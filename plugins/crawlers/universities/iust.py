@@ -73,7 +73,7 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.content, "html.parser")
 
     # دانشکده مهندسی راه آهن
-    def get_professors_railway_engineering(self, link: str):
+    def get_professors_railway_engineering(self):
         response = check_connection(
             requests.get, self.railway_engineering + "page/913/اساتید"
         )
@@ -87,7 +87,7 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
 
-    def get_professors_mathematics_and_computer_science(self, link: str):
+    def get_professors_mathematics_and_computer_science(self):
         response = check_connection(
             requests.get,
             self.mathematics_and_computer_science + "page/19620/اعضای-هیئت-علمی",
@@ -95,7 +95,7 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.content, "html.parser")
 
     # دانشکده مهندسی شیمی
-    def get_professors_chemistry(self, link: str):
+    def get_professors_chemistry(self):
         response = check_connection(
             requests.get, self.chemistry + "page/20311/اعضای-هیات-علمی"
         )
@@ -110,7 +110,7 @@ class ElmSanatCrawler(University):
         return soup
 
     # مهندسی شیمی نفت و گاز
-    def get_professors_chemical_petroleum_and_gas_engineering(self, link: str):
+    def get_professors_chemical_petroleum_and_gas_engineering(self):
         response = check_connection(
             requests.get, self.chemical_petroleum_and_gas_engineering + "faculty/"
         )
@@ -130,7 +130,7 @@ class ElmSanatCrawler(University):
         return soup
 
     # مهندسی صنایع
-    def get_professors_industrial_engineering(self, link: str):
+    def get_professors_industrial_engineering(self):
         response = check_connection(
             requests.get, self.industrial_engineering + "page/5318/اعضاء-هیات-علمی"
         )
@@ -144,14 +144,14 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
 
-    def get_professors_civil_engineering(self, link: str):
+    def get_professors_civil_engineering(self):
         response = check_connection(
             requests.get, self.civil_engineering + "page/5991/اعضاء-هیأت-علمی"
         )
         soup = BeautifulSoup(response.content, "html.parser")
 
     # فناوری های نوین
-    def get_professors_advanced_technologies(self, link: str):
+    def get_professors_advanced_technologies(self):
         response = check_connection(
             requests.get, self.advanced_technologies + "page/20260/اعضای-هیات-علمی"
         )
@@ -166,7 +166,7 @@ class ElmSanatCrawler(University):
         return soup
 
     # فیزیک
-    def get_professors_physics(self, link: str):
+    def get_professors_physics(self):
         response = check_connection(requests.get, self.physics + "faculty/")
         soup = BeautifulSoup(response.content, "html.parser")
         for button_wrapper in soup.find_all(
@@ -181,7 +181,7 @@ class ElmSanatCrawler(University):
         return soup
 
     #  مهندسی کامپیوتر
-    def get_professors_computer_engineering(self, link: str):
+    def get_professors_computer_engineering(self):
         response = check_connection(
             requests.get,
             self.computer_engineering + "page/18766/اعضا-هیات-علمی-در-یک-نگاه",
@@ -197,7 +197,7 @@ class ElmSanatCrawler(University):
         return soup
 
     # شهر سازی
-    def get_professors_architecture_and_environmental_design(self, link: str):
+    def get_professors_architecture_and_environmental_design(self):
         response = check_connection(
             requests.get,
             self.architecture_and_environmental_design + "page/7134/اعضای-هیئت-علمی",
@@ -213,7 +213,7 @@ class ElmSanatCrawler(University):
         return soup
 
     # اقتصاد
-    def get_professors_economy(self, link: str):
+    def get_professors_economy(self):
         response = check_connection(
             requests.get, self.economy + "page/11376/اعضای-هیأت-علمی"
         )
@@ -227,7 +227,7 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
 
-    def get_professors_metallurgy_and_materials(self, link: str):
+    def get_professors_metallurgy_and_materials(self):
         response = check_connection(
             requests.get, self.metallurgy_and_materials + "faculty/"
         )
