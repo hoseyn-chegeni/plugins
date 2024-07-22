@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
+
 class Social(BaseModel):
     google: Optional[str] = None
     linkedin: Optional[str] = None
@@ -12,12 +13,14 @@ class Social(BaseModel):
     twitter: Optional[str] = None
     webofscience: Optional[str] = None
 
+
 class Activity(BaseModel):
     description: Optional[str] = None
     end_date: Optional[str] = None
     location: Optional[str] = None
     start_date: Optional[str] = None
     title: Optional[str] = None
+
 
 class Book(BaseModel):
     authors: List[str] = []
@@ -26,10 +29,12 @@ class Book(BaseModel):
     publish_date: Optional[str] = None
     title: Optional[str] = None
 
+
 class Course(BaseModel):
     description: Optional[str] = None
     period: Optional[str] = None
     title: Optional[str] = None
+
 
 class EducationalRecord(BaseModel):
     city: Optional[str] = None
@@ -40,13 +45,16 @@ class EducationalRecord(BaseModel):
     title: Optional[str] = None
     university: Optional[str] = None
 
+
 class Honor(BaseModel):
     title: Optional[str] = None
     date: Optional[str] = None
 
+
 class Interest(BaseModel):
     start_date: Optional[str] = None
     title: Optional[str] = None
+
 
 class Invention(BaseModel):
     country: Optional[str] = None
@@ -56,29 +64,35 @@ class Invention(BaseModel):
     registration_number: Optional[str] = None
     title: Optional[str] = None
 
+
 class Language(BaseModel):
     language: Optional[str] = None
     speaking: Optional[str] = None
     translate: Optional[str] = None
 
+
 class Membership(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
+
 
 class Thesis(BaseModel):
     authors: List[str] = []
     defense_date: Optional[str] = None
     title: Optional[str] = None
 
+
 class Skill(BaseModel):
     title: Optional[str] = None
     start_date: Optional[str] = None
+
 
 class Workshop(BaseModel):
     event_date: Optional[str] = None
     event_place: Optional[str] = None
     organizing: Optional[str] = None
     title: Optional[str] = None
+
 
 class Professor(BaseModel):
     activities: List[Activity] = []

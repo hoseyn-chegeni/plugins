@@ -41,7 +41,7 @@ class MongoBasic:
             print(f"<MongoBasic>:::Error in reset_database()\n     └─────{Error}\n")
             return False
 
-    def reset_collection(self, collection_name:str) -> bool:
+    def reset_collection(self, collection_name: str) -> bool:
         try:
             self.db[collection_name].delete_many({})
             return True
@@ -49,7 +49,7 @@ class MongoBasic:
             print(f"<MongoBasic>:::Error in reset_database()\n     └─────{Error}\n")
             return False
 
-    def collection_exist(self, collection_name:str) -> bool:
+    def collection_exist(self, collection_name: str) -> bool:
         """
         Returns
         -------
@@ -57,10 +57,10 @@ class MongoBasic:
         """
         return collection_name in self.db.list_collection_names()
 
-    def drop_collection(self, collection_name:str = None, pattern:str = None) -> bool:
+    def drop_collection(self, collection_name: str = None, pattern: str = None) -> bool:
         """
         Drop a single collection using `collection_name` or RegEx `pattern`.
-            <At least one of the arguments must be filled> 
+            <At least one of the arguments must be filled>
         """
         try:
             if pattern:
@@ -69,7 +69,7 @@ class MongoBasic:
                     if regex.match(coll_name):
                         self.db[coll_name].drop()
                         return True
-                    
+
                 return False
 
             else:
@@ -79,7 +79,7 @@ class MongoBasic:
             print(f"<MongoBasic>:::Error in drop_collection()\n     └─────{Error}\n")
             return False
 
-    def drop_database(self, database_name:str) -> bool:
+    def drop_database(self, database_name: str) -> bool:
         """
         Drop a database using it's name.
         """
@@ -90,7 +90,12 @@ class MongoBasic:
             print(f"<MongoBasic>:::Error in drop_database()\n     └─────{Error}\n")
             return False
 
-    def insert_data(self, collection_name:str, data:Union[list[dict], dict], show_errors:bool = False) -> bool:
+    def insert_data(
+        self,
+        collection_name: str,
+        data: Union[list[dict], dict],
+        show_errors: bool = False,
+    ) -> bool:
         """
         Inserts Data into the `collection_name`.
         """
@@ -105,7 +110,9 @@ class MongoBasic:
                 print(f"<MongoBasic>:::Error in insert_data()\n     └─────{Error}\n")
             return False
 
-    def load_data(self, collection_name:str, query={}, filter={}, limit=0, first:bool=False) -> Union[dict, list[dict]]:
+    def load_data(
+        self, collection_name: str, query={}, filter={}, limit=0, first: bool = False
+    ) -> Union[dict, list[dict]]:
         """
         Itrates over `collection` name.
         ## Parameters
@@ -127,12 +134,17 @@ class MongoBasic:
             if first:
                 return self.db[collection_name].find_one(query, filter)
             else:
-                return [col for col in self.db[collection_name].find(query, filter).limit(limit)]
+                return [
+                    col
+                    for col in self.db[collection_name].find(query, filter).limit(limit)
+                ]
         except Exception as Error:
             print(f"<MongoBasic>:::Error in load_data()\n     └─────{Error}\n")
             return dict()
 
-    def update_data(self, collection_name:str, query:dict, value:dict, upsert=False) -> bool:
+    def update_data(
+        self, collection_name: str, query: dict, value: dict, upsert=False
+    ) -> bool:
         """
         ## Parameters
             query (`dict` | `{}`):
@@ -143,27 +155,29 @@ class MongoBasic:
                     $set -> `{"name": "max"}`
         """
         try:
-            self.db[collection_name].update_one(query, {'$set': value}, upsert=upsert)
+            self.db[collection_name].update_one(query, {"$set": value}, upsert=upsert)
             return True
         except Exception as Error:
             print(f"<MongoBasic>:::Error in update_data()\n     └─────{Error}\n")
             return False
 
-    def push_data(self, collection_name:str, query:dict, value:dict) -> bool:
+    def push_data(self, collection_name: str, query: dict, value: dict) -> bool:
         """
         Append item to MongoDB document array without re-insertion.
         """
         try:
             if type(value) == dict:
-                self.db[collection_name].update_one(query, {'$push': value})
+                self.db[collection_name].update_one(query, {"$push": value})
             elif type(value) == list:
-                self.db[collection_name].update_one(query, {'$push': {'$each': value}})
+                self.db[collection_name].update_one(query, {"$push": {"$each": value}})
             return True
         except Exception as Error:
             print(f"<MongoBasic>:::Error in push_data()\n     └─────{Error}\n")
             return False
 
-    def delete_data(self, collection_name:str, query={}, delete_many: bool = True) -> bool:
+    def delete_data(
+        self, collection_name: str, query={}, delete_many: bool = True
+    ) -> bool:
         """
         Deletes data from given `collection_name`.
         """
@@ -172,9 +186,9 @@ class MongoBasic:
                 self.db[collection_name].delete_many(query)
             else:
                 self.db[collection_name].delete_one(query)
-                
+
             return True
-        
+
         except Exception as Error:
             print(f"<MongoBasic>:::Error in delete_data()\n     └─────{Error}\n")
             return False

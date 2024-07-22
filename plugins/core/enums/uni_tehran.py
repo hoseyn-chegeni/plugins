@@ -2,12 +2,12 @@ from enum import Enum
 
 
 class SearchType(Enum):
-    Profile = 'profile'
-    Retired = 'retired'
-    Decedent = 'decedent'
-    Journals = 'journals'
-    Publications = 'publications'
-    Prizes = 'prizes'
+    Profile = "profile"
+    Retired = "retired"
+    Decedent = "decedent"
+    Journals = "journals"
+    Publications = "publications"
+    Prizes = "prizes"
 
 
 class ElectricalComputerEngineeringInfoFields(Enum):

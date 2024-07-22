@@ -12,17 +12,17 @@ month_persian = {
     "آذر": 9,
     "دی": 10,
     "بهمن": 11,
-    "اسفند": 12
+    "اسفند": 12,
 }
 
-def check_connection(func,*args,**kwargs):
-    """
-    """
+
+def check_connection(func, *args, **kwargs):
+    """ """
     try_connection = 0
     while True:
         try:
-            print('Still Crawling')
-            response = func(*args,**kwargs)
+            print("Still Crawling")
+            response = func(*args, **kwargs)
             sleep(1)
             return response
         except Exception as e:

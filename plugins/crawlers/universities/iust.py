@@ -22,21 +22,24 @@ class ElmSanatCrawler(University):
         self.advanced_technologies = "https://fn.iust.ac.ir/"
         self.physics = "https://physics.iust.ac.ir/"
         self.computer_engineering = "https://ce.iust.ac.ir/"
-        self.architecture_and_environmental_design = "https://www.iust.ac.ir/index.php?sid=27&slc_lang=fa"
-        self.ثconomy = "https://pe.iust.ac.ir/"
+        self.architecture_and_environmental_design = (
+            "https://www.iust.ac.ir/index.php?sid=27&slc_lang=fa"
+        )
+        self.economy = "https://pe.iust.ac.ir/"
         self.metallurgy_and_materials = "http://meteng.iust.ac.ir/"
-    
-
-
 
     def get_colleges(self) -> Generator[colleges.CollegeData, None, None]:
-        response = check_connection(requests.get, self.url + "persons.php?slc_lang=fa&sid=1&list_sections=1/fa/")
-        soup = BeautifulSoup(response.text, 'html.parser')
-        menu_section = soup.find('ul', class_='dropdown-menu mega-dropdown-menu row')
+        response = check_connection(
+            requests.get, self.url + "persons.php?slc_lang=fa&sid=1&list_sections=1/fa/"
+        )
+        soup = BeautifulSoup(response.text, "html.parser")
+        menu_section = soup.find("ul", class_="dropdown-menu mega-dropdown-menu row")
         if not menu_section:
             return
 
-        for a_tag in menu_section.find_all('a', href=True):
+        for a_tag in menu_section.find_all("a", href=True):
             text_value = a_tag.get_text(strip=True)
-            if re.match(r'^دانشکده', text_value):
-                yield colleges.CollegeData(href=self.url + a_tag['href'], value=text_value)
+            if re.match(r"^دانشکده", text_value):
+                yield colleges.CollegeData(
+                    href=self.url + a_tag["href"], value=text_value
+                )
