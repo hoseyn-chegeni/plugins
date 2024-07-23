@@ -108,9 +108,10 @@ class ElmSanatCrawler(University):
     def get_railway_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+
 
 #ریاضی 
+
     def get_professors_mathematics_and_computer_science(self):
         response = check_connection(
             requests.get,
@@ -125,7 +126,46 @@ class ElmSanatCrawler(University):
     def get_mathematics_and_computer_science_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+        professor_info = {}
+
+        # Extract professor's name
+        name_element = soup.select_one("td[rowspan='1'] span strong")
+        if name_element:
+            professor_info['name'] = name_element.get_text(strip=True)
+        
+        # Extract email, phone, fax, postal code, address, and website
+        contact_info_element = soup.select_one("td img[alt=''][src*='mail-iust-36x36.png']")
+        if contact_info_element:
+            contact_info_td = contact_info_element.find_parent("td")
+            contact_info = contact_info_td.get_text(separator="\n", strip=True)
+            lines = contact_info.split("\n")
+            
+            if len(lines) > 1:
+                professor_info['email'] = lines[1].split(":", 1)[1].strip() if ":" in lines[1] else ""
+            if len(lines) > 3:
+                professor_info['phone'] = lines[3].split(":", 1)[1].strip() if ":" in lines[3] else ""
+            if len(lines) > 5:
+                professor_info['fax'] = lines[5].split(":", 1)[1].strip() if ":" in lines[5] else ""
+            if len(lines) > 7:
+                professor_info['postal_code'] = lines[7].split(":", 1)[1].strip() if ":" in lines[7] else ""
+            if len(lines) > 9:
+                professor_info['address'] = lines[9].split(":", 1)[1].strip() if ":" in lines[9] else ""
+            if len(lines) > 11:
+                professor_info['website'] = lines[11].split(":", 1)[1].strip() if ":" in lines[11] else ""
+        
+        # Extract virtual lab and research lab info
+        labs_element = soup.select_one("td img[alt=''][src*='faculty-mech-iust-icon.png']")
+        if labs_element:
+            labs_td = labs_element.find_parent("td")
+            labs_info = labs_td.get_text(separator="\n", strip=True)
+            labs_lines = labs_info.split("\n")
+            
+            if len(labs_lines) > 0:
+                professor_info['virtual_lab'] = labs_lines[0].split(":", 1)[1].strip() if ":" in labs_lines[0] else ""
+            if len(labs_lines) > 2:
+                professor_info['research_lab'] = labs_lines[2].split(":", 1)[1].strip() if ":" in labs_lines[2] else ""
+        
+
 
     # دانشکده مهندسی شیمی
     def get_professors_chemistry(self):
