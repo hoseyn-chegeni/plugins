@@ -24,7 +24,7 @@ class ElmSanatCrawler(University):
         self.physics = "https://physics.iust.ac.ir/"
         self.computer_engineering = "https://ce.iust.ac.ir/"
         self.architecture_and_environmental_design = (
-            "https://www.iust.ac.ir/index.php?sid=27&slc_lang=fa"
+            "https://www.iust.ac.ir/"
         )
         self.economy = "https://pe.iust.ac.ir/"
         self.metallurgy_and_materials = "http://meteng.iust.ac.ir/"
@@ -202,14 +202,15 @@ class ElmSanatCrawler(University):
 
     # شهر سازی
     def get_professors_architecture_and_environmental_design(self):
-        response = check_connection(
-            requests.get,
-            self.architecture_and_environmental_design + "page/7134/اعضای-هیئت-علمی",
-        )
+        response = check_connection(requests.get, self.architecture_and_environmental_design + "page/7134/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A6%D8%AA-%D8%B9%D9%84%D9%85%DB%8C",)
         soup = BeautifulSoup(response.content, "html.parser")
         for td in soup.find_all("td", style="text-align: center;"):
-            link = td.find("a", href=True)["href"]
-            yield link
+            a_tag = td.find("a")
+            if a_tag:
+                span_tag = a_tag.find("span", style="font-size:11px;")
+                if span_tag:
+                    link = a_tag['href']
+                    yield link
 
     def get_aed_professor_page(self, link: str):
         response = check_connection(requests.get, link)
