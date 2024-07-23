@@ -64,11 +64,28 @@ class ElmSanatCrawler(University):
         )
         soup = BeautifulSoup(response.content, "html.parser")
 
-    def get_professors_automotive_engineering(self, link: str):
+# مهندسی خودرو
+    def get_professors_automotive_engineering(self):
         response = check_connection(
             requests.get, self.automotive_engineering + "page/13939/اعضاء-هیات-علمی"
         )
         soup = BeautifulSoup(response.content, "html.parser")
+        divs = soup.find_all("div", style="text-align: center;")
+        for div in divs:
+            links = div.find_all('a')
+            detail_link = None
+            for link in links:
+                href = link.get('href')
+                if href and re.match(r'^http://scimet.iust', href):
+                    detail_link = href
+                    if detail_link is not None:
+                        yield detail_link
+                        
+
+    def get_automotive_engineering_professor_page(self, link: str):
+        response = check_connection(requests.get, link)
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup
 
     # دانشکده مهندسی راه آهن
     def get_professors_railway_engineering(self):
