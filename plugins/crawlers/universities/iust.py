@@ -173,10 +173,10 @@ class ElmSanatCrawler(University):
     def get_professors_physics(self):
         response = check_connection(requests.get, self.physics + "faculty/")
         soup = BeautifulSoup(response.content, "html.parser")
-        for button_wrapper in soup.find_all(
-            "div", {"class": "wd-button-wrapper text-center"}
-        ):
-            link = button_wrapper.find("a", href=True)["href"]
+        elements = soup.find_all('a', class_='btn btn-style-3d btn-style-semi-round btn-size-small btn-scheme-inherit btn-scheme-hover-inherit btn-icon-pos-right')
+
+        for element in elements:
+            link = element['href']
             yield link
 
     def get_physics_faculty_professor_page(self, link: str):
