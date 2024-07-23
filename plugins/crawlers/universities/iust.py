@@ -78,9 +78,13 @@ class ElmSanatCrawler(University):
             requests.get, self.railway_engineering + "page/913/اساتید"
         )
         soup = BeautifulSoup(response.content, "html.parser")
-        for teacher_info in soup.find_all("div", {"class": "rounded"}, style=True):
-            link = teacher_info.find("a", href=True)["href"]
-            yield self.railway_engineering + link
+        divs = soup.find_all("div", class_="rounded")
+
+        for div in divs:
+            name_tag = div.find("a")
+            link = self.railway_engineering + name_tag["href"] if name_tag and name_tag["href"] else None
+            if link is not None:
+                yield link
 
     def get_railway_professor_page(self, link: str):
         response = check_connection(requests.get, link)
