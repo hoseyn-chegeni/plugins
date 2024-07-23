@@ -313,7 +313,46 @@ class ElmSanatCrawler(University):
     def get_advanced_technologies_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+        
+        # Extracting data from the first div element
+        profile_div = soup.find("div", {"id": "sidebar-title"})
+        if not profile_div:
+            return None
+        
+        profile_img_tag = profile_div.find("img", {"class": "img-fluid"})
+        profile_img_url = profile_img_tag["src"] if profile_img_tag else None
+        
+        alt_img_tag = profile_div.find("img", {"src": "./files/fnst/images/Faculty_Member/Dr.Rahmani.png"})
+        alt_img_url = alt_img_tag["src"] if alt_img_tag else None
+        
+        professor_name_tag = profile_div.find("h3")
+        professor_name = professor_name_tag.text.strip() if professor_name_tag else None
+        
+        professor_title_tag = profile_div.find("p")
+        professor_title = professor_title_tag.text.strip() if professor_title_tag else None
+        
+        # Extracting data from the second div element
+        contact_div = soup.find("div", {"class": "section px-3"})
+        if not contact_div:
+            return None
+        
+        contact_info = {}
+        contact_list_items = contact_div.find_all("li", {"class": "d-flex align-items-center"})
+        
+        for item in contact_list_items:
+            contact_icon = item.find("span", {"class": "contact-icon"}).find("i")
+            contact_value = item.find("strong")
+            if contact_icon and contact_value:
+                icon_class = contact_icon["class"][1]  # assuming the second class is the specific icon type
+                contact_info[icon_class] = contact_value.text.strip()
+        
+        return {
+            "profile_img_url": profile_img_url,
+            "alt_img_url": alt_img_url,
+            "professor_name": professor_name,
+            "professor_title": professor_title,
+            "contact_info": contact_info
+        }
 
     # فیزیک
     def get_professors_physics(self):
