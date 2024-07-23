@@ -167,6 +167,7 @@ class ElmSanatCrawler(University):
         
 
 
+
     # دانشکده مهندسی شیمی
     def get_professors_chemistry(self):
         response = check_connection(
@@ -180,8 +181,61 @@ class ElmSanatCrawler(University):
     def get_chemistry_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+    def get_chemistry_professor_page(self, link: str):
+        response = check_connection(requests.get, link)
+        soup = BeautifulSoup(response.text, "html.parser")
+        professor_info = {}
 
+        # Extract professor's name and title
+        title_element = soup.select_one("span.news_titler")
+        if title_element:
+            professor_info['title'] = title_element.get_text(strip=True)
+        
+        # Extract image, email, phone numbers, and profile links
+        contact_info_element = soup.select_one("p")
+        if contact_info_element:
+            # Extract the image source
+            img_element = contact_info_element.find("img")
+            if img_element:
+                professor_info['image'] = img_element['src']
+            
+            # Extract the contact details
+            spans = contact_info_element.find_all("span", recursive=False)
+            if len(spans) > 0:
+                contact_info = spans[0].get_text(separator="\n", strip=True)
+                lines = contact_info.split("\n")
+                
+                for line in lines:
+                    if "ایمیل:" in line:
+                        professor_info['email'] = line.split(":", 1)[1].strip()
+                    elif "تلفن مستقیم:" in line:
+                        professor_info['phone_direct'] = line.split(":", 1)[1].strip()
+                    elif "دورنگار:" in line:
+                        professor_info['fax'] = line.split(":", 1)[1].strip()
+                    elif "تلفن همراه" in line:
+                        professor_info['phone_mobile'] = line.split(":", 1)[1].strip()
+
+        profile_links = contact_info_element.find_all("a")
+        for link in profile_links:
+            href = link.get('href')
+            if "researcher/1678952/vahid-safarifard" in href:
+                professor_info['publons'] = href
+            elif "scholar.google.com" in href:
+                professor_info['google_scholar'] = href
+            elif "scopus.com" in href:
+                professor_info['scopus'] = href
+            elif "orcid.org" in href:
+                professor_info['orcid'] = href
+            elif "researchgate.net" in href:
+                professor_info['researchgate'] = href
+            elif "mendeley.com" in href:
+                professor_info['mendeley'] = href
+            elif "persianmof.ir" in href:
+                professor_info['research_group'] = href
+            elif "chemistry.iust.ac.ir" in href:
+                professor_info['homepage'] = href
+
+        return professor_info
     # مهندسی شیمی نفت و گاز
     def get_professors_chemical_petroleum_and_gas_engineering(self):
         response = check_connection(
