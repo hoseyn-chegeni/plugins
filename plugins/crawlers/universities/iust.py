@@ -274,7 +274,28 @@ class ElmSanatCrawler(University):
     def get_ie_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+        professor_info = {}
+        # Extract information from the <td> element
+        td_element = soup.find("td")
+        if td_element:
+            # Extract the professor's name
+            name_element = td_element.find("font", size="2")
+            if name_element:
+                professor_info['name'] = name_element.get_text(strip=True).strip('"')
+            # Extract title, group, email, and phone
+            strong_elements = td_element.find_all("strong")
+            for element in strong_elements:
+                text = element.get_text(strip=True)
+                if "استاد" in text and "عضو" not in text:
+                    professor_info['title'] = text
+                elif "عضو گروه" in text:
+                    professor_info['group'] = text
+                elif "Email" in text:
+                    professor_info['email'] = text.split(":", 1)[1].strip().replace("AT", "@")
+                elif "تلفن" in text:
+                    professor_info['phone'] = text.split(":", 1)[1].strip()
+        return professor_info
+
 
     def get_professors_civil_engineering(self):
         response = check_connection(
