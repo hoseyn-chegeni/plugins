@@ -181,9 +181,6 @@ class ElmSanatCrawler(University):
     def get_chemistry_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-    def get_chemistry_professor_page(self, link: str):
-        response = check_connection(requests.get, link)
-        soup = BeautifulSoup(response.text, "html.parser")
         professor_info = {}
 
         # Extract professor's name and title
