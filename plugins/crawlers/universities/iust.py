@@ -139,9 +139,10 @@ class ElmSanatCrawler(University):
             requests.get, self.industrial_engineering + "page/5318/اعضاء-هیات-علمی"
         )
         soup = BeautifulSoup(response.text, "html.parser")
-        for teacher_info in soup.find_all("td", {"class": "tbld_odd"}):
-            link = teacher_info.find("a", href=True)["href"]
-            yield self.industrial_engineering + link
+        for td in soup.find_all("td", class_="tbld_odd"):
+            name_anchor = td.find("a")
+            if name_anchor:
+                yield self.industrial_engineering + name_anchor['href'] if name_anchor.has_attr('href') else None 
 
     def get_ie_professor_page(self, link: str):
         response = check_connection(requests.get, link)
