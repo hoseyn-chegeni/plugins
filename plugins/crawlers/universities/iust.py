@@ -110,12 +110,22 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
 
+#ریاضی 
     def get_professors_mathematics_and_computer_science(self):
         response = check_connection(
             requests.get,
             self.mathematics_and_computer_science + "page/19620/اعضای-هیئت-علمی",
         )
         soup = BeautifulSoup(response.content, "html.parser")
+        divs = soup.find_all('div', style="text-align: center;")
+        for div in divs:
+            link = div.find('a', href=True)
+            if link and link['href'].startswith("http://math.iust.ac.ir"):
+                yield link
+    def get_mathematics_and_computer_science_professor_page(self, link: str):
+        response = check_connection(requests.get, link)
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup
 
     # دانشکده مهندسی شیمی
     def get_professors_chemistry(self):
