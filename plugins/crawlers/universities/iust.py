@@ -234,7 +234,7 @@ class ElmSanatCrawler(University):
 
         return professor_info
     
-    
+
     # مهندسی شیمی نفت و گاز
     def get_professors_chemical_petroleum_and_gas_engineering(self):
         response = check_connection( requests.get, self.chemical_petroleum_and_gas_engineering + "/faculty/")
@@ -351,6 +351,7 @@ class ElmSanatCrawler(University):
             "contact_info": contact_info
         }
 
+
     # فیزیک
     def get_professors_physics(self):
         response = check_connection(requests.get, self.physics + "faculty/")
@@ -365,9 +366,57 @@ class ElmSanatCrawler(University):
             yield link
 
     def get_physics_faculty_professor_page(self, link: str):
-        response = check_connection(requests.get, link)
-        soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+            response = check_connection(requests.get, link)
+            if not response:
+                return None
+            
+            soup = BeautifulSoup(response.text, "html.parser")
+            
+            data = {}
+            
+            # Extract the professor's name
+            name_element = soup.find("h2", class_="elementor-heading-title elementor-size-large")
+            data['name'] = name_element.text.strip() if name_element else "N/A"
+            
+            # Extract academic rank
+            academic_rank_element = None
+            contact_elements = soup.find_all("li", class_="elementor-icon-list-item")
+            for element in contact_elements:
+                if "مرتبه علمی" in element.get_text(strip=True):
+                    academic_rank_element = element
+                    break
+            
+            data['academic_rank'] = academic_rank_element.get_text(strip=True) if academic_rank_element else "N/A"
+            
+            # Extract contact information
+            contact_info = {}
+            for element in contact_elements:
+                text = element.get_text(strip=True)
+                if "تلفن" in text:
+                    contact_info['phone'] = text
+                elif "فاکس" in text:
+                    contact_info['fax'] = text
+                elif "ایمیل" in text:
+                    contact_info['email'] = text
+                elif "آدرس" in text:
+                    contact_info['address'] = text
+            
+            data['contact_info'] = contact_info
+            
+            # Extract external links
+            external_links = {}
+            external_link_elements = soup.find_all("a", class_="elementor-icon-list-item-link")
+            
+            for element in external_link_elements:
+                link_text = element.get_text(strip=True)
+                href = element.get('href')
+                external_links[link_text] = href
+            
+            data['external_links'] = external_links
+            
+            return data
+
+
 
     #  مهندسی کامپیوتر
     def get_professors_computer_engineering(self):
