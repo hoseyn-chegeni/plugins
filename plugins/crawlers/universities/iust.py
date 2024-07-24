@@ -233,20 +233,17 @@ class ElmSanatCrawler(University):
                 professor_info['homepage'] = href
 
         return professor_info
+    
+    
     # مهندسی شیمی نفت و گاز
     def get_professors_chemical_petroleum_and_gas_engineering(self):
-        response = check_connection(
-            requests.get, self.chemical_petroleum_and_gas_engineering + "faculty/"
-        )
+        response = check_connection( requests.get, self.chemical_petroleum_and_gas_engineering + "/faculty/")
         soup = BeautifulSoup(response.content, "html.parser")
-        for teacher_info in soup.find_all(
-            "div",
-            {
-                "class": "w-post-elm post_custom_field usg_post_custom_field_1 type_text fjb_faculty_info color_link_inherit"
-            },
-        ):
-            link = teacher_info.find("a", href=True)["href"]
-            yield self.chemical_petroleum_and_gas_engineering + link
+        h1_elements = soup.find_all("h1", style="text-align: right;")
+        for h1 in h1_elements:
+            a_tag = h1.find("a", href=True)
+            if a_tag is not None:
+                return f'{self.chemical_petroleum_and_gas_engineering}{a_tag['href']}'
 
     def get_chem_eng_professor_page(self, link: str):
         response = check_connection(requests.get, link)
