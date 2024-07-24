@@ -51,12 +51,31 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.content, "html.parser")
         for teacher_info in soup.find_all("div", {"class": "teacher-description"}):
             link = teacher_info.find("a", href=True)["href"]
+            
             yield link
 
     def get_electrical_engineering_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+        main_div = soup.find("div", {"dir": "rtl", "style": "overflow: hidden;", "id": "page_full"})
+        if not main_div:
+            return None
+        professor_info = {}
+        name_div = main_div.find("div", class_="page_title")
+        if name_div:
+            professor_info["name"] = name_div.find("h1").text.strip()
+        
+        small_text_divs = main_div.find_all("div", class_="yw_text_small persian")
+        if small_text_divs:
+            for div in small_text_divs:
+                text = div.get_text(separator="|").strip().replace('\u200c', '').replace('\xa0', '')
+                professor_info["additional_info"] = text
+        
+        main_content_div = main_div.find("div", class_="yw_text")
+        if main_content_div:
+            professor_info["main_content"] = main_content_div.get_text(separator="\n").strip().replace('\u200c', '').replace('\xa0', '')
+
+        return professor_info
 
     def get_professors_mechanical_engineering(self):
         response = check_connection(
