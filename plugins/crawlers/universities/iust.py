@@ -235,20 +235,86 @@ class ElmSanatCrawler(University):
         return professor_info
     
 
-    # مهندسی شیمی نفت و گاز
+     # مهندسی شیمی نفت و گاز
     def get_professors_chemical_petroleum_and_gas_engineering(self):
-        response = check_connection( requests.get, self.chemical_petroleum_and_gas_engineering + "/faculty/")
+        response = check_connection(requests.get, self.chemical_petroleum_and_gas_engineering + "/faculty/")
         soup = BeautifulSoup(response.content, "html.parser")
         h1_elements = soup.find_all("h1", style="text-align: right;")
+        links = []
         for h1 in h1_elements:
             a_tag = h1.find("a", href=True)
             if a_tag is not None:
-                return f'{self.chemical_petroleum_and_gas_engineering}{a_tag['href']}'
+                href = a_tag['href']
+                if not href.startswith("http"):
+                    href = f"{self.chemical_petroleum_and_gas_engineering}{href}"
+
+                links.append(href)
+        return links
 
     def get_chem_eng_professor_page(self, link: str):
         response = check_connection(requests.get, link)
+        if not response:
+            return None
+
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup
+        data = {}
+
+        # Extract professor's name and image
+        profile_div = soup.find("div", class_="g-cols wpb_row us_custom_88e775d5 fjb_faculty_local_info via_flex valign_top type_default stacking_default")
+        if profile_div:
+            name_tag = profile_div.find("h1").find("strong")
+            data['name'] = name_tag.get_text(strip=True) if name_tag else "N/A"
+
+            image_tag = profile_div.find("img", class_="wp-image-1133")
+            data['image'] = image_tag.get('src') if image_tag else "N/A"
+
+        # Extract research interests
+        interests_tag = profile_div.find("p")
+        if interests_tag:
+            data['research_interests'] = [interest.strip() for interest in interests_tag.stripped_strings]
+
+        # Extract contact information
+        contact_info = {}
+        table_rows = profile_div.find_all("tr")
+        for row in table_rows:
+            cells = row.find_all("td")
+            if len(cells) == 2:
+                text = cells[1].get_text(strip=True)
+                if "ایمیل" in text:
+                    contact_info['email'] = text.replace("ایمیل:", "").strip()
+                elif "تلفن دفتر" in text:
+                    contact_info['office_phone'] = text.replace("تلفن دفتر:", "").strip()
+                elif "تلفن دانشکده" in text:
+                    contact_info['faculty_phone'] = text.replace("تلفن دانشکده:", "").strip()
+                elif "دورنگار" in text:
+                    contact_info['fax'] = text.replace("دورنگار:", "").strip()
+                elif "کدپستی" in text:
+                    contact_info['postal_code'] = text.replace("کدپستی:", "").strip()
+                elif "تهران" in text:
+                    contact_info['address'] = text.strip()
+
+        data['contact_info'] = contact_info
+
+        # Extract external links
+        external_links = {}
+        links = profile_div.find_all("a")
+        for link in links:
+            text = link.get_text(strip=True)
+            href = link.get('href')
+            if "آزمایشگاه مجازی" in text:
+                external_links['virtual_lab'] = href
+            elif "آزمایشگاه پژوهشی" in text:
+                external_links['research_lab'] = href
+            elif "Scopus" in text:
+                external_links['scopus'] = href
+            elif "Scholar" in text:
+                external_links['scholar'] = href
+            elif "LinkedIn" in text:
+                external_links['linkedin'] = href
+
+        data['external_links'] = external_links
+
+        return data
 
     # مهندسی صنایع
     def get_professors_industrial_engineering(self):
