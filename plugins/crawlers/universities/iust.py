@@ -51,29 +51,41 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.content, "html.parser")
         for teacher_info in soup.find_all("div", {"class": "teacher-description"}):
             link = teacher_info.find("a", href=True)["href"]
-            
+
             yield link
 
     def get_electrical_engineering_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        main_div = soup.find("div", {"dir": "rtl", "style": "overflow: hidden;", "id": "page_full"})
+        main_div = soup.find(
+            "div", {"dir": "rtl", "style": "overflow: hidden;", "id": "page_full"}
+        )
         if not main_div:
             return None
         professor_info = {}
         name_div = main_div.find("div", class_="page_title")
         if name_div:
             professor_info["name"] = name_div.find("h1").text.strip()
-        
+
         small_text_divs = main_div.find_all("div", class_="yw_text_small persian")
         if small_text_divs:
             for div in small_text_divs:
-                text = div.get_text(separator="|").strip().replace('\u200c', '').replace('\xa0', '')
+                text = (
+                    div.get_text(separator="|")
+                    .strip()
+                    .replace("\u200c", "")
+                    .replace("\xa0", "")
+                )
                 professor_info["additional_info"] = text
-        
+
         main_content_div = main_div.find("div", class_="yw_text")
         if main_content_div:
-            professor_info["main_content"] = main_content_div.get_text(separator="\n").strip().replace('\u200c', '').replace('\xa0', '')
+            professor_info["main_content"] = (
+                main_content_div.get_text(separator="\n")
+                .strip()
+                .replace("\u200c", "")
+                .replace("\xa0", "")
+            )
 
         return professor_info
 
@@ -83,7 +95,7 @@ class ElmSanatCrawler(University):
         )
         soup = BeautifulSoup(response.content, "html.parser")
 
-# مهندسی خودرو
+    # مهندسی خودرو
     def get_professors_automotive_engineering(self):
         response = check_connection(
             requests.get, self.automotive_engineering + "page/13939/اعضاء-هیات-علمی"
@@ -91,15 +103,14 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.content, "html.parser")
         divs = soup.find_all("div", style="text-align: center;")
         for div in divs:
-            links = div.find_all('a')
+            links = div.find_all("a")
             detail_link = None
             for link in links:
-                href = link.get('href')
-                if href and re.match(r'^http://scimet.iust', href):
+                href = link.get("href")
+                if href and re.match(r"^http://scimet.iust", href):
                     detail_link = href
                     if detail_link is not None:
                         yield detail_link
-                        
 
     def get_automotive_engineering_professor_page(self, link: str):
         response = check_connection(requests.get, link)
@@ -128,8 +139,7 @@ class ElmSanatCrawler(University):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
 
-
-#ریاضی 
+    # ریاضی
 
     def get_professors_mathematics_and_computer_science(self):
         response = check_connection(
@@ -137,11 +147,12 @@ class ElmSanatCrawler(University):
             self.mathematics_and_computer_science + "page/19620/اعضای-هیئت-علمی",
         )
         soup = BeautifulSoup(response.content, "html.parser")
-        divs = soup.find_all('div', style="text-align: center;")
+        divs = soup.find_all("div", style="text-align: center;")
         for div in divs:
-            link = div.find('a', href=True)
-            if link and link['href'].startswith("http://math.iust.ac.ir"):
+            link = div.find("a", href=True)
+            if link and link["href"].startswith("http://math.iust.ac.ir"):
                 yield link
+
     def get_mathematics_and_computer_science_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -150,42 +161,63 @@ class ElmSanatCrawler(University):
         # Extract professor's name
         name_element = soup.select_one("td[rowspan='1'] span strong")
         if name_element:
-            professor_info['name'] = name_element.get_text(strip=True)
-        
+            professor_info["name"] = name_element.get_text(strip=True)
+
         # Extract email, phone, fax, postal code, address, and website
-        contact_info_element = soup.select_one("td img[alt=''][src*='mail-iust-36x36.png']")
+        contact_info_element = soup.select_one(
+            "td img[alt=''][src*='mail-iust-36x36.png']"
+        )
         if contact_info_element:
             contact_info_td = contact_info_element.find_parent("td")
             contact_info = contact_info_td.get_text(separator="\n", strip=True)
             lines = contact_info.split("\n")
-            
+
             if len(lines) > 1:
-                professor_info['email'] = lines[1].split(":", 1)[1].strip() if ":" in lines[1] else ""
+                professor_info["email"] = (
+                    lines[1].split(":", 1)[1].strip() if ":" in lines[1] else ""
+                )
             if len(lines) > 3:
-                professor_info['phone'] = lines[3].split(":", 1)[1].strip() if ":" in lines[3] else ""
+                professor_info["phone"] = (
+                    lines[3].split(":", 1)[1].strip() if ":" in lines[3] else ""
+                )
             if len(lines) > 5:
-                professor_info['fax'] = lines[5].split(":", 1)[1].strip() if ":" in lines[5] else ""
+                professor_info["fax"] = (
+                    lines[5].split(":", 1)[1].strip() if ":" in lines[5] else ""
+                )
             if len(lines) > 7:
-                professor_info['postal_code'] = lines[7].split(":", 1)[1].strip() if ":" in lines[7] else ""
+                professor_info["postal_code"] = (
+                    lines[7].split(":", 1)[1].strip() if ":" in lines[7] else ""
+                )
             if len(lines) > 9:
-                professor_info['address'] = lines[9].split(":", 1)[1].strip() if ":" in lines[9] else ""
+                professor_info["address"] = (
+                    lines[9].split(":", 1)[1].strip() if ":" in lines[9] else ""
+                )
             if len(lines) > 11:
-                professor_info['website'] = lines[11].split(":", 1)[1].strip() if ":" in lines[11] else ""
-        
+                professor_info["website"] = (
+                    lines[11].split(":", 1)[1].strip() if ":" in lines[11] else ""
+                )
+
         # Extract virtual lab and research lab info
-        labs_element = soup.select_one("td img[alt=''][src*='faculty-mech-iust-icon.png']")
+        labs_element = soup.select_one(
+            "td img[alt=''][src*='faculty-mech-iust-icon.png']"
+        )
         if labs_element:
             labs_td = labs_element.find_parent("td")
             labs_info = labs_td.get_text(separator="\n", strip=True)
             labs_lines = labs_info.split("\n")
-            
+
             if len(labs_lines) > 0:
-                professor_info['virtual_lab'] = labs_lines[0].split(":", 1)[1].strip() if ":" in labs_lines[0] else ""
+                professor_info["virtual_lab"] = (
+                    labs_lines[0].split(":", 1)[1].strip()
+                    if ":" in labs_lines[0]
+                    else ""
+                )
             if len(labs_lines) > 2:
-                professor_info['research_lab'] = labs_lines[2].split(":", 1)[1].strip() if ":" in labs_lines[2] else ""
-        
-
-
+                professor_info["research_lab"] = (
+                    labs_lines[2].split(":", 1)[1].strip()
+                    if ":" in labs_lines[2]
+                    else ""
+                )
 
     # دانشکده مهندسی شیمی
     def get_professors_chemistry(self):
@@ -205,65 +237,66 @@ class ElmSanatCrawler(University):
         # Extract professor's name and title
         title_element = soup.select_one("span.news_titler")
         if title_element:
-            professor_info['title'] = title_element.get_text(strip=True)
-        
+            professor_info["title"] = title_element.get_text(strip=True)
+
         # Extract image, email, phone numbers, and profile links
         contact_info_element = soup.select_one("p")
         if contact_info_element:
             # Extract the image source
             img_element = contact_info_element.find("img")
             if img_element:
-                professor_info['image'] = img_element['src']
-            
+                professor_info["image"] = img_element["src"]
+
             # Extract the contact details
             spans = contact_info_element.find_all("span", recursive=False)
             if len(spans) > 0:
                 contact_info = spans[0].get_text(separator="\n", strip=True)
                 lines = contact_info.split("\n")
-                
+
                 for line in lines:
                     if "ایمیل:" in line:
-                        professor_info['email'] = line.split(":", 1)[1].strip()
+                        professor_info["email"] = line.split(":", 1)[1].strip()
                     elif "تلفن مستقیم:" in line:
-                        professor_info['phone_direct'] = line.split(":", 1)[1].strip()
+                        professor_info["phone_direct"] = line.split(":", 1)[1].strip()
                     elif "دورنگار:" in line:
-                        professor_info['fax'] = line.split(":", 1)[1].strip()
+                        professor_info["fax"] = line.split(":", 1)[1].strip()
                     elif "تلفن همراه" in line:
-                        professor_info['phone_mobile'] = line.split(":", 1)[1].strip()
+                        professor_info["phone_mobile"] = line.split(":", 1)[1].strip()
 
         profile_links = contact_info_element.find_all("a")
         for link in profile_links:
-            href = link.get('href')
+            href = link.get("href")
             if "researcher/1678952/vahid-safarifard" in href:
-                professor_info['publons'] = href
+                professor_info["publons"] = href
             elif "scholar.google.com" in href:
-                professor_info['google_scholar'] = href
+                professor_info["google_scholar"] = href
             elif "scopus.com" in href:
-                professor_info['scopus'] = href
+                professor_info["scopus"] = href
             elif "orcid.org" in href:
-                professor_info['orcid'] = href
+                professor_info["orcid"] = href
             elif "researchgate.net" in href:
-                professor_info['researchgate'] = href
+                professor_info["researchgate"] = href
             elif "mendeley.com" in href:
-                professor_info['mendeley'] = href
+                professor_info["mendeley"] = href
             elif "persianmof.ir" in href:
-                professor_info['research_group'] = href
+                professor_info["research_group"] = href
             elif "chemistry.iust.ac.ir" in href:
-                professor_info['homepage'] = href
+                professor_info["homepage"] = href
 
         return professor_info
-    
 
-     # مهندسی شیمی نفت و گاز
+    # مهندسی شیمی نفت و گاز
     def get_professors_chemical_petroleum_and_gas_engineering(self):
-        response = check_connection(requests.get, self.chemical_petroleum_and_gas_engineering + "/faculty/")
+        response = check_connection(
+            requests.get, self.chemical_petroleum_and_gas_engineering + "/faculty/"
+        )
         soup = BeautifulSoup(response.content, "html.parser")
         h1_elements = soup.find_all("h1", style="text-align: right;")
         links = []
         for h1 in h1_elements:
             a_tag = h1.find("a", href=True)
             if a_tag is not None:
-                href = a_tag['href']
+                href = a_tag["href"]
                 if not href.startswith("http"):
                     href = f"{self.chemical_petroleum_and_gas_engineering}{href}"
 
@@ -279,18 +312,23 @@ class ElmSanatCrawler(University):
         data = {}
 
         # Extract professor's name and image
-        profile_div = soup.find("div", class_="g-cols wpb_row us_custom_88e775d5 fjb_faculty_local_info via_flex valign_top type_default stacking_default")
+        profile_div = soup.find(
+            "div",
+            class_="g-cols wpb_row us_custom_88e775d5 fjb_faculty_local_info via_flex valign_top type_default stacking_default",
+        )
         if profile_div:
             name_tag = profile_div.find("h1").find("strong")
-            data['name'] = name_tag.get_text(strip=True) if name_tag else "N/A"
+            data["name"] = name_tag.get_text(strip=True) if name_tag else "N/A"
 
             image_tag = profile_div.find("img", class_="wp-image-1133")
-            data['image'] = image_tag.get('src') if image_tag else "N/A"
+            data["image"] = image_tag.get("src") if image_tag else "N/A"
 
         # Extract research interests
         interests_tag = profile_div.find("p")
         if interests_tag:
-            data['research_interests'] = [interest.strip() for interest in interests_tag.stripped_strings]
+            data["research_interests"] = [
+                interest.strip() for interest in interests_tag.stripped_strings
+            ]
 
         # Extract contact information
         contact_info = {}
@@ -300,38 +338,42 @@ class ElmSanatCrawler(University):
             if len(cells) == 2:
                 text = cells[1].get_text(strip=True)
                 if "ایمیل" in text:
-                    contact_info['email'] = text.replace("ایمیل:", "").strip()
+                    contact_info["email"] = text.replace("ایمیل:", "").strip()
                 elif "تلفن دفتر" in text:
-                    contact_info['office_phone'] = text.replace("تلفن دفتر:", "").strip()
+                    contact_info["office_phone"] = text.replace(
+                        "تلفن دفتر:", ""
+                    ).strip()
                 elif "تلفن دانشکده" in text:
-                    contact_info['faculty_phone'] = text.replace("تلفن دانشکده:", "").strip()
+                    contact_info["faculty_phone"] = text.replace(
+                        "تلفن دانشکده:", ""
+                    ).strip()
                 elif "دورنگار" in text:
-                    contact_info['fax'] = text.replace("دورنگار:", "").strip()
+                    contact_info["fax"] = text.replace("دورنگار:", "").strip()
                 elif "کدپستی" in text:
-                    contact_info['postal_code'] = text.replace("کدپستی:", "").strip()
+                    contact_info["postal_code"] = text.replace("کدپستی:", "").strip()
                 elif "تهران" in text:
-                    contact_info['address'] = text.strip()
+                    contact_info["address"] = text.strip()
 
-        data['contact_info'] = contact_info
+        data["contact_info"] = contact_info
 
         # Extract external links
         external_links = {}
         links = profile_div.find_all("a")
         for link in links:
             text = link.get_text(strip=True)
-            href = link.get('href')
+            href = link.get("href")
             if "آزمایشگاه مجازی" in text:
-                external_links['virtual_lab'] = href
+                external_links["virtual_lab"] = href
             elif "آزمایشگاه پژوهشی" in text:
-                external_links['research_lab'] = href
+                external_links["research_lab"] = href
             elif "Scopus" in text:
-                external_links['scopus'] = href
+                external_links["scopus"] = href
             elif "Scholar" in text:
-                external_links['scholar'] = href
+                external_links["scholar"] = href
             elif "LinkedIn" in text:
-                external_links['linkedin'] = href
+                external_links["linkedin"] = href
 
-        data['external_links'] = external_links
+        data["external_links"] = external_links
 
         return data
 
@@ -360,21 +402,22 @@ class ElmSanatCrawler(University):
             # Extract the professor's name
             name_element = td_element.find("font", size="2")
             if name_element:
-                professor_info['name'] = name_element.get_text(strip=True).strip('"')
+                professor_info["name"] = name_element.get_text(strip=True).strip('"')
             # Extract title, group, email, and phone
             strong_elements = td_element.find_all("strong")
             for element in strong_elements:
                 text = element.get_text(strip=True)
                 if "استاد" in text and "عضو" not in text:
-                    professor_info['title'] = text
+                    professor_info["title"] = text
                 elif "عضو گروه" in text:
-                    professor_info['group'] = text
+                    professor_info["group"] = text
                 elif "Email" in text:
-                    professor_info['email'] = text.split(":", 1)[1].strip().replace("AT", "@")
+                    professor_info["email"] = (
+                        text.split(":", 1)[1].strip().replace("AT", "@")
+                    )
                 elif "تلفن" in text:
-                    professor_info['phone'] = text.split(":", 1)[1].strip()
+                    professor_info["phone"] = text.split(":", 1)[1].strip()
         return professor_info
-
 
     def get_professors_civil_engineering(self):
         response = check_connection(
@@ -395,47 +438,54 @@ class ElmSanatCrawler(University):
     def get_advanced_technologies_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
-        
+
         # Extracting data from the first div element
         profile_div = soup.find("div", {"id": "sidebar-title"})
         if not profile_div:
             return None
-        
+
         profile_img_tag = profile_div.find("img", {"class": "img-fluid"})
         profile_img_url = profile_img_tag["src"] if profile_img_tag else None
-        
-        alt_img_tag = profile_div.find("img", {"src": "./files/fnst/images/Faculty_Member/Dr.Rahmani.png"})
+
+        alt_img_tag = profile_div.find(
+            "img", {"src": "./files/fnst/images/Faculty_Member/Dr.Rahmani.png"}
+        )
         alt_img_url = alt_img_tag["src"] if alt_img_tag else None
-        
+
         professor_name_tag = profile_div.find("h3")
         professor_name = professor_name_tag.text.strip() if professor_name_tag else None
-        
+
         professor_title_tag = profile_div.find("p")
-        professor_title = professor_title_tag.text.strip() if professor_title_tag else None
-        
+        professor_title = (
+            professor_title_tag.text.strip() if professor_title_tag else None
+        )
+
         # Extracting data from the second div element
         contact_div = soup.find("div", {"class": "section px-3"})
         if not contact_div:
             return None
-        
+
         contact_info = {}
-        contact_list_items = contact_div.find_all("li", {"class": "d-flex align-items-center"})
-        
+        contact_list_items = contact_div.find_all(
+            "li", {"class": "d-flex align-items-center"}
+        )
+
         for item in contact_list_items:
             contact_icon = item.find("span", {"class": "contact-icon"}).find("i")
             contact_value = item.find("strong")
             if contact_icon and contact_value:
-                icon_class = contact_icon["class"][1]  # assuming the second class is the specific icon type
+                icon_class = contact_icon["class"][
+                    1
+                ]  # assuming the second class is the specific icon type
                 contact_info[icon_class] = contact_value.text.strip()
-        
+
         return {
             "profile_img_url": profile_img_url,
             "alt_img_url": alt_img_url,
             "professor_name": professor_name,
             "professor_title": professor_title,
-            "contact_info": contact_info
+            "contact_info": contact_info,
         }
-
 
     # فیزیک
     def get_professors_physics(self):
@@ -451,57 +501,63 @@ class ElmSanatCrawler(University):
             yield link
 
     def get_physics_faculty_professor_page(self, link: str):
-            response = check_connection(requests.get, link)
-            if not response:
-                return None
-            
-            soup = BeautifulSoup(response.text, "html.parser")
-            
-            data = {}
-            
-            # Extract the professor's name
-            name_element = soup.find("h2", class_="elementor-heading-title elementor-size-large")
-            data['name'] = name_element.text.strip() if name_element else "N/A"
-            
-            # Extract academic rank
-            academic_rank_element = None
-            contact_elements = soup.find_all("li", class_="elementor-icon-list-item")
-            for element in contact_elements:
-                if "مرتبه علمی" in element.get_text(strip=True):
-                    academic_rank_element = element
-                    break
-            
-            data['academic_rank'] = academic_rank_element.get_text(strip=True) if academic_rank_element else "N/A"
-            
-            # Extract contact information
-            contact_info = {}
-            for element in contact_elements:
-                text = element.get_text(strip=True)
-                if "تلفن" in text:
-                    contact_info['phone'] = text
-                elif "فاکس" in text:
-                    contact_info['fax'] = text
-                elif "ایمیل" in text:
-                    contact_info['email'] = text
-                elif "آدرس" in text:
-                    contact_info['address'] = text
-            
-            data['contact_info'] = contact_info
-            
-            # Extract external links
-            external_links = {}
-            external_link_elements = soup.find_all("a", class_="elementor-icon-list-item-link")
-            
-            for element in external_link_elements:
-                link_text = element.get_text(strip=True)
-                href = element.get('href')
-                external_links[link_text] = href
-            
-            data['external_links'] = external_links
-            
-            return data
+        response = check_connection(requests.get, link)
+        if not response:
+            return None
 
+        soup = BeautifulSoup(response.text, "html.parser")
 
+        data = {}
+
+        # Extract the professor's name
+        name_element = soup.find(
+            "h2", class_="elementor-heading-title elementor-size-large"
+        )
+        data["name"] = name_element.text.strip() if name_element else "N/A"
+
+        # Extract academic rank
+        academic_rank_element = None
+        contact_elements = soup.find_all("li", class_="elementor-icon-list-item")
+        for element in contact_elements:
+            if "مرتبه علمی" in element.get_text(strip=True):
+                academic_rank_element = element
+                break
+
+        data["academic_rank"] = (
+            academic_rank_element.get_text(strip=True)
+            if academic_rank_element
+            else "N/A"
+        )
+
+        # Extract contact information
+        contact_info = {}
+        for element in contact_elements:
+            text = element.get_text(strip=True)
+            if "تلفن" in text:
+                contact_info["phone"] = text
+            elif "فاکس" in text:
+                contact_info["fax"] = text
+            elif "ایمیل" in text:
+                contact_info["email"] = text
+            elif "آدرس" in text:
+                contact_info["address"] = text
+
+        data["contact_info"] = contact_info
+
+        # Extract external links
+        external_links = {}
+        external_link_elements = soup.find_all(
+            "a", class_="elementor-icon-list-item-link"
+        )
+
+        for element in external_link_elements:
+            link_text = element.get_text(strip=True)
+            href = element.get("href")
+            external_links[link_text] = href
+
+        data["external_links"] = external_links
+
+        return data
 
     #  مهندسی کامپیوتر
     def get_professors_computer_engineering(self):
@@ -561,13 +617,14 @@ class ElmSanatCrawler(University):
             requests.get, self.metallurgy_and_materials + "faculty/"
         )
         soup = BeautifulSoup(response.content, "html.parser")
-        link_tags = soup.find_all('a', href=True)
+        link_tags = soup.find_all("a", href=True)
         for tag in link_tags:
-            href = tag['href']
+            href = tag["href"]
             if "/faculty/" in href:
                 if "http://meteng.iust.ac.ir" not in href:
                     href = "http://meteng.iust.ac.ir" + href
-                yield  href 
+                yield href
+
     def get_metallurgy_and_materials_professor_page(self, link: str):
         response = check_connection(requests.get, link)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -575,26 +632,51 @@ class ElmSanatCrawler(University):
         # Extract the required information
         name_element = soup.select_one("div.vc_col-sm-6 h1 span strong")
         research_interests_element = soup.select_one("div.vc_col-sm-6 p span")
-        email_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(1) td:nth-of-type(2) span")
-        phone_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(2) td:nth-of-type(2) a")
-        fax_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(3) td:nth-of-type(2) span")
-        address_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(5) td:nth-of-type(2) span")
-        scopus_element = soup.select_one("div.vc_col-sm-2 tr:nth-of-type(3) td:nth-of-type(2) a")
-        scholar_element = soup.select_one("div.vc_col-sm-2 tr:nth-of-type(4) td:nth-of-type(2) a")
-        linkedin_element = soup.select_one("div.vc_col-sm-2 tr:nth-of-type(5) td:nth-of-type(2) span")
+        email_element = soup.select_one(
+            "div.vc_col-sm-4 tr:nth-of-type(1) td:nth-of-type(2) span"
+        )
+        phone_element = soup.select_one(
+            "div.vc_col-sm-4 tr:nth-of-type(2) td:nth-of-type(2) a"
+        )
+        fax_element = soup.select_one(
+            "div.vc_col-sm-4 tr:nth-of-type(3) td:nth-of-type(2) span"
+        )
+        address_element = soup.select_one(
+            "div.vc_col-sm-4 tr:nth-of-type(5) td:nth-of-type(2) span"
+        )
+        scopus_element = soup.select_one(
+            "div.vc_col-sm-2 tr:nth-of-type(3) td:nth-of-type(2) a"
+        )
+        scholar_element = soup.select_one(
+            "div.vc_col-sm-2 tr:nth-of-type(4) td:nth-of-type(2) a"
+        )
+        linkedin_element = soup.select_one(
+            "div.vc_col-sm-2 tr:nth-of-type(5) td:nth-of-type(2) span"
+        )
 
         # Prepare the data to return
         professor_data = {
             "name": name_element.get_text(strip=True) if name_element else "N/A",
-            "research_interests": research_interests_element.get_text(strip=True) if research_interests_element else "N/A",
-            "email": email_element.get_text(strip=True).replace("[AT]", "@") if email_element else "N/A",
+            "research_interests": (
+                research_interests_element.get_text(strip=True)
+                if research_interests_element
+                else "N/A"
+            ),
+            "email": (
+                email_element.get_text(strip=True).replace("[AT]", "@")
+                if email_element
+                else "N/A"
+            ),
             "phone": phone_element.get_text(strip=True) if phone_element else "N/A",
             "fax": fax_element.get_text(strip=True) if fax_element else "N/A",
-            "address": address_element.get_text(strip=True) if address_element else "N/A",
-            "scopus": scopus_element['href'] if scopus_element else "N/A",
-            "scholar": scholar_element['href'] if scholar_element else "N/A",
-            "linkedin": linkedin_element.get_text(strip=True) if linkedin_element else "N/A",
+            "address": (
+                address_element.get_text(strip=True) if address_element else "N/A"
+            ),
+            "scopus": scopus_element["href"] if scopus_element else "N/A",
+            "scholar": scholar_element["href"] if scholar_element else "N/A",
+            "linkedin": (
+                linkedin_element.get_text(strip=True) if linkedin_element else "N/A"
+            ),
         }
 
         return professor_data
-    
