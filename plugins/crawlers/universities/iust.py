@@ -89,12 +89,25 @@ class ElmSanatCrawler(University):
 
         return professor_info
 
-    def get_professors_mechanical_engineering(self):
-        response = check_connection(
-            requests.get, self.mechanical_engineering + "faculty/"
-        )
-        soup = BeautifulSoup(response.content, "html.parser")
+    # مکانیک
+    def get_professors_mechanical_engineering(self) -> Generator[str, None, None]:
+        urls = [
+            'https://mech.iust.ac.ir/faculty/?filter_fjb_faculty_group_5666=biomechanics',
+            'https://mech.iust.ac.ir/faculty/?filter_fjb_faculty_group_5666=fluidmechanics',
+            'https://mech.iust.ac.ir/faculty/?filter_fjb_faculty_group_5666=productionandmanufacturing',
+            'https://mech.iust.ac.ir/faculty/?filter_fjb_faculty_group_5666=solidmechanics',
+            'https://mech.iust.ac.ir/faculty/?filter_fjb_faculty_group_5666=aerospaceengineering'
+        ]
 
+        for url in urls:
+            response = check_connection(requests.get, url)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            anchor_tags = soup.find_all('a')
+
+            for tag in anchor_tags:
+                href = tag.get('href')
+                if href and href.startswith('http://mech.iust.ac.ir/faculty/') and "پیشکسوت" not in tag.text:
+                    yield href
     # مهندسی خودرو
     def get_professors_automotive_engineering(self):
         response = check_connection(
