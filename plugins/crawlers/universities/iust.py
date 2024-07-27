@@ -568,5 +568,33 @@ class ElmSanatCrawler(University):
                 if "http://meteng.iust.ac.ir" not in href:
                     href = "http://meteng.iust.ac.ir" + href
                 yield  href 
+    def get_metallurgy_and_materials_professor_page(self, link: str):
+        response = check_connection(requests.get, link)
+        soup = BeautifulSoup(response.text, "html.parser")
 
+        # Extract the required information
+        name_element = soup.select_one("div.vc_col-sm-6 h1 span strong")
+        research_interests_element = soup.select_one("div.vc_col-sm-6 p span")
+        email_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(1) td:nth-of-type(2) span")
+        phone_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(2) td:nth-of-type(2) a")
+        fax_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(3) td:nth-of-type(2) span")
+        address_element = soup.select_one("div.vc_col-sm-4 tr:nth-of-type(5) td:nth-of-type(2) span")
+        scopus_element = soup.select_one("div.vc_col-sm-2 tr:nth-of-type(3) td:nth-of-type(2) a")
+        scholar_element = soup.select_one("div.vc_col-sm-2 tr:nth-of-type(4) td:nth-of-type(2) a")
+        linkedin_element = soup.select_one("div.vc_col-sm-2 tr:nth-of-type(5) td:nth-of-type(2) span")
+
+        # Prepare the data to return
+        professor_data = {
+            "name": name_element.get_text(strip=True) if name_element else "N/A",
+            "research_interests": research_interests_element.get_text(strip=True) if research_interests_element else "N/A",
+            "email": email_element.get_text(strip=True).replace("[AT]", "@") if email_element else "N/A",
+            "phone": phone_element.get_text(strip=True) if phone_element else "N/A",
+            "fax": fax_element.get_text(strip=True) if fax_element else "N/A",
+            "address": address_element.get_text(strip=True) if address_element else "N/A",
+            "scopus": scopus_element['href'] if scopus_element else "N/A",
+            "scholar": scholar_element['href'] if scholar_element else "N/A",
+            "linkedin": linkedin_element.get_text(strip=True) if linkedin_element else "N/A",
+        }
+
+        return professor_data
     
