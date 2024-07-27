@@ -555,8 +555,18 @@ class ElmSanatCrawler(University):
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
 
+    # متالوژی و مواد
     def get_professors_metallurgy_and_materials(self):
         response = check_connection(
             requests.get, self.metallurgy_and_materials + "faculty/"
         )
         soup = BeautifulSoup(response.content, "html.parser")
+        link_tags = soup.find_all('a', href=True)
+        for tag in link_tags:
+            href = tag['href']
+            if "/faculty/" in href:
+                if "http://meteng.iust.ac.ir" not in href:
+                    href = "http://meteng.iust.ac.ir" + href
+                yield  href 
+
+    
