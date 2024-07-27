@@ -108,6 +108,42 @@ class ElmSanatCrawler(University):
                 href = tag.get('href')
                 if href and href.startswith('http://mech.iust.ac.ir/faculty/') and "پیشکسوت" not in tag.text:
                     yield href
+
+    def get_mechanical_engineering_professor_page(self, link: str):
+        response = check_connection(requests.get, link)
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        professor_data = {}
+
+        # Extract main professor details
+        main_details = soup.find('div', class_='vc_col-sm-6 wpb_column vc_column_container has_text_color')
+        if main_details:
+            name_tag = main_details.find('h1', style='font-size: 16px;')
+            professor_data['name'] = name_tag.text.strip() if name_tag else 'N/A'
+            bio_paragraphs = main_details.find_all('p', style='font-size: 14px;')
+            bio = [p.text.strip() for p in bio_paragraphs]
+            professor_data['bio'] = ' '.join(bio)
+
+        # Extract contact information
+        contact_info = soup.find('div', class_='vc_col-sm-4 wpb_column vc_column_container')
+        if contact_info:
+            email_tag = contact_info.find('a', href=True)
+            email = email_tag['href'].replace('mailto:', '').strip() if email_tag else 'N/A'
+            professor_data['email'] = email
+
+            phone_tag = contact_info.find('td', text='تلفن:')
+            professor_data['phone'] = phone_tag.next_sibling.text.strip() if phone_tag else 'N/A'
+
+            fax_tag = contact_info.find('td', text='فاکس:')
+            professor_data['fax'] = fax_tag.next_sibling.text.strip() if fax_tag else 'N/A'
+
+            address_tag = contact_info.find('td', text='کدپستی:')
+            professor_data['postal_code'] = address_tag.next_sibling.text.strip() if address_tag else 'N/A'
+
+            location_tag = contact_info.find('a', href=True, text='تهران، میدان رسالت، خیابان هنگام، دانشگاه علم و صنعت ایران')
+            professor_data['location'] = location_tag.text.strip() if location_tag else 'N/A'
+
+        return professor_data
     # مهندسی خودرو
     def get_professors_automotive_engineering(self):
         response = check_connection(
