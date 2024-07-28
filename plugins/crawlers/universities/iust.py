@@ -45,132 +45,120 @@ class ElmSanatCrawler(University):
         specializations = []
         teachings = []
 
-        rows = soup.find_all("td")
+
+        rows = soup.find_all('td')
         for i in rows:
             rows_value.append(i.text)
             if "دانشکده" in i.text:
                 college = i.text
 
         professor = Professor(
-            full_name=soup.find("h1", style="font-size:1.5em").text.strip(),
-            rank=rows_value[0],
+            full_name= soup.find('h1', style="font-size:1.5em").text.strip(),
+            rank= rows_value[0],
             college=college,
         )
-        # SOCIALS
-        professor.email = soup.find(
-            "span", class_="email", style="font-size:9.0pt;", dir="RTL"
-        ).text.strip()
+        #SOCIALS 
         try:
-            professor.phone_number = soup.find(
-                "span", style="font-size:9.0pt;"
-            ).text.strip()
+            email_span = soup.find('span', class_='email', style="font-size:9.0pt;", dir="RTL")
+            if email_span:
+                email_text = email_span.text.strip()
+                professor.email = email_text.split(':')[-1].strip()
         except:
             pass
         try:
-            scholar = soup.find(
-                "a", href=True, text=lambda x: x and "Google Scholar" in x
-            )
+            span_elements = soup.find_all('span', style="font-size:9.0pt;")
+            for span_element in span_elements:
+                span_text = span_element.text.strip()
+                match = re.search(r'تلفن دانشگاه: (\d+)', span_text)
+                if match:
+                    professor.phone_number = match.group(1)
+        except:
+            pass
+        try:
+            scholar = soup.find('a', href=True, text=lambda x: x and 'Google Scholar' in x)
             if scholar:
-                professor.socials.scholar = scholar["href"]
+                professor.socials.scholar = scholar['href']
         except:
             pass
         try:
-            google = soup.find("a", href=True, text=lambda x: x and "Home Page" in x)
+            google = soup.find('a', href=True, text=lambda x: x and 'Home Page' in x)
             if google:
-                professor.socials.google = google["href"]
+                professor.socials.google = google['href']
         except:
             pass
 
-        # HONOR
+
+        #HONOR
         honors_list = []
-        honor_elements = soup.find_all(
-            "div", class_="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right"
-        )
+        honor_elements = soup.find_all('div', class_='col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right')
 
         for honor_element in honor_elements:
-            honor_tables = honor_element.find_all(
-                "table", class_="table table-hover table-bordered"
-            )
-
+            honor_tables = honor_element.find_all('table', class_='table table-hover table-bordered')
+            
             for honor_table in honor_tables:
-                headers = honor_table.find_all("th")
+                headers = honor_table.find_all('th')
                 header_titles = [header.text.strip() for header in headers]
 
-                if (
-                    "ردیف" in header_titles
-                    and "عنوان" in header_titles
-                    and "سال" in header_titles
-                ):
-                    rows = honor_table.find("tbody").find_all("tr")
+                if 'ردیف' in header_titles and 'عنوان' in header_titles and 'سال' in header_titles:
+                    rows = honor_table.find('tbody').find_all('tr')
 
-                    r_index = header_titles.index("ردیف")
+                    r_index = header_titles.index('ردیف')
                     for row in rows:
-                        cells = row.find_all("td")
-                        row_data = [
-                            cell.text.strip()
-                            for idx, cell in enumerate(cells)
-                            if idx != r_index
-                        ]
+                        cells = row.find_all('td')
+                        row_data = [cell.text.strip() for idx, cell in enumerate(cells) if idx != r_index]
                         honors_list.append(row_data)
         try:
             for i in honors_list:
-                professor.honors.append(Honor(title=i[0], date=i[1]))
+                professor.honors.append(Honor(title=i[0], date=i[1]))    
         except:
             pass
 
-        # BOOKS
-        book_table = soup.find(
-            "table", {"class": "table table-hover table-bordered align-middle"}
-        )
+
+
+        # BOOKS 
+        book_table =  soup.find('table', {'class': 'table table-hover table-bordered align-middle'})
         if book_table:
-            headers = [header.text for header in book_table.find_all("th")]
+            headers = [header.text for header in book_table.find_all('th')]
             rows = []
-            for row in book_table.find_all("tr")[1:]:  # Skip the header row
-                cells = [cell.text.strip() for cell in row.find_all("td")]
+            for row in book_table.find_all('tr')[1:]:  # Skip the header row
+                cells = [cell.text.strip() for cell in row.find_all('td')]
                 rows.append(cells)
             books = [row for row in rows]
         try:
             for book in books:
                 if len(book) >= 4:
-                    authors = [author.strip() for author in book[3].split(",")]
-                    new_book = Book(
-                        publish_date=book[0], title=book[2], authors=authors
-                    )
+                    authors = [author.strip() for author in book[3].split(',')]
+                    new_book = Book(publish_date=book[0], title=book[2], authors=authors)
                     professor.books.append(new_book)
         except:
             pass
 
-        # COURSES AND SKILLS
-        table = soup.find("table", {"class": "table table-hover table-bordered"})
+
+        # COURSES AND SKILLS 
+        table = soup.find('table', {'class': 'table table-hover table-bordered'})
         if table:
-            headers = table.find("thead").find_all("th")
-            columns = {
-                header.get_text(strip=True): idx for idx, header in enumerate(headers)
-            }
-            if "زمینه های تخصصی" in columns or "دروس تدریسی" in columns:
+            headers = table.find('thead').find_all('th')
+            columns = {header.get_text(strip=True): idx for idx, header in enumerate(headers)}
+            if "زمینه های تخصصی"  in columns or "دروس تدریسی"  in columns:
                 specialization_idx = columns["زمینه های تخصصی"]
                 teaching_idx = columns["دروس تدریسی"]
-                rows = table.find("tbody").find_all("tr")
+                rows = table.find('tbody').find_all('tr')
                 for row in rows:
-                    cells = row.find_all("td")
+                    cells = row.find_all('td')
                     if len(cells) > specialization_idx and len(cells) > teaching_idx:
-                        specializations.append(
-                            cells[specialization_idx].get_text(strip=True)
-                        )
+                        specializations.append(cells[specialization_idx].get_text(strip=True))
                         teachings.append(cells[teaching_idx].get_text(strip=True))
-        try:
+        try:     
             for i in range(len(teachings)):
-                professor.courses.append(
-                    Course(description=None, period=None, title=teachings[i])
-                )
+                professor.courses.append(Course(description = None, period=None, title=teachings[i]))
         except:
             pass
-        try:
+        try:     
             for i in range(len(specializations)):
-                professor.skills.append(
-                    Skill(start_date=None, title=specializations[i])
-                )
+                professor.skills.append(Skill(start_date=None, title=specializations[i]))
         except:
             pass
 
         return professor
+    
+    
