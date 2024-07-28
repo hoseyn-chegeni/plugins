@@ -5,27 +5,18 @@ from utils import check_connection
 from typing import List, Generator
 import re
 from schemas import colleges
-from schemas import professor as P
+from schemas import Professor
+import requests
+from bs4 import BeautifulSoup
+import xml.etree.ElementTree as ET
+
 
 
 class ElmSanatCrawler(University):
     def __init__(self) -> None:
         self.url = "https://www.iust.ac.ir/"
-        self.electrical_engineering = "https://ee.iust.ac.ir/"
-        self.mechanical_engineering = "https://mech.iust.ac.ir/"
-        self.automotive_engineering = "https://aed.iust.ac.ir/"
-        self.railway_engineering = "https://railway.iust.ac.ir/"
-        self.mathematics_and_computer_science = "https://math.iust.ac.ir/"
-        self.chemistry = "https://chemistry.iust.ac.ir/"
-        self.chemical_petroleum_and_gas_engineering = "http://chem_eng.iust.ac.ir/"
-        self.industrial_engineering = "https://ie.iust.ac.ir/"
-        self.civil_engineering = "https://civil.iust.ac.ir/"
-        self.advanced_technologies = "https://fn.iust.ac.ir/"
-        self.physics = "https://physics.iust.ac.ir/"
-        self.computer_engineering = "https://ce.iust.ac.ir/"
-        self.architecture_and_environmental_design = "https://www.iust.ac.ir/"
-        self.economy = "https://pe.iust.ac.ir/"
-        self.metallurgy_and_materials = "http://meteng.iust.ac.ir/"
+        self.it_url = "https://its.iust.ac.ir/api/its/profsprofilelist"
+
 
     def get_colleges(self) -> Generator[colleges.CollegeData, None, None]:
         response = check_connection(
@@ -42,3 +33,39 @@ class ElmSanatCrawler(University):
                 yield colleges.CollegeData(
                     href=self.url + a_tag["href"], value=text_value
                 )
+
+
+    def get_professors(self):
+        response = check_connection(requests.post, self.it_url )        
+        root = ET.fromstring(response.content)
+        for item in root.findall('.//item'):
+            link = item.find('profile').text
+            yield link
+
+
+    def get_professor_page(self, link: str):
+        response = check_connection(requests.get, link)
+        soup = BeautifulSoup(response.text, "html.parser")
+        professor = Professor(
+            full_name= soup.find('h1', style="font-size:1.5em").text.strip(),
+        )
+
+        professor.email = soup.find('span', class_="email", style="font-size:9.0pt;", dir="RTL").text.strip()
+        try:
+            professor.phone_number = soup.find('span', style="font-size:9.0pt;").text.strip()
+        except:
+            pass
+        try:
+            scholar = soup.find('a', href=True, text=lambda x: x and 'Google Scholar' in x)
+            if scholar:
+                professor.socials.scholar = scholar['href']
+        except:
+            pass
+        try:
+            google = soup.find('a', href=True, text=lambda x: x and 'Home Page' in x)
+            if google:
+                professor.socials.google = google['href']
+        except:
+            pass
+
+        return professor
