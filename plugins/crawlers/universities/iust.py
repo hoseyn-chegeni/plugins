@@ -86,6 +86,15 @@ class ElmSanatCrawler(University):
                 professor.socials.google = google['href']
         except:
             pass
+        try:
+            span_elements = soup.find_all('span', style="font-size:9.0pt;")
+            for span_element in span_elements:
+                span_text = span_element.text.strip()
+                match = re.search(r'همراه: (\+\d+)', span_text)
+                if match:
+                    professor.socials.telegram = match.group(1)        
+        except:
+            pass
 
 
         #HONOR
@@ -160,5 +169,6 @@ class ElmSanatCrawler(University):
             pass
 
         return professor
+    
     
     
