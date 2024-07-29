@@ -18,26 +18,17 @@ class ElmSanatCrawler(University):
 
     def get_employees(self):
         session = requests.Session()
-        response = check_connection(
-            requests.get, self.phone_book_url
-        )
+        response = check_connection(requests.get, self.phone_book_url)
         soup = BeautifulSoup(response.content, "html.parser")
-
-        # Find the form and extract necessary data
         form = soup.find("form", id="phonebook-searchform")
         form_build_id = form.find("input", {"name": "form_build_id"})["value"]
         form_id = form.find("input", {"name": "form_id"})["value"]
-
-        # Extract options from the select field
         select = form.find("select", {"name": "vid"})
         options = select.find_all("option")
 
-        # Iterate over each option and submit the form
         for option in options:
             option_value = option["value"]
             option_text = option.text
-            
-            # Create form data for POST request
             form_data = {
                 "lastname": "",
                 "vid": option_value,
@@ -45,13 +36,10 @@ class ElmSanatCrawler(University):
                 "form_id": form_id,
                 "search": "جستجو"
             }
-            
-            # Submit the form
             response = session.post(self.phone_book_url, data=form_data)
             result_soup = BeautifulSoup(response.content, "html.parser")
-            
-            # Extract the results from the table
             table = result_soup.find("table", {"class": "table table-bordered table-hover rtecenter"})
+            
             if table:
                 rows = table.find("tbody").find_all("tr")
                 print(f"Results for {option_text}:")
@@ -62,13 +50,14 @@ class ElmSanatCrawler(University):
                     phone = columns[2].text.strip()
                     fax = columns[3].text.strip() if len(columns) > 3 else ""
 
-                    employee = Employee(
-                        department= unit,
-                        name = name,
-                        internal_number= phone,
-                        phone_number= fax
-                    )
-                    return employee
+                    if re.match(r"^(آقای|خانم|دکتر)", name):
+                        employee = Employee(
+                            department=unit,
+                            name=name,
+                            internal_number=phone,
+                            phone_number=fax
+                        )
+                        return employee
 
 
 
