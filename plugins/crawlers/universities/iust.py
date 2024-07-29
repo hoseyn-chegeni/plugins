@@ -4,6 +4,7 @@ from schemas import colleges
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
 from schemas import Course, Professor, Skill, Book, Honor
+from schemas.employee import Employee
 import xml.etree.ElementTree as ET
 from typing import Generator
 import re
@@ -13,6 +14,63 @@ class ElmSanatCrawler(University):
     def __init__(self) -> None:
         self.url = "https://www.iust.ac.ir/"
         self.it_url = "https://its.iust.ac.ir/api/its/profsprofilelist"
+        self.phone_book_url = "https://its.iust.ac.ir/phonebook/view"
+
+    def get_employees(self):
+        session = requests.Session()
+        response = check_connection(
+            requests.get, self.phone_book_url
+        )
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Find the form and extract necessary data
+        form = soup.find("form", id="phonebook-searchform")
+        form_build_id = form.find("input", {"name": "form_build_id"})["value"]
+        form_id = form.find("input", {"name": "form_id"})["value"]
+
+        # Extract options from the select field
+        select = form.find("select", {"name": "vid"})
+        options = select.find_all("option")
+
+        # Iterate over each option and submit the form
+        for option in options:
+            option_value = option["value"]
+            option_text = option.text
+            
+            # Create form data for POST request
+            form_data = {
+                "lastname": "",
+                "vid": option_value,
+                "form_build_id": form_build_id,
+                "form_id": form_id,
+                "search": "جستجو"
+            }
+            
+            # Submit the form
+            response = session.post(self.phone_book_url, data=form_data)
+            result_soup = BeautifulSoup(response.content, "html.parser")
+            
+            # Extract the results from the table
+            table = result_soup.find("table", {"class": "table table-bordered table-hover rtecenter"})
+            if table:
+                rows = table.find("tbody").find_all("tr")
+                print(f"Results for {option_text}:")
+                for row in rows:
+                    columns = row.find_all("td")
+                    name = columns[0].text.strip()
+                    unit = columns[1].text.strip()
+                    phone = columns[2].text.strip()
+                    fax = columns[3].text.strip() if len(columns) > 3 else ""
+
+                    employee = Employee(
+                        department= unit,
+                        name = name,
+                        internal_number= phone,
+                        phone_number= fax
+                    )
+                    return employee
+
+
 
     def get_colleges(self) -> Generator[colleges.CollegeData, None, None]:
         response = check_connection(
@@ -169,6 +227,5 @@ class ElmSanatCrawler(University):
             pass
 
         return professor
-    
     
     
