@@ -247,4 +247,4 @@ class ElmSanatCrawler(University):
         except:
             pass
 
-        return professor
+        yield professor
