@@ -103,46 +103,55 @@ class ElmSanatCrawler(University):
             rank=rows_value[0],
             college=college,
         )
-        # SOCIALS
+        #SOCIALS 
         try:
-            email_span = soup.find(
-                "span", class_="email", style="font-size:9.0pt;", dir="RTL"
-            )
+            email_span = soup.find('span', class_='email', style="font-size:9.0pt;", dir="RTL")
             if email_span:
                 email_text = email_span.text.strip()
-                professor.email = email_text.split(":")[-1].strip()
+                professor.email = email_text.split(':')[-1].strip()
         except:
             pass
         try:
-            span_elements = soup.find_all("span", style="font-size:9.0pt;")
+            span_elements = soup.find_all('span', style="font-size:9.0pt;")
             for span_element in span_elements:
                 span_text = span_element.text.strip()
-                match = re.search(r"تلفن دانشگاه: (\d+)", span_text)
+                match = re.search(r'تلفن دانشگاه: (\d+)', span_text)
                 if match:
                     professor.phone_number = match.group(1)
         except:
             pass
         try:
-            scholar = soup.find(
-                "a", href=True, text=lambda x: x and "Google Scholar" in x
-            )
-            if scholar:
-                professor.socials.scholar = scholar["href"]
+            scholar_links = soup.find_all('a', href=True)
+            for link in scholar_links:
+                if link.find('span', string=lambda x: x and 'Google Scholar' in x):
+                    professor.socials.scholar = link['href']
+                    break
+
         except:
             pass
         try:
-            google = soup.find("a", href=True, text=lambda x: x and "Home Page" in x)
-            if google:
-                professor.socials.google = google["href"]
+            google = soup.find_all('a', href=True)
+            for link in google:
+                if link.find('span', string=lambda x: x and 'Home Page' in x):
+                    professor.socials.google = link['href']
+                    break
         except:
             pass
         try:
-            span_elements = soup.find_all("span", style="font-size:9.0pt;")
+            scopus = soup.find_all('a', href=True)
+            for link in scopus:
+                if link.find('span', string=lambda x: x and 'Scopus' in x):
+                    professor.socials.scopus = link['href']
+                    break
+        except:
+            pass
+        try:
+            span_elements = soup.find_all('span', style="font-size:9.0pt;")
             for span_element in span_elements:
                 span_text = span_element.text.strip()
-                match = re.search(r"همراه: (\+\d+)", span_text)
+                match = re.search(r'همراه: (\+\d+)', span_text)
                 if match:
-                    professor.socials.telegram = match.group(1)
+                    professor.socials.telegram = match.group(1)        
         except:
             pass
 
