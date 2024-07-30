@@ -23,7 +23,7 @@ class QUTCrawler(University):
         pass
 
     def get_professors(self):
-        response = check_connection(requests.get, self.url + "fa/wp/index")
+        response = check_connection(requests.get, self.url + '/fa/wp/index' )
         soup = BeautifulSoup(response.text, "html.parser")
         for a_tag in soup.find_all('a', href=True, text='صفحه شخصی'):
             link = self.url + a_tag['href']
