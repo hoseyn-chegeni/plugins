@@ -10,9 +10,11 @@ from typing import Generator
 import re
 
 
-class ElmSanatCrawler(University):
+class QUTCrawler(University):
+
     def __init__(self) -> None:
-        self.url = ""
+        self.url = "https://www.qut.ac.ir/"
+
 
     def get_employees(self):
         pass
@@ -21,7 +23,11 @@ class ElmSanatCrawler(University):
         pass
 
     def get_professors(self):
-        pass
+        response = check_connection(requests.get, self.url + "fa/wp/index")
+        soup = BeautifulSoup(response.text, "html.parser")
+        for a_tag in soup.find_all('a', href=True, text='صفحه شخصی'):
+            link = self.url + a_tag['href']
+            yield link
 
     def get_professor_page(self, link: str):
         pass
