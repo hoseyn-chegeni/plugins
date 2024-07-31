@@ -97,12 +97,12 @@ class ElmSanatCrawler(University):
             rows_value.append(i.text)
             if "دانشکده" in i.text:
                 college = i.text
-        img_element = soup.find('img', {'class': 'userpic', 'alt': 'دکتر ساسان آسیایی'})
+        img_element = soup.find("img", {"class": "userpic", "alt": "دکتر ساسان آسیایی"})
         professor = Professor(
             full_name=soup.find("h1", style="font-size:1.5em").text.strip(),
             rank=rows_value[0],
             college=college,
-            image = img_element.get('src')
+            image=img_element.get("src"),
         )
         # SOCIALS
         try:
