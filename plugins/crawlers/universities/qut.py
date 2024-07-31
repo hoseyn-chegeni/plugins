@@ -4,7 +4,7 @@ from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
 from schemas.professor import Professor
-
+from schemas.employee import Employee
 
 class QUTCrawler(University):
 
@@ -13,8 +13,30 @@ class QUTCrawler(University):
 
 
     def get_employees(self):
-        pass
-
+        response = check_connection(requests.get, self.url + '/fa/publicrelations/persons' )
+        soup = BeautifulSoup(response.content, 'html.parser')
+        rows = soup.find_all('tr', attrs={'data-original-title': ''})
+        for row in rows:
+            cells = row.find_all('td')
+            for i in range(0, len(cells), 3):
+                if i + 2 < len(cells):
+                    name_cell = cells[i]
+                    dept_cell = cells[i+1]
+                    phone_cell = cells[i+2]
+                    
+                    if 'color: #ff0000;' not in str(name_cell.get('style', '')) and \
+                    'color: #ff0000;' not in str(dept_cell.get('style', '')) and \
+                    'color: #ff0000;' not in str(phone_cell.get('style', '')):
+                        name = name_cell.text.strip()
+                        dept = dept_cell.text.strip()
+                        phone = phone_cell.text.strip()
+                        employee = Employee(
+                            name= name,
+                            department= dept,
+                            internal_number= phone
+                        )
+                        yield employee
+                        
     def get_colleges(self):
         response = check_connection(requests.get, self.url + '/fa/wp/index' )
         soup = BeautifulSoup(response.text, "html.parser")
