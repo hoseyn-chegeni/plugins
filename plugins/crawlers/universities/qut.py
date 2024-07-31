@@ -1,13 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from schemas import colleges
+from schemas.colleges import CollegeData 
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas import Course, Professor, Skill, Book, Honor
-from schemas.employee import Employee
-import xml.etree.ElementTree as ET
-from typing import Generator
-import re
+from schemas.professor import Professor
 
 
 class QUTCrawler(University):
@@ -20,7 +16,17 @@ class QUTCrawler(University):
         pass
 
     def get_colleges(self):
-        pass
+        response = check_connection(requests.get, self.url + '/fa/wp/index' )
+        soup = BeautifulSoup(response.text, "html.parser")
+        th_elements = soup.find_all('th', attrs={'data-original-title': ''})
+        
+        # Iterate through each <th> element to check the text
+        for th in th_elements:
+            th_text = th.text.strip()
+            if th_text.startswith("لیست اعضای هیئت علمی"):
+                result_text = th_text[len("لیست اعضای هیئت علمی "):]
+                college = CollegeData(value= result_text)
+                return college
 
     def get_professors(self):
         response = check_connection(requests.get, self.url + '/fa/wp/index' )
@@ -58,7 +64,7 @@ class QUTCrawler(University):
                 professor.socials.scopus = scopus_link
                 professor.socials.personal_cv = personal_page_link
 
-                print(professor)
+                return professor
 
 
     def get_professor_page(self, link: str):
