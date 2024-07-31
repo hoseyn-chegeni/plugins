@@ -12,6 +12,7 @@ class Social(BaseModel):
     telegram: Optional[str] = None
     twitter: Optional[str] = None
     webofscience: Optional[str] = None
+    personal_cv: Optional[str] = None
 
 
 class Activity(BaseModel):

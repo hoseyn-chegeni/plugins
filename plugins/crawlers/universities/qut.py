@@ -25,9 +25,41 @@ class QUTCrawler(University):
     def get_professors(self):
         response = check_connection(requests.get, self.url + '/fa/wp/index' )
         soup = BeautifulSoup(response.text, "html.parser")
-        for a_tag in soup.find_all('a', href=True, text='صفحه شخصی'):
-            link = self.url + a_tag['href']
-            yield link
+        rows = soup.find_all('tr', attrs={'data-original-title': ''})
+        for row in rows:
+            cells = row.find_all('td')
+            if len(cells) == 7:
+                name = cells[1].text.strip()
+                college = cells[2].text.strip()
+                title = cells[3].text.strip()
+
+                personal_page_link = cells[4].find('a', href=True)['href'].strip() if cells[4].find('a', href=True) else None
+                google_scholar_link = cells[4].find_all('a', href=True)[1]['href'].strip() if len(cells[4].find_all('a', href=True)) > 1 else None
+                scopus_link = cells[4].find_all('a', href=True)[2]['href'].strip() if len(cells[4].find_all('a', href=True)) > 2 else None
+
+                email = cells[5].text.strip()
+                image_src =  self.url + cells[6].find('img')['src'].strip() if cells[6].find('img') else None
+
+                # If any element is None or empty, replace it with an empty list
+                personal_page_link = self.url + personal_page_link if personal_page_link else None
+                google_scholar_link = google_scholar_link if google_scholar_link else None
+                scopus_link = scopus_link if scopus_link else None
+                image_src = image_src if image_src else None
+                
+                professor = Professor(
+                    full_name= name,
+                    college= college,
+                    rank= title,
+                    email= email,
+                    image= image_src
+                
+                )
+                professor.socials.scholar = google_scholar_link
+                professor.socials.scopus = scopus_link
+                professor.socials.personal_cv = personal_page_link
+
+                print(professor)
+
 
     def get_professor_page(self, link: str):
         pass
