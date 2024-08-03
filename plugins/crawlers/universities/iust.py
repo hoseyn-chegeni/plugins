@@ -76,7 +76,6 @@ class ElmSanatCrawler(University):
                 yield colleges.CollegeData(
                     href=self.url + a_tag["href"], value=text_value
                 )
-
     def get_professors(self):
         response = check_connection(requests.post, self.it_url)
         root = ET.fromstring(response.content)
@@ -97,13 +96,17 @@ class ElmSanatCrawler(University):
             rows_value.append(i.text)
             if "دانشکده" in i.text:
                 college = i.text
-        img_element = soup.find("img", {"class": "userpic", "alt": "دکتر ساسان آسیایی"})
         professor = Professor(
             full_name=soup.find("h1", style="font-size:1.5em").text.strip(),
             rank=rows_value[0],
             college=college,
-            image=img_element.get("src"),
         )
+        try: 
+            img_element = soup.find("img", {"class": "userpic", "alt": "دکتر ساسان آسیایی"})
+            professor.image =img_element.get("src")
+        except:
+            pass
+
         # SOCIALS
         try:
             email_span = soup.find(
@@ -111,7 +114,9 @@ class ElmSanatCrawler(University):
             )
             if email_span:
                 email_text = email_span.text.strip()
-                professor.email = email_text.split(":")[-1].strip()
+                email_text = email_text.split(":")[-1].strip()
+                email_text = email_text.replace("!!", "@")
+                professor.email = email_text
         except:
             pass
         try:
@@ -250,4 +255,4 @@ class ElmSanatCrawler(University):
         except:
             pass
 
-        yield professor
+        return professor
