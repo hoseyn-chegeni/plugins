@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor,Book
+from schemas.professor import Professor,Book, EducationalRecord
 from schemas.employee import Employee
 
 
@@ -111,6 +111,7 @@ class QUTCrawler(University):
                     self.get_professor_page(professor, personal_page_link)
 
 
+
     def get_professor_page(self, professor, personal_page_link):
         response = check_connection(requests.get, personal_page_link)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -133,6 +134,18 @@ class QUTCrawler(University):
                             new_book = Book(authors=[authors], title=title)
                             professor.books.append(new_book)
         except :
+            pass
+
+
+        try:
+            elements = soup.find_all('p', text='تحصیلات:')
+            for element in elements:
+                ul = element.find_next_sibling('ul')
+                if ul:
+                    for li in ul.find_all('li'):
+                       new_education_record =EducationalRecord(li.get_text(strip=True))
+                       professor.educational_records.app(new_education_record)
+        except:
             pass
         
         return professor
