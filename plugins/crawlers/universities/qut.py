@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor
+from schemas.professor import Professor,Book
 from schemas.employee import Employee
 
 
@@ -108,14 +108,31 @@ class QUTCrawler(University):
                 professor.socials.personal_cv = personal_page_link
 
                 if personal_page_link:
-                    self.get_professor_details(professor, personal_page_link)
+                    self.get_professor_page(professor, personal_page_link)
 
-    def get_professor_details(self, professor, personal_page_link):
+
+    def get_professor_page(self, professor, personal_page_link):
         response = check_connection(requests.get, personal_page_link)
         soup = BeautifulSoup(response.text, "html.parser")
-        h2_element = soup.find("h2", {"data-original-title": "", "title": ""})
+        h2_element = soup.find('h2', {'data-original-title': '', 'title': ''})
         if h2_element:
             professor.full_name_en = h2_element.text.strip()
 
-        print(professor)
+        try:
+            p_elements = soup.find_all('p', {'data-original-title': '', 'title': ''})
+            for p_element in p_elements:
+                if "مقاله" in p_element.get_text() or"مقالات" in p_element.get_text():
+                    ol_elements = p_element.find_next_siblings('ol', {'dir': 'ltr', 'data-original-title': '', 'title': ''})
+                    for ol in ol_elements:
+                        li_elements = ol.find_all('li')
+                        for li in li_elements:
+                            # Split text at the first semicolon to separate author(s) and title
+                            parts = li.get_text(strip=True).split(",")
+                            authors = parts[0].strip()
+                            title = ",".join(parts[1:]).strip() if len(parts) > 1 else ""
+                            new_book = Book(authors=[authors], title=title)
+                            professor.books.append(new_book)
+        except :
+            pass
+        
         return professor
