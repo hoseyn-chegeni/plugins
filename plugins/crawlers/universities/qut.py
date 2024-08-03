@@ -107,7 +107,15 @@ class QUTCrawler(University):
                 professor.socials.scopus = scopus_link
                 professor.socials.personal_cv = personal_page_link
 
-                return professor
+                if personal_page_link:
+                    self.get_professor_details(professor, personal_page_link)
 
-    def get_professor_page(self, link: str):
-        pass
+    def get_professor_details(self, professor, personal_page_link):
+        response = check_connection(requests.get, personal_page_link)
+        soup = BeautifulSoup(response.text, "html.parser")
+        h2_element = soup.find("h2", {"data-original-title": "", "title": ""})
+        if h2_element:
+            professor.full_name_en = h2_element.text.strip()
+
+        print(professor)
+        return professor
