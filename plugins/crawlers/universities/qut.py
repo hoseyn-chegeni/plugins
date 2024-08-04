@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor,Book, EducationalRecord
+from schemas.professor import Professor,Book, EducationalRecord, Interest
 from schemas.employee import Employee
 
 
@@ -147,6 +147,18 @@ class QUTCrawler(University):
                     for li in ul.find_all('li'):
                        new_education_record =EducationalRecord(li.get_text(strip=True))
                        professor.educational_records.app(new_education_record)
+        except:
+            pass
+        try:
+            all_elements = soup.find_all(string=lambda text: "پژهش" in text)
+            for element in all_elements:
+                parent = element.find_parent('strong')
+                if parent:
+                    ol = parent.find_next_sibling("ol")
+                    if ol:
+                        for li in ol.find_all("li"):
+                            interest =Interest(title= li.get_text(strip=True))
+                            professor.interest.append(interest)
         except:
             pass
         
