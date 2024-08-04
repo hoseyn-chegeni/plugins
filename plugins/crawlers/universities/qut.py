@@ -115,10 +115,12 @@ class QUTCrawler(University):
     def get_professor_page(self, professor, personal_page_link):
         response = check_connection(requests.get, personal_page_link)
         soup = BeautifulSoup(response.text, "html.parser")
-        h2_element = soup.find('h2', {'data-original-title': '', 'title': ''})
-        if h2_element:
-            professor.full_name_en = h2_element.text.strip()
-
+        try:
+            h2_element = soup.find('h2', {'data-original-title': '', 'title': ''})
+            if h2_element:
+                professor.full_name_en = h2_element.text.strip()
+        except:
+            pass
         try:
             p_elements = soup.find_all('p', {'data-original-title': '', 'title': ''})
             for p_element in p_elements:
