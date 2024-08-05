@@ -76,6 +76,7 @@ class ElmSanatCrawler(University):
                 yield colleges.CollegeData(
                     href=self.url + a_tag["href"], value=text_value
                 )
+
     def get_professors(self):
         response = check_connection(requests.post, self.it_url)
         root = ET.fromstring(response.content)
@@ -101,9 +102,11 @@ class ElmSanatCrawler(University):
             rank=rows_value[0],
             college=college,
         )
-        try: 
-            img_element = soup.find("img", {"class": "userpic", "alt": "دکتر ساسان آسیایی"})
-            professor.image =img_element.get("src")
+        try:
+            img_element = soup.find(
+                "img", {"class": "userpic", "alt": "دکتر ساسان آسیایی"}
+            )
+            professor.image = img_element.get("src")
         except:
             pass
 
