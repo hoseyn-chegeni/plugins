@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-
-from schemas import Employee, Professor
-
+from schemas.professor import Professor
+from schemas.employee import Employee
 
 class University(ABC):
 

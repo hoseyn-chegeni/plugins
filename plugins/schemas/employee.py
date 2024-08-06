@@ -9,3 +9,4 @@ class Employee(BaseModel):
     role: Optional[str] = None
     internal_number: Optional[str] = None
     phone_number: Optional[str] = None
+    university_link: Optional[str] = None
