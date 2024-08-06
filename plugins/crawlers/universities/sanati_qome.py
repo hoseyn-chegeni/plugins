@@ -37,20 +37,30 @@ class QUTCrawler(University):
                         employee = Employee(
                             name=name, department=dept, internal_number=phone
                         )
-                        yield employee
+                        return  employee
 
     def get_colleges(self):
-        response = check_connection(requests.get, self.url + "/fa/wp/index")
+        response = check_connection(requests.get, self.url)
         soup = BeautifulSoup(response.text, "html.parser")
-        th_elements = soup.find_all("th", attrs={"data-original-title": ""})
+        # Step 3: Locate the specific <li> element containing the desired <a> tag
+        li_elements = soup.find_all('li', class_='dropdown yamm-fw')
+        target_li = None
+        for li in li_elements:
+            a_tag = li.find('a', class_='dropdown-toggle', href='#')
+            if a_tag and 'دانشکده ها' in a_tag.text:
+                target_li = li
+                break
 
-        # Iterate through each <th> element to check the text
-        for th in th_elements:
-            th_text = th.text.strip()
-            if th_text.startswith("لیست اعضای هیئت علمی"):
-                result_text = th_text[len("لیست اعضای هیئت علمی ") :]
-                college = CollegeData(value=result_text)
-                return college
+        if target_li:
+            nested_li_elements = target_li.find_all('li')
+            for nested_li in nested_li_elements:
+                nested_a = nested_li.find('a')
+                if nested_a and not nested_a.text.strip().startswith('معرفی'):
+                    college = CollegeData(
+                        value=nested_a.text.strip(),
+                        href= self.url + nested_a['href']
+                    )
+                    return college
 
     def get_professors(self):
         response = check_connection(requests.get, self.url + "/fa/wp/index")
