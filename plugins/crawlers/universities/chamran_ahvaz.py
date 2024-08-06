@@ -79,8 +79,6 @@ class ChamranAhvazCrawler(University):
                     )
                     return employee
 
-
-
     def get_colleges(self):
         pass
 

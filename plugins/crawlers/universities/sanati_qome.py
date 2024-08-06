@@ -37,30 +37,32 @@ class QUTCrawler(University):
                         employee = Employee(
                             name=name, department=dept, internal_number=phone
                         )
-                        return  employee
+                        yield employee
+
+    def get_employee_page(self) -> Employee:
+        return super().get_employee_page()
 
     def get_colleges(self):
         response = check_connection(requests.get, self.url)
         soup = BeautifulSoup(response.text, "html.parser")
         # Step 3: Locate the specific <li> element containing the desired <a> tag
-        li_elements = soup.find_all('li', class_='dropdown yamm-fw')
+        li_elements = soup.find_all("li", class_="dropdown yamm-fw")
         target_li = None
         for li in li_elements:
-            a_tag = li.find('a', class_='dropdown-toggle', href='#')
-            if a_tag and 'دانشکده ها' in a_tag.text:
+            a_tag = li.find("a", class_="dropdown-toggle", href="#")
+            if a_tag and "دانشکده ها" in a_tag.text:
                 target_li = li
                 break
 
         if target_li:
-            nested_li_elements = target_li.find_all('li')
+            nested_li_elements = target_li.find_all("li")
             for nested_li in nested_li_elements:
-                nested_a = nested_li.find('a')
-                if nested_a and not nested_a.text.strip().startswith('معرفی'):
+                nested_a = nested_li.find("a")
+                if nested_a and not nested_a.text.strip().startswith("معرفی"):
                     college = CollegeData(
-                        value=nested_a.text.strip(),
-                        href= self.url + nested_a['href']
+                        value=nested_a.text.strip(), href=self.url + nested_a["href"]
                     )
-                    return college
+                    yield college
 
     def get_professors(self):
         response = check_connection(requests.get, self.url + "/fa/wp/index")
