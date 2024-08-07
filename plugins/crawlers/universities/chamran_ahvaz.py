@@ -5,8 +5,7 @@ from crawlers.universities.base import University
 from crawlers.utils import check_connection
 from schemas.professor import Professor, Book, EducationalRecord, Interest
 from schemas.employee import Employee
-
-
+from urllib import parse
 class ChamranAhvazCrawler(University):
 
     def __init__(self) -> None:
@@ -83,7 +82,30 @@ class ChamranAhvazCrawler(University):
         pass
 
     def get_professors(self):
-        pass
+
+        def get_page_url(base_url, params):
+            return f"{base_url}?{parse.urlencode(params)}"
+        
+        while True:
+            url = get_page_url(self.url +  "/اعضای-هییت-علمی" , self.prof_params)
+           
+            response = check_connection(requests.get, url)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            h3_elements = soup.find_all('h3')
+
+            links_found = False
+            for h3 in h3_elements:
+                link_tag = h3.find('a')
+                if link_tag and 'href' in link_tag.attrs:
+                    link = self.url+link_tag['href']
+                    yield link
+                    links_found = True
+
+            if not links_found:
+                break
+
+            self.prof_params['cur'] = str(int(self.prof_params['cur']) + 1)
+
 
     def get_professor_page(self, professor, personal_page_link):
         pass
