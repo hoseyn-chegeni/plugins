@@ -9,9 +9,9 @@ from urllib import parse
 class ChamranAhvazCrawler(University):
 
     def __init__(self) -> None:
-        self.url = "https://scu.ac.ir/"
+        self.url = "https://scu.ac.ir"
 
-        self.headers = {
+        self.emp_headers = {
             "accept": "application/json, text/javascript, */*",
             "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "en-US,en;q=0.9",
@@ -32,7 +32,7 @@ class ChamranAhvazCrawler(University):
             "x-requested-with": "XMLHttpRequest",
         }
 
-        self.payload = {
+        self.emp_payload = {
             "p_p_id": "phonebooksearch_WAR_phonebookportlet",
             "p_p_lifecycle": "2",
             "p_p_state": "normal",
@@ -57,12 +57,35 @@ class ChamranAhvazCrawler(University):
             "_phonebooksearch_WAR_phonebookportlet_pbPost": "",
         }
 
+
+        self.prof_params = {
+            'p_p_id': 'eduteacherdisplay_WAR_edumanagerportlet',
+            'p_p_lifecycle': '0',
+            'p_p_state': 'normal',
+            'p_p_mode': 'view',
+            'p_p_col_id': 'column-1',
+            'p_p_col_count': '1',
+            '_eduteacherdisplay_WAR_edumanagerportlet_mvcPath': '/edu-teacher-display/view.jsp',
+            '_eduteacherdisplay_WAR_edumanagerportlet_delta': '75',
+            '_eduteacherdisplay_WAR_edumanagerportlet_keywords': '',
+            '_eduteacherdisplay_WAR_edumanagerportlet_advancedSearch': 'false',
+            '_eduteacherdisplay_WAR_edumanagerportlet_andOperator': 'true',
+            '_eduteacherdisplay_WAR_edumanagerportlet_lastName': '',
+            '_eduteacherdisplay_WAR_edumanagerportlet_groupId': '0',
+            '_eduteacherdisplay_WAR_edumanagerportlet_collegeSubGroupId': '0',
+            '_eduteacherdisplay_WAR_edumanagerportlet_dependCollegeSubGroupId': '0',
+            '_eduteacherdisplay_WAR_edumanagerportlet_resetCur': 'false',
+            'cur': '1'
+        }
+
+
+
     def get_employees(self):
         response = requests.post(
             self.url
-            + "%D8%AA%D9%85%D8%A7%D8%B3-%D8%A8%D8%A7-%D8%AF%D8%A7%D9%86%D8%B4%DA%AF%D8%A7%D9%87?p_p_id=phonebooksearch_WAR_phonebookportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_pos=1&p_p_col_count=2",
-            headers=self.headers,
-            data=self.payload,
+            + "/%D8%AA%D9%85%D8%A7%D8%B3-%D8%A8%D8%A7-%D8%AF%D8%A7%D9%86%D8%B4%DA%AF%D8%A7%D9%87?p_p_id=phonebooksearch_WAR_phonebookportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_pos=1&p_p_col_count=2",
+            headers=self.emp_headers,
+            data=self.emp_payload,
         )
 
         if response.status_code == 200:
@@ -107,5 +130,5 @@ class ChamranAhvazCrawler(University):
             self.prof_params['cur'] = str(int(self.prof_params['cur']) + 1)
 
 
-    def get_professor_page(self, professor, personal_page_link):
+    def get_professor_page(self, link):
         pass
