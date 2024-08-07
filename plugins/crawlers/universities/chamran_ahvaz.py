@@ -6,6 +6,9 @@ from crawlers.utils import check_connection
 from schemas.professor import Professor, Book, EducationalRecord, Interest
 from schemas.employee import Employee
 from urllib import parse
+import re
+
+
 class ChamranAhvazCrawler(University):
 
     def __init__(self) -> None:
@@ -131,4 +134,65 @@ class ChamranAhvazCrawler(University):
 
 
     def get_professor_page(self, link):
-        pass
+        response = check_connection(requests.get, link)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        info_fields = soup.find_all('div', class_='info-field')
+        name_tag = soup.find('h3')
+        name = name_tag.get_text(strip=True)
+        rank = info_fields[0].get_text(strip=True) if len(info_fields) > 0 else None
+        college = info_fields[1].get_text(strip=True) if len(info_fields) > 1 else None
+        professor = Professor(
+            full_name= name,
+            rank= rank,
+            college= college
+        )
+        # BOOKS
+        try:
+            book_texts = []
+            divs = soup.find_all('div', id='_eduteacherdisplay_WAR_edumanagerportlet_tabs1971141161059910810111545971101004598111111107115TabsSection')
+            for div in divs:
+                # Find the <h3> tag with the specific text "کتب"
+                h3_tag = div.find('h3', class_='cv-title', string="کتب")
+                if h3_tag:
+                    # If the <h3> tag is found, find all <a> tags with the class 'dsc-headlines'
+                    a_tags = div.find_all('a', class_='dsc-headlines')
+                    for a in a_tags:
+                        book_texts.append(a.get_text(strip=True))
+            combined_text = '\n\n'.join(book_texts)
+            
+            entries = combined_text.strip().split('\n\n')
+
+            for entry in entries:
+                parts = entry.split(',')
+                authors = []
+                title = None
+                publisher = None
+                publish_date = None
+                place = None
+
+                for part in parts:
+                    part = part.strip()
+                    if ': مترجم' in part or ': نویسنده' in part:
+                        authors.append(part.split(':')[0].strip())
+                    elif re.match(r'\d{4}', part):
+                        publish_date = part
+                    elif re.match(r'\d+-\d+-\d+', part):
+                        publish_date = part
+                    elif not title:
+                        title = part
+                    else:
+                        if publisher is None:
+                            publisher = part
+                        elif place is None:
+                            place = part
+
+                professor.books.append(Book(
+                    authors=authors,
+                    title=title,
+                    publish_date=publish_date,
+                    place=place
+                ))  
+        except:
+            pass
+
+        return professor
