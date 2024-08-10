@@ -101,7 +101,10 @@ class ChamranAhvazCrawler(University):
                         internal_number=item.get("internalnumber"),
                         phone_number=item.get("mobile"),
                     )
-                    return employee
+                    #For test
+                    print(employee)
+
+                    #return employee
 
     def get_colleges(self):
         pass

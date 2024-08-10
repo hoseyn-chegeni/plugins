@@ -11,7 +11,6 @@ from crawlers.universities.chamran_ahvaz import ChamranAhvazCrawler
 def main():
     crawler = ChamranAhvazCrawler()
 
-    # Get the list of professor links
     professor_links = crawler.get_professors()
     if not professor_links:
         print("No professor links found.")
@@ -23,6 +22,10 @@ def main():
             print(professor_data)
         else:
             print(f"Failed to get data for link: {link}")
+
+    # employee
+    # emp = crawler.get_employees()
+
 
 
 if __name__ == "__main__":
