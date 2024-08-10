@@ -112,13 +112,12 @@ class QUTCrawler(University):
                     full_name=name,
                     college=college,
                     rank=title,
-                    email=email,
                     image=image_src,
                 )
                 professor.socials.scholar = google_scholar_link
                 professor.socials.scopus = scopus_link
                 professor.socials.personal_cv = personal_page_link
-
+                professor.email.append(email)
                 if personal_page_link:
                     self.get_professor_page(professor, personal_page_link)
 

@@ -119,7 +119,7 @@ class ElmSanatCrawler(University):
                 email_text = email_span.text.strip()
                 email_text = email_text.split(":")[-1].strip()
                 email_text = email_text.replace("!!", "@")
-                professor.email = email_text
+                professor.email.append(email_text)
         except:
             pass
         try:

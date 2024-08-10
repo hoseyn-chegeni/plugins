@@ -1,9 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book, EducationalRecord, Interest
+from schemas.professor import Professor, Book
 from schemas.employee import Employee
 from urllib import parse
 import re
