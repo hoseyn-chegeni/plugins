@@ -124,7 +124,8 @@ class ChamranAhvazCrawler(University):
                 link_tag = h3.find('a')
                 if link_tag and 'href' in link_tag.attrs:
                     link = self.url+link_tag['href']
-                    yield link
+                    if link:
+                        yield link
                     links_found = True
 
             if not links_found:
@@ -194,5 +195,10 @@ class ChamranAhvazCrawler(University):
                 ))  
         except:
             pass
-
+        
+        # FOR TEST
         return professor
+
+
+    def get_employee_page(self) -> Employee:
+        return super().get_employee_page()
