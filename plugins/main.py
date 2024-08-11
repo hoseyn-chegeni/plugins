@@ -51,18 +51,19 @@ from crawlers.universities.sanati_qome import QUTCrawler
 #     college = crawler.get_colleges()
 
 
-
 """ صنعتی قم """
+
+
 def main():
     crawler = QUTCrawler()
     prof = crawler.get_professors()
+
 
 #     # employee
 #     emp = crawler.get_employees()
 
 #     # college
 #     college = crawler.get_colleges()
-
 
 
 if __name__ == "__main__":

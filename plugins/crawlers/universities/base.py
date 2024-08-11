@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from schemas.professor import Professor
 from schemas.employee import Employee
 
+
 class University(ABC):
 
     @abstractmethod

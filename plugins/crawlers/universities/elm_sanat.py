@@ -260,6 +260,5 @@ class ElmSanatCrawler(University):
 
         return professor
 
-
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()
