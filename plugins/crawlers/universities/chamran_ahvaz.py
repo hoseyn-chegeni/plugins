@@ -145,11 +145,14 @@ class ChamranAhvazCrawler(University):
         clean_name = re.sub(r'\(EN Page\)', '', name).strip()
         rank = info_fields[0].get_text(strip=True) if len(info_fields) > 0 else None
         college = info_fields[1].get_text(strip=True) if len(info_fields) > 1 else None
+        email_img_tag = soup.select_one('div.info-field span.email img')
+        email_img_src = email_img_tag['src'] if email_img_tag else None
         professor = Professor(
             full_name= clean_name,
             rank= rank,
             college= college
         )
+        professor.email.append(email_img_src)
         # BOOKS
         try:
             book_texts = []
