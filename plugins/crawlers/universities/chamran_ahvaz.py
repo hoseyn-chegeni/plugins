@@ -142,10 +142,11 @@ class ChamranAhvazCrawler(University):
         info_fields = soup.find_all('div', class_='info-field')
         name_tag = soup.find('h3')
         name = name_tag.get_text(strip=True)
+        clean_name = re.sub(r'\(EN Page\)', '', name).strip()
         rank = info_fields[0].get_text(strip=True) if len(info_fields) > 0 else None
         college = info_fields[1].get_text(strip=True) if len(info_fields) > 1 else None
         professor = Professor(
-            full_name= name,
+            full_name= clean_name,
             rank= rank,
             college= college
         )
