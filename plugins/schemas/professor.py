@@ -117,6 +117,7 @@ class Social(BaseModel):
     twitter: Optional[str] = None
     webofscience: Optional[str] = None
     website: Optional[str] = None
+    personal_cv: Optional[str] = None
 
 class Thesis(BaseModel):
     authors: List[str] = []

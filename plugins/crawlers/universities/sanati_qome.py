@@ -140,7 +140,6 @@ class QUTCrawler(University):
                     for ol in ol_elements:
                         li_elements = ol.find_all("li")
                         for li in li_elements:
-                            # Split text at the first semicolon to separate author(s) and title
                             parts = li.get_text(strip=True).split(",")
                             authors = parts[0].strip()
                             title = (
@@ -176,4 +175,7 @@ class QUTCrawler(University):
         except:
             pass
 
-        return professor
+        # For Test
+        print(professor)
+
+        # yield professor

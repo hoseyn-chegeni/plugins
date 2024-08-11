@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from schemas import colleges
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas import Course, Professor, Skill, Book, Honor
+from schemas.professor import Course, Professor, Skill, Book, Honor
 from schemas.employee import Employee
 import xml.etree.ElementTree as ET
 from typing import Generator
@@ -259,3 +259,7 @@ class ElmSanatCrawler(University):
             pass
 
         return professor
+
+
+    def get_employee_page(self) -> Employee:
+        return super().get_employee_page()
