@@ -6,7 +6,7 @@ from schemas.professor import Professor, Book
 from schemas.employee import Employee
 from urllib import parse
 import re
-
+from schemas.colleges import CollegeData
 
 class ChamranAhvazCrawler(University):
 
@@ -107,7 +107,25 @@ class ChamranAhvazCrawler(University):
                     #return employee
 
     def get_colleges(self):
-        pass
+        response = check_connection(requests.get,self.url + "/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%DB%8C%D8%AA-%D8%B9%D9%84%D9%85%DB%8C")
+        soup = BeautifulSoup(response.content, 'html.parser')
+        select_element = soup.find('select', {'id': '_eduteacherdisplay_WAR_edumanagerportlet_groupId'})
+        if select_element:
+            options = select_element.find_all('option')
+            for option in options:
+                if option['value'] != '0':  
+                    text = option.get_text(strip=True) 
+                    college  = CollegeData(
+                        value= text,
+                        href= ''
+                    )
+
+                    #For test
+                    print(college)
+
+                    #return employee
+
+
 
     def get_professors(self):
 
