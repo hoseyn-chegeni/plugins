@@ -9,25 +9,10 @@ from crawlers.universities.elm_sanat import ElmSanatCrawler
 from crawlers.universities.sanati_qome import QUTCrawler
 
 """ چمران اهواز """
-# def main():
-#     crawler = ChamranAhvazCrawler()
-#     professor_links = crawler.get_professors()
-#     if not professor_links:
-#         print("No professor links found.")
-#         return
+crawler = ChamranAhvazCrawler()
+for college in crawler.get_colleges():
+    print(college)
 
-#     for link in professor_links:
-#         professor_data = crawler.get_professor_page(link)
-#         if professor_data:
-#             print(professor_data)
-#         else:
-#             print(f"Failed to get data for link: {link}")
-
-#     # employee
-#     emp = crawler.get_employees()
-
-#     # college
-#     college = crawler.get_colleges()
 
 """ علم و صنعت """
 # def main():
@@ -54,9 +39,9 @@ from crawlers.universities.sanati_qome import QUTCrawler
 """ صنعتی قم """
 
 
-def main():
-    crawler = QUTCrawler()
-    prof = crawler.get_professors()
+# def main():
+#     crawler = QUTCrawler()
+#     prof = crawler.get_professors()
 
 
 #     # employee
@@ -65,6 +50,3 @@ def main():
 #     # college
 #     college = crawler.get_colleges()
 
-
-if __name__ == "__main__":
-    main()

@@ -104,26 +104,18 @@ class ChamranAhvazCrawler(University):
                     # return employee
 
     def get_colleges(self):
-        response = check_connection(
-            requests.get,
-            self.url
-            + "/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%DB%8C%D8%AA-%D8%B9%D9%84%D9%85%DB%8C",
-        )
+        response = check_connection(requests.get,self.url)
         soup = BeautifulSoup(response.content, "html.parser")
-        select_element = soup.find(
-            "select", {"id": "_eduteacherdisplay_WAR_edumanagerportlet_groupId"}
-        )
-        if select_element:
-            options = select_element.find_all("option")
-            for option in options:
-                if option["value"] != "0":
-                    text = option.get_text(strip=True)
-                    college = CollegeData(value=text, href="")
-
-                    # For test
-                    print(college)
-
-                    # return employee
+        has_content_lis = soup.find_all('li', class_='has-content')
+        if len(has_content_lis) >= 4:
+            fourth_li = has_content_lis[3]
+            a_tags = fourth_li.find_all('a')
+            links = [(a['href'], a.get_text(strip=True)) for a in a_tags]
+            for href, text in links:
+                college = CollegeData(
+                    href= href, value=text
+                )
+                yield college
 
     def get_professors(self):
 
@@ -213,6 +205,11 @@ class ChamranAhvazCrawler(University):
                         place=place,
                     )
                 )
+        except:
+            pass
+
+        try:
+            pass   
         except:
             pass
 
