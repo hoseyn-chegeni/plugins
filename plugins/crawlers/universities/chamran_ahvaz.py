@@ -98,10 +98,7 @@ class ChamranAhvazCrawler(University):
                         internal_number=item.get("internalnumber"),
                         phone_number=item.get("mobile"),
                     )
-                    # For test
-                    print(employee)
-
-                    # return employee
+                    yield employee
 
     def get_colleges(self):
         response = check_connection(requests.get,self.url)

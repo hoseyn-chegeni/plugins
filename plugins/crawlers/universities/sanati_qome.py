@@ -68,6 +68,7 @@ class QUTCrawler(University):
         response = check_connection(requests.get, self.url + "/fa/wp/index")
         soup = BeautifulSoup(response.text, "html.parser")
         rows = soup.find_all("tr", attrs={"data-original-title": ""})
+        
         for row in rows:
             cells = row.find_all("td")
             if len(cells) == 7:
@@ -118,18 +119,25 @@ class QUTCrawler(University):
                 professor.socials.scopus = scopus_link
                 professor.socials.personal_cv = personal_page_link
                 professor.email.append(email)
+                
+                # Populate additional professor data if personal page exists
                 if personal_page_link:
                     self.get_professor_page(professor, personal_page_link)
+                
+                # Yield the populated professor object
+                yield professor
 
     def get_professor_page(self, professor, personal_page_link):
         response = check_connection(requests.get, personal_page_link)
         soup = BeautifulSoup(response.text, "html.parser")
+        
         try:
             h2_element = soup.find("h2", {"data-original-title": "", "title": ""})
             if h2_element:
                 professor.full_name_en = h2_element.text.strip()
-        except:
-            pass
+        except Exception as e:
+            print(f"Error fetching full_name_en: {e}")
+        
         try:
             p_elements = soup.find_all("p", {"data-original-title": "", "title": ""})
             for p_element in p_elements:
@@ -147,8 +155,8 @@ class QUTCrawler(University):
                             )
                             new_book = Book(authors=[authors], title=title)
                             professor.books.append(new_book)
-        except:
-            pass
+        except Exception as e:
+            print(f"Error fetching books: {e}")
 
         try:
             elements = soup.find_all("p", text="تحصیلات:")
@@ -159,11 +167,12 @@ class QUTCrawler(University):
                         new_education_record = EducationalRecord(
                             li.get_text(strip=True)
                         )
-                        professor.educational_records.app(new_education_record)
-        except:
-            pass
+                        professor.educational_records.append(new_education_record)
+        except Exception as e:
+            print(f"Error fetching educational records: {e}")
+        
         try:
-            all_elements = soup.find_all(string=lambda text: "پژهش" in text)
+            all_elements = soup.find_all(string=lambda text: "پژوهش" in text)
             for element in all_elements:
                 parent = element.find_parent("strong")
                 if parent:
@@ -172,10 +181,5 @@ class QUTCrawler(University):
                         for li in ol.find_all("li"):
                             interest = Interest(title=li.get_text(strip=True))
                             professor.interest.append(interest)
-        except:
-            pass
-
-        # For Test
-        print(professor)
-
-        # yield professor
+        except Exception as e:
+            print(f"Error fetching interests: {e}")
