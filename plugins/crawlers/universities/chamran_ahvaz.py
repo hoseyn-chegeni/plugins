@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book, Activity
+from schemas.professor import Professor, Book, Activity, ResearchPlan
 from schemas.employee import Employee
 from urllib import parse
 import re
@@ -222,6 +222,25 @@ class ChamranAhvazCrawler(University):
                                     location=text_list[4],
                                 )
                             )
+        except:
+            pass
+
+
+        try:
+            divs = soup.find_all("div", class_="content-description")
+            for div in divs:
+                h3_tag = div.find("h3", class_="cv-title")
+                if h3_tag and h3_tag.text.strip() ==  "طرح های بنیادی":
+                    list_items = div.find_all("li")
+                    for li in list_items:
+                        a_tag = li.find("a", class_="dsc-headlines")
+                        if a_tag:
+                            text_list = a_tag.text.strip()
+                            professor.research_plans.append(
+                                ResearchPlan(
+                                    title=text_list,
+                                )
+                            ) 
         except:
             pass
 
