@@ -29,8 +29,6 @@ crawler = ChamranAhvazCrawler()
 #         print(f"Failed to get data for link: {link}")
 
 
-
-
 """ علم و صنعت """
 crawler = ElmSanatCrawler()
 """College"""

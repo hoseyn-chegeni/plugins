@@ -45,7 +45,6 @@ class QUTCrawler(University):
     def get_colleges(self):
         response = check_connection(requests.get, self.url)
         soup = BeautifulSoup(response.text, "html.parser")
-        # Step 3: Locate the specific <li> element containing the desired <a> tag
         li_elements = soup.find_all("li", class_="dropdown yamm-fw")
         target_li = None
         for li in li_elements:
@@ -68,7 +67,7 @@ class QUTCrawler(University):
         response = check_connection(requests.get, self.url + "/fa/wp/index")
         soup = BeautifulSoup(response.text, "html.parser")
         rows = soup.find_all("tr", attrs={"data-original-title": ""})
-        
+
         for row in rows:
             cells = row.find_all("td")
             if len(cells) == 7:
@@ -99,7 +98,6 @@ class QUTCrawler(University):
                     else None
                 )
 
-                # If any element is None or empty, replace it with an empty list
                 personal_page_link = (
                     self.url + personal_page_link if personal_page_link else None
                 )
@@ -119,25 +117,23 @@ class QUTCrawler(University):
                 professor.socials.scopus = scopus_link
                 professor.socials.personal_cv = personal_page_link
                 professor.email.append(email)
-                
-                # Populate additional professor data if personal page exists
+
                 if personal_page_link:
                     self.get_professor_page(professor, personal_page_link)
-                
-                # Yield the populated professor object
+
                 yield professor
 
     def get_professor_page(self, professor, personal_page_link):
         response = check_connection(requests.get, personal_page_link)
         soup = BeautifulSoup(response.text, "html.parser")
-        
+
         try:
             h2_element = soup.find("h2", {"data-original-title": "", "title": ""})
             if h2_element:
                 professor.full_name_en = h2_element.text.strip()
         except Exception as e:
             print(f"Error fetching full_name_en: {e}")
-        
+
         try:
             p_elements = soup.find_all("p", {"data-original-title": "", "title": ""})
             for p_element in p_elements:
@@ -170,7 +166,7 @@ class QUTCrawler(University):
                         professor.educational_records.append(new_education_record)
         except Exception as e:
             print(f"Error fetching educational records: {e}")
-        
+
         try:
             all_elements = soup.find_all(string=lambda text: "پژوهش" in text)
             for element in all_elements:

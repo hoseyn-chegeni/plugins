@@ -101,17 +101,15 @@ class ChamranAhvazCrawler(University):
                     yield employee
 
     def get_colleges(self):
-        response = check_connection(requests.get,self.url)
+        response = check_connection(requests.get, self.url)
         soup = BeautifulSoup(response.content, "html.parser")
-        has_content_lis = soup.find_all('li', class_='has-content')
+        has_content_lis = soup.find_all("li", class_="has-content")
         if len(has_content_lis) >= 4:
             fourth_li = has_content_lis[3]
-            a_tags = fourth_li.find_all('a')
-            links = [(a['href'], a.get_text(strip=True)) for a in a_tags]
+            a_tags = fourth_li.find_all("a")
+            links = [(a["href"], a.get_text(strip=True)) for a in a_tags]
             for href, text in links:
-                college = CollegeData(
-                    href= href, value=text
-                )
+                college = CollegeData(href=href, value=text)
                 yield college
 
     def get_professors(self):
@@ -206,7 +204,7 @@ class ChamranAhvazCrawler(University):
             pass
 
         try:
-            pass   
+            pass
         except:
             pass
 
