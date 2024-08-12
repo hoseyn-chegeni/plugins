@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book
+from schemas.professor import Professor, Book, Activity
 from schemas.employee import Employee
 from urllib import parse
 import re
@@ -204,7 +204,16 @@ class ChamranAhvazCrawler(University):
             pass
 
         try:
-            pass
+            divs = soup.find_all('div', class_='content-description')
+            for div in divs:
+                h3_tag = div.find('h3', class_='cv-title')
+                if h3_tag and h3_tag.text.strip() == 'فعالیت های اجرایی':
+                    list_items = div.find_all('li')
+                    for li in list_items:
+                        a_tag = li.find('a', class_='dsc-headlines')
+                        if a_tag:
+                            text_list = a_tag.text.strip().split(',')
+                            professor.activities.append(Activity(title= text_list[0], start_date=text_list[1], end_date=text_list[2], description=text_list[3], location=text_list[4]))
         except:
             pass
 

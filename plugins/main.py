@@ -17,16 +17,16 @@ crawler = ChamranAhvazCrawler()
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-# professor_links = crawler.get_professors()
-# if not professor_links:
-#     print("No professor links found.")
+professor_links = crawler.get_professors()
+if not professor_links:
+    print("No professor links found.")
 
-# for link in professor_links:
-#     professor_data = crawler.get_professor_page(link)
-#     if professor_data:
-#         print(professor_data)
-#     else:
-#         print(f"Failed to get data for link: {link}")
+for link in professor_links:
+    professor_data = crawler.get_professor_page(link)
+    if professor_data:
+        print(professor_data)
+    else:
+        print(f"Failed to get data for link: {link}")
 
 
 """ علم و صنعت """
