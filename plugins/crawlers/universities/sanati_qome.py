@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book, EducationalRecord, Interest
+from schemas.professor import Professor, Book, EducationalRecord, Interest, Course
 from schemas.employee import Employee
 
 
@@ -120,7 +120,6 @@ class QUTCrawler(University):
 
                 if personal_page_link:
                     self.get_professor_page(professor, personal_page_link)
-
                 yield professor
 
     def get_professor_page(self, professor, personal_page_link):
@@ -131,8 +130,8 @@ class QUTCrawler(University):
             h2_element = soup.find("h2", {"data-original-title": "", "title": ""})
             if h2_element:
                 professor.full_name_en = h2_element.text.strip()
-        except Exception as e:
-            print(f"Error fetching full_name_en: {e}")
+        except:
+            pass
 
         try:
             p_elements = soup.find_all("p", {"data-original-title": "", "title": ""})
@@ -151,22 +150,29 @@ class QUTCrawler(University):
                             )
                             new_book = Book(authors=[authors], title=title)
                             professor.books.append(new_book)
-        except Exception as e:
-            print(f"Error fetching books: {e}")
-
+        except:
+            pass
+        # تحصیلات
         try:
-            elements = soup.find_all("p", text="تحصیلات:")
-            for element in elements:
-                ul = element.find_next_sibling("ul")
-                if ul:
-                    for li in ul.find_all("li"):
-                        new_education_record = EducationalRecord(
-                            li.get_text(strip=True)
-                        )
-                        professor.educational_records.append(new_education_record)
-        except Exception as e:
-            print(f"Error fetching educational records: {e}")
-
+            elements = soup.find_all(['p', 'li',])
+            element_texts = [element.get_text() for element in elements]
+            section_data = []
+            start_collecting = False
+            section_headers = ['مدارك دانشگاهي:', 'Education',"سوابق تحصيلي","EDUCATION","تحصیلات:"]
+            for text in element_texts:
+                if any(header in text for header in section_headers):
+                    start_collecting = True
+                    continue
+                
+                if start_collecting:
+                    if text.strip().endswith(":") or len(text.strip().split(" ")) <=2 or "،" not in text.strip():
+                        break
+                    section_data.append(text.strip())
+            
+            for record in section_data:
+                professor.educational_records.append(EducationalRecord(title=record))
+        except:
+            pass
         try:
             all_elements = soup.find_all(string=lambda text: "پژوهش" in text)
             for element in all_elements:
@@ -177,5 +183,26 @@ class QUTCrawler(University):
                         for li in ol.find_all("li"):
                             interest = Interest(title=li.get_text(strip=True))
                             professor.interest.append(interest)
-        except Exception as e:
-            print(f"Error fetching interests: {e}")
+        except:
+            pass
+        # سوابق تدریس
+        try:
+            elements = soup.find_all(['p'])
+            element_texts = [element.get_text() for element in elements]
+            section_data = []
+            start_collecting = False
+            section_headers = ["سوابق تدريس:","undergraduate courses","سوابق تدريس"]
+            for text in element_texts:
+                if any(header in text for header in section_headers):
+                    start_collecting = True
+                    continue
+                
+                if start_collecting:
+                    if  len(text.strip().split(" ")) <=2:
+                        break
+                    section_data.append(text.strip())
+            
+            for record in section_data:
+                professor.courses.append(Course(title=record))
+        except:
+            pass

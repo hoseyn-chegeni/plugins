@@ -59,5 +59,5 @@ crawler = QUTCrawler()
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-# for professor in crawler.get_professors():
-#     print(professor)
+for professor in crawler.get_professors():
+    print(professor)
