@@ -3,7 +3,14 @@ from bs4 import BeautifulSoup
 from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book, EducationalRecord, Interest, Course, Article
+from schemas.professor import (
+    Professor,
+    Book,
+    EducationalRecord,
+    Interest,
+    Course,
+    Article,
+)
 from schemas.employee import Employee
 
 
@@ -163,9 +170,7 @@ class QUTCrawler(University):
             element_texts = [element.get_text() for element in elements]
             section_data = []
             start_collecting = False
-            section_headers = [
-                "مقالات:"
-            ]
+            section_headers = ["مقالات:"]
             for text in element_texts:
                 if any(header in text for header in section_headers):
                     start_collecting = True

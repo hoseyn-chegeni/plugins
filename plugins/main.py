@@ -30,7 +30,6 @@ crawler = ChamranAhvazCrawler()
 #         print(f"Failed to get data for link: {link}")
 
 
-
 """ علم و صنعت """
 crawler = ElmSanatCrawler()
 """College"""
@@ -52,7 +51,6 @@ crawler = ElmSanatCrawler()
 #         print(f"Failed to get data for link: {link}")
 
 
-
 """ صنعتی قم """
 crawler = QUTCrawler()
 """College"""
@@ -63,4 +61,4 @@ crawler = QUTCrawler()
 #     print(emp)
 """Professor"""
 for professor in crawler.get_professors():
-    print(professor.article_in_print)
+    print(professor)
