@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from schemas.colleges import CollegeData
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book, EducationalRecord, Interest, Course
+from schemas.professor import Professor, Book, EducationalRecord, Interest, Course, Article
 from schemas.employee import Employee
 
 
@@ -148,10 +148,55 @@ class QUTCrawler(University):
                             title = (
                                 ",".join(parts[1:]).strip() if len(parts) > 1 else ""
                             )
-                            new_book = Book(authors=[authors], title=title)
-                            professor.books.append(new_book)
+                            new_book = Article(title=title)
+                            professor.article_in_print.append(new_book)
         except:
             pass
+        # تحصیلات
+        try:
+            elements = soup.find_all(
+                [
+                    "p",
+                    "li",
+                ]
+            )
+            element_texts = [element.get_text() for element in elements]
+            section_data = []
+            start_collecting = False
+            section_headers = [
+                "مقالات:"
+            ]
+            for text in element_texts:
+                if any(header in text for header in section_headers):
+                    start_collecting = True
+                    continue
+
+                if start_collecting:
+                    if (
+                        text.strip().endswith(":")
+                        or len(text.strip().split(" ")) <= 2
+                        or "،" not in text.strip()
+                    ):
+                        break
+                    section_data.append(text.strip())
+
+            for record in section_data:
+                professor.article_in_print.append(Article(title=record))
+        except:
+            pass
+        try:
+            all_elements = soup.find_all(string=lambda text: "پژوهش" in text)
+            for element in all_elements:
+                parent = element.find_parent("strong")
+                if parent:
+                    ol = parent.find_next_sibling("ol")
+                    if ol:
+                        for li in ol.find_all("li"):
+                            interest = Interest(title=li.get_text(strip=True))
+                            professor.interest.append(interest)
+        except:
+            pass
+
         # تحصیلات
         try:
             elements = soup.find_all(
