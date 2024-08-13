@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book, Activity, ResearchPlan
+from schemas.professor import Professor, Book, Activity, ResearchPlan, Article
 from schemas.employee import Employee
 from urllib import parse
 import re
@@ -158,16 +158,22 @@ class ChamranAhvazCrawler(University):
                 "div",
                 id="_eduteacherdisplay_WAR_edumanagerportlet_tabs1971141161059910810111545971101004598111111107115TabsSection",
             )
+            
             for div in divs:
                 h3_tag = div.find("h3", class_="cv-title", string="کتب")
+                
                 if h3_tag:
-                    a_tags = div.find_all("a", class_="dsc-headlines")
-                    for a in a_tags:
-                        book_texts.append(a.get_text(strip=True))
+                    ul_tag = h3_tag.find_next_sibling("ul")
+                    
+                    if ul_tag:
+                        a_tags = ul_tag.find_all("a", class_="dsc-headlines")
+                        for a in a_tags:
+                            book_texts.append(a.get_text(strip=True))
+            
             combined_text = "\n\n".join(book_texts)
-
+            
             entries = combined_text.strip().split("\n\n")
-
+            
             for entry in entries:
                 parts = entry.split(",")
                 authors = []
@@ -191,15 +197,15 @@ class ChamranAhvazCrawler(University):
                             publisher = part
                         elif place is None:
                             place = part
-
-                professor.books.append(
-                    Book(
-                        authors=authors,
-                        title=title,
-                        publish_date=publish_date,
-                        place=place,
+                if title:
+                    professor.books.append(
+                        Book(
+                            authors=authors,
+                            title=title,
+                            publish_date=publish_date,
+                            place=place,
+                        )
                     )
-                )
         except:
             pass
 
@@ -244,8 +250,66 @@ class ChamranAhvazCrawler(University):
         except:
             pass
 
-        # FOR TEST
+        # Article
+        try:
+            article_texts = []
+            divs = soup.find_all(
+                "div",
+                id="_eduteacherdisplay_WAR_edumanagerportlet_tabs1971141161059910810111545971101004598111111107115TabsSection",
+            )
+            
+            for div in divs:
+                h3_tag = div.find("h3", class_="cv-title", string="مقالات")
+                
+                if h3_tag:
+                    ul_tag = h3_tag.find_next_sibling("ul")
+                    
+                    if ul_tag:
+                        a_tags = ul_tag.find_all("a", class_="dsc-headlines")
+                        for a in a_tags:
+                            article_texts.append(a.get_text(strip=True))
+            
+            combined_text = "\n\n".join(article_texts)
+            
+            entries = combined_text.strip().split("\n\n")
+            
+            for entry in entries:
+                parts = entry.split("،")
+                authors = []
+                title = None
+                details = None
+                date = None
+                place = None
+
+                for part in parts:
+                    part = part.strip()
+
+                    if "نویسنده" in part:
+                        authors.append(part.split(":")[0].strip())
+                    elif re.match(r"\d{4}/\d{2}/\d{2}", part) or re.match(r"\d{4}/\d{2}/\d{2}", part):
+                        date = part
+                    elif not title:
+                        title = part
+                    elif not details:
+                        details = part
+                    else:
+                        place = part
+
+                if title:
+                    professor.article_in_print.append(
+                        Article(
+                            authors=authors,
+                            title=title,
+                            details=details,
+                            date=date,
+                            link=None,
+                            place=place,
+                        )
+                    )
+        except:
+            pass
         return professor
+
 
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()
