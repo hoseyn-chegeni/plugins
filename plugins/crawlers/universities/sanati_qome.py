@@ -154,21 +154,36 @@ class QUTCrawler(University):
             pass
         # تحصیلات
         try:
-            elements = soup.find_all(['p', 'li',])
+            elements = soup.find_all(
+                [
+                    "p",
+                    "li",
+                ]
+            )
             element_texts = [element.get_text() for element in elements]
             section_data = []
             start_collecting = False
-            section_headers = ['مدارك دانشگاهي:', 'Education',"سوابق تحصيلي","EDUCATION","تحصیلات:"]
+            section_headers = [
+                "مدارك دانشگاهي:",
+                "Education",
+                "سوابق تحصيلي",
+                "EDUCATION",
+                "تحصیلات:",
+            ]
             for text in element_texts:
                 if any(header in text for header in section_headers):
                     start_collecting = True
                     continue
-                
+
                 if start_collecting:
-                    if text.strip().endswith(":") or len(text.strip().split(" ")) <=2 or "،" not in text.strip():
+                    if (
+                        text.strip().endswith(":")
+                        or len(text.strip().split(" ")) <= 2
+                        or "،" not in text.strip()
+                    ):
                         break
                     section_data.append(text.strip())
-            
+
             for record in section_data:
                 professor.educational_records.append(EducationalRecord(title=record))
         except:
@@ -187,21 +202,21 @@ class QUTCrawler(University):
             pass
         # سوابق تدریس
         try:
-            elements = soup.find_all(['p'])
+            elements = soup.find_all(["p"])
             element_texts = [element.get_text() for element in elements]
             section_data = []
             start_collecting = False
-            section_headers = ["سوابق تدريس:","undergraduate courses","سوابق تدريس"]
+            section_headers = ["سوابق تدريس:", "undergraduate courses", "سوابق تدريس"]
             for text in element_texts:
                 if any(header in text for header in section_headers):
                     start_collecting = True
                     continue
-                
+
                 if start_collecting:
-                    if  len(text.strip().split(" ")) <=2:
+                    if len(text.strip().split(" ")) <= 2:
                         break
                     section_data.append(text.strip())
-            
+
             for record in section_data:
                 professor.courses.append(Course(title=record))
         except:

@@ -158,22 +158,22 @@ class ChamranAhvazCrawler(University):
                 "div",
                 id="_eduteacherdisplay_WAR_edumanagerportlet_tabs1971141161059910810111545971101004598111111107115TabsSection",
             )
-            
+
             for div in divs:
                 h3_tag = div.find("h3", class_="cv-title", string="کتب")
-                
+
                 if h3_tag:
                     ul_tag = h3_tag.find_next_sibling("ul")
-                    
+
                     if ul_tag:
                         a_tags = ul_tag.find_all("a", class_="dsc-headlines")
                         for a in a_tags:
                             book_texts.append(a.get_text(strip=True))
-            
+
             combined_text = "\n\n".join(book_texts)
-            
+
             entries = combined_text.strip().split("\n\n")
-            
+
             for entry in entries:
                 parts = entry.split(",")
                 authors = []
@@ -231,12 +231,11 @@ class ChamranAhvazCrawler(University):
         except:
             pass
 
-
         try:
             divs = soup.find_all("div", class_="content-description")
             for div in divs:
                 h3_tag = div.find("h3", class_="cv-title")
-                if h3_tag and h3_tag.text.strip() ==  "طرح های بنیادی":
+                if h3_tag and h3_tag.text.strip() == "طرح های بنیادی":
                     list_items = div.find_all("li")
                     for li in list_items:
                         a_tag = li.find("a", class_="dsc-headlines")
@@ -246,7 +245,7 @@ class ChamranAhvazCrawler(University):
                                 ResearchPlan(
                                     title=text_list,
                                 )
-                            ) 
+                            )
         except:
             pass
 
@@ -257,22 +256,22 @@ class ChamranAhvazCrawler(University):
                 "div",
                 id="_eduteacherdisplay_WAR_edumanagerportlet_tabs1971141161059910810111545971101004598111111107115TabsSection",
             )
-            
+
             for div in divs:
                 h3_tag = div.find("h3", class_="cv-title", string="مقالات")
-                
+
                 if h3_tag:
                     ul_tag = h3_tag.find_next_sibling("ul")
-                    
+
                     if ul_tag:
                         a_tags = ul_tag.find_all("a", class_="dsc-headlines")
                         for a in a_tags:
                             article_texts.append(a.get_text(strip=True))
-            
+
             combined_text = "\n\n".join(article_texts)
-            
+
             entries = combined_text.strip().split("\n\n")
-            
+
             for entry in entries:
                 parts = entry.split("،")
                 authors = []
@@ -286,7 +285,9 @@ class ChamranAhvazCrawler(University):
 
                     if "نویسنده" in part:
                         authors.append(part.split(":")[0].strip())
-                    elif re.match(r"\d{4}/\d{2}/\d{2}", part) or re.match(r"\d{4}/\d{2}/\d{2}", part):
+                    elif re.match(r"\d{4}/\d{2}/\d{2}", part) or re.match(
+                        r"\d{4}/\d{2}/\d{2}", part
+                    ):
                         date = part
                     elif not title:
                         title = part
@@ -309,7 +310,6 @@ class ChamranAhvazCrawler(University):
         except:
             pass
         return professor
-
 
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()

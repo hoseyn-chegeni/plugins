@@ -24,7 +24,7 @@ if not professor_links:
 for link in professor_links:
     professor_data = crawler.get_professor_page(link)
     if professor_data:
-        print(professor_data.article_in_print)
+        print(professor_data)
     else:
         print(f"Failed to get data for link: {link}")
 
