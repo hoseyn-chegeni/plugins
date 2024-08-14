@@ -159,7 +159,7 @@ class QUTCrawler(University):
                             professor.article_in_print.append(new_book)
         except:
             pass
-        # تحصیلات
+        # مقالات
         try:
             elements = soup.find_all(
                 [
@@ -184,9 +184,9 @@ class QUTCrawler(University):
                     ):
                         break
                     section_data.append(text.strip())
-
-            for record in section_data:
-                professor.article_in_print.append(Article(title=record))
+            if not professor.article_in_print:
+                for record in section_data:
+                    professor.article_in_print.append(Article(title=record))
         except:
             pass
         try:
