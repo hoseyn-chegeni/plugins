@@ -1,5 +1,7 @@
 import sys
 import os
+from pprint import pprint
+
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
@@ -61,4 +63,5 @@ crawler = QUTCrawler()
 #     print(emp)
 """Professor"""
 for professor in crawler.get_professors():
-    print(professor)
+        pprint(professor.article_in_print)
+

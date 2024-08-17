@@ -10,6 +10,7 @@ from schemas.professor import (
     Interest,
     Course,
     Article,
+    JobExperience,
 )
 from schemas.employee import Employee
 
@@ -151,12 +152,12 @@ class QUTCrawler(University):
                         li_elements = ol.find_all("li")
                         for li in li_elements:
                             parts = li.get_text(strip=True).split(",")
-                            authors = parts[0].strip()
                             title = (
                                 ",".join(parts[1:]).strip() if len(parts) > 1 else ""
                             )
-                            new_book = Article(title=title)
-                            professor.article_in_print.append(new_book)
+                            if title:
+                                new_book = Article(title=title)
+                                professor.article_in_print.append(new_book)
         except:
             pass
         # مقالات
@@ -170,7 +171,15 @@ class QUTCrawler(University):
             element_texts = [element.get_text() for element in elements]
             section_data = []
             start_collecting = False
-            section_headers = ["مقالات:"]
+            section_headers = [
+                "مقالات:",
+                "مقالات علمی پژوهشی و ISI",
+                "مقالات علمی",
+                "مقالات کنفرانس:",
+                "Publications",
+                "Publications:",
+                "Publications(Journal articles)",
+            ]
             for text in element_texts:
                 if any(header in text for header in section_headers):
                     start_collecting = True
@@ -219,6 +228,7 @@ class QUTCrawler(University):
                 "سوابق تحصيلي",
                 "EDUCATION",
                 "تحصیلات:",
+                "Educational Background",
             ]
             for text in element_texts:
                 if any(header in text for header in section_headers):
@@ -256,7 +266,13 @@ class QUTCrawler(University):
             element_texts = [element.get_text() for element in elements]
             section_data = []
             start_collecting = False
-            section_headers = ["سوابق تدريس:", "undergraduate courses", "سوابق تدريس"]
+            section_headers = [
+                "سوابق تدريس:",
+                "undergraduate courses",
+                "سوابق تدريس",
+                "سوابق آموزشی",
+                "Courses",
+            ]
             for text in element_texts:
                 if any(header in text for header in section_headers):
                     start_collecting = True
@@ -268,6 +284,6 @@ class QUTCrawler(University):
                     section_data.append(text.strip())
 
             for record in section_data:
-                professor.courses.append(Course(title=record))
+                    professor.courses.append(Course(title=record))
         except:
             pass
