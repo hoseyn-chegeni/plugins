@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from crawlers.universities.base import University
 from crawlers.utils import check_connection
-from schemas.professor import Professor, Book, Activity, ResearchPlan, Article
+from schemas.professor import Professor, Book, Activity, ResearchPlan, Article, Thesis
 from schemas.employee import Employee
 from urllib import parse
 import re
@@ -309,6 +309,41 @@ class ChamranAhvazCrawler(University):
                     )
         except:
             pass
+
+        try:
+            tr_elements = soup.find_all("tr")
+            if tr_elements:
+                tr_elements.pop(0)
+            for tr in tr_elements:
+                tds = tr.find_all("td")
+                if len(tds) >= 5:
+                    name = tds[0].get_text(strip=True)
+                    title = tds[1].get_text(strip=True)
+                    date = tds[4].get_text(strip=True)
+
+                    if tds[2].get_text(strip=True) == "کارشناسی ارشد":
+                        professor.masters_thesis.append(
+                            Thesis(
+                                authors=[
+                                    name,
+                                ],
+                                title=title,
+                                defense_date=date,
+                            )
+                        )
+                    elif tds[2].get_text(strip=True) == "دکتری":
+                        professor.doctoral_thesis.append(
+                            Thesis(
+                                authors=[
+                                    name,
+                                ],
+                                title=title,
+                                defense_date=date,
+                            )
+                        )
+        except:
+            pass
+
         return professor
 
     def get_employee_page(self) -> Employee:
