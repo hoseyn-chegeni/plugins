@@ -11,6 +11,7 @@ from schemas.professor import (
     Course,
     Article,
     JobExperience,
+    Interest,
 )
 from schemas.employee import Employee
 
@@ -179,6 +180,9 @@ class QUTCrawler(University):
                 "Publications",
                 "Publications:",
                 "Publications(Journal articles)",
+                "ISI:",
+                "Non-ISI:",
+                "مقالات سمیناری:",
             ]
             for text in element_texts:
                 if any(header in text for header in section_headers):
@@ -198,19 +202,6 @@ class QUTCrawler(University):
                     professor.article_in_print.append(Article(title=record))
         except:
             pass
-        try:
-            all_elements = soup.find_all(string=lambda text: "پژوهش" in text)
-            for element in all_elements:
-                parent = element.find_parent("strong")
-                if parent:
-                    ol = parent.find_next_sibling("ol")
-                    if ol:
-                        for li in ol.find_all("li"):
-                            interest = Interest(title=li.get_text(strip=True))
-                            professor.interest.append(interest)
-        except:
-            pass
-
         # تحصیلات
         try:
             elements = soup.find_all(
@@ -248,18 +239,7 @@ class QUTCrawler(University):
                 professor.educational_records.append(EducationalRecord(title=record))
         except:
             pass
-        try:
-            all_elements = soup.find_all(string=lambda text: "پژوهش" in text)
-            for element in all_elements:
-                parent = element.find_parent("strong")
-                if parent:
-                    ol = parent.find_next_sibling("ol")
-                    if ol:
-                        for li in ol.find_all("li"):
-                            interest = Interest(title=li.get_text(strip=True))
-                            professor.interest.append(interest)
-        except:
-            pass
+
         # سوابق تدریس
         try:
             elements = soup.find_all(["p"])
@@ -284,6 +264,6 @@ class QUTCrawler(University):
                     section_data.append(text.strip())
 
             for record in section_data:
-                    professor.courses.append(Course(title=record))
+                professor.courses.append(Course(title=record))
         except:
             pass

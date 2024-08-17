@@ -63,5 +63,4 @@ crawler = QUTCrawler()
 #     print(emp)
 """Professor"""
 for professor in crawler.get_professors():
-        pprint(professor.article_in_print)
-
+    pprint(professor)
