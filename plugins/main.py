@@ -9,6 +9,7 @@ sys.path.append(current_dir)
 from crawlers.universities.chamran_ahvaz import ChamranAhvazCrawler
 from crawlers.universities.elm_sanat import ElmSanatCrawler
 from crawlers.universities.sanati_qome import QUTCrawler
+from crawlers.universities.azad.tehran_markaz import TehranMarkazCrawler
 
 
 """ چمران اهواز """
@@ -20,16 +21,16 @@ crawler = ChamranAhvazCrawler()
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-professor_links = crawler.get_professors()
-if not professor_links:
-    print("No professor links found.")
+# professor_links = crawler.get_professors()
+# if not professor_links:
+#     print("No professor links found.")
 
-for link in professor_links:
-    professor_data = crawler.get_professor_page(link)
-    if professor_data:
-        print(professor_data)
-    else:
-        print(f"Failed to get data for link: {link}")
+# for link in professor_links:
+#     professor_data = crawler.get_professor_page(link)
+#     if professor_data:
+#         print(professor_data)
+#     else:
+#         print(f"Failed to get data for link: {link}")
 
 
 """ علم و صنعت """
@@ -61,6 +62,20 @@ crawler = QUTCrawler()
 """Employee"""
 # for emp in crawler.get_employees():
 #     print(emp)
+"""Professor"""
+# for professor in crawler.get_professors():
+#     print(professor)
+
+
+
+"""آزاد تهران مرکز"""
+crawler =  TehranMarkazCrawler()
+"""College"""
+# for college in crawler.get_colleges():
+#     print(college)
+"""Employee"""
+for emp in crawler.get_employees():
+    print(emp)
 """Professor"""
 # for professor in crawler.get_professors():
 #     print(professor)
