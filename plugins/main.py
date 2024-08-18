@@ -67,9 +67,8 @@ crawler = QUTCrawler()
 #     print(professor)
 
 
-
 """آزاد تهران مرکز"""
-crawler =  TehranMarkazCrawler()
+crawler = TehranMarkazCrawler()
 """College"""
 # for college in crawler.get_colleges():
 #     print(college)
