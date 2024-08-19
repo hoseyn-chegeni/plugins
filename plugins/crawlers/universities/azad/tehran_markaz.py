@@ -5,6 +5,8 @@ from crawlers.utils import check_connection
 from schemas.employee import Employee
 from playwright.sync_api import sync_playwright
 from schemas.colleges import CollegeData
+
+
 class TehranMarkazCrawler(University):
     def __init__(self) -> None:
         self.url = "https://ctb.iau.ir"
@@ -53,20 +55,19 @@ class TehranMarkazCrawler(University):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.goto('https://ctb.iau.ir/fa')
-            page.wait_for_selector('ul#wb08a2d9f4c3791de4252d29fb27982a15')
+            page.goto("https://ctb.iau.ir/fa")
+            page.wait_for_selector("ul#wb08a2d9f4c3791de4252d29fb27982a15")
             page_content = page.content()
             browser.close()
-            soup = BeautifulSoup(page_content, 'html.parser')
-            ul_element = soup.find('ul', id='wb08a2d9f4c3791de4252d29fb27982a15')
-            links = ul_element.find_all('a')
+            soup = BeautifulSoup(page_content, "html.parser")
+            ul_element = soup.find("ul", id="wb08a2d9f4c3791de4252d29fb27982a15")
+            links = ul_element.find_all("a")
             for link in links[1:]:
-                href = link.get('href')
-                if not href.startswith('http'):
-                    href = 'https://ctb.iau.ir' + href
-                college = CollegeData(href= href, value=link.text.strip())
+                href = link.get("href")
+                if not href.startswith("http"):
+                    href = "https://ctb.iau.ir" + href
+                college = CollegeData(href=href, value=link.text.strip())
                 yield college
-
 
     def get_professors(self):
         pass
