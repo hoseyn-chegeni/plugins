@@ -70,11 +70,11 @@ crawler = QUTCrawler()
 """آزاد تهران مرکز"""
 crawler = TehranMarkazCrawler()
 """College"""
-# for college in crawler.get_colleges():
-#     print(college)
+for college in crawler.get_colleges():
+    print(college)
 """Employee"""
-for emp in crawler.get_employees():
-    print(emp)
+# for emp in crawler.get_employees():
+#     print(emp)
 """Professor"""
 # for professor in crawler.get_professors():
 #     print(professor)
