@@ -1,11 +1,10 @@
-import requests
 from bs4 import BeautifulSoup
 from crawlers.universities.base import University
-from crawlers.utils import check_connection
 from schemas.employee import Employee
 from playwright.sync_api import sync_playwright
 from schemas.colleges import CollegeData
-
+from schemas.professor import Professor
+from crawlers.universities.azad.groups import get_professors_1, get_professors_2,get_professors_3, get_professors_4, get_professors_5, get_professors_6, get_professors_7, get_professors_8, get_professors_9
 
 class TehranMarkazCrawler(University):
     def __init__(self) -> None:
@@ -69,11 +68,46 @@ class TehranMarkazCrawler(University):
                 college = CollegeData(href=href, value=link.text.strip())
                 yield college
 
-    def get_professors(self):
-        pass
 
-    def get_professor_page(self, link):
-        pass
+    def get_professors(self):
+        # ادبیات علوم انسانی -علوم قرآن و حدیث
+        for professor in get_professors_1():
+            yield professor
+
+        # ادبیات علوم انسانی -   ادیان و عرفان اسلامی
+        for professor in get_professors_2():
+            yield professor
+
+        # ادبیات علوم انسانی -   فقه و حقوق اسلامی
+        for professor in get_professors_3():
+            yield professor
+
+        # ادبیات علوم انسانی -  تاریخ و باستانشناسی
+        for professor in get_professors_4():
+            yield professor
+
+        # ادبیات علوم انسانی - فلسفه و حکمت اسلامی
+        for professor in get_professors_5():
+            yield professor
+
+        # ادبیات علوم انسانی - فلسفه غرب
+        for professor in get_professors_6():
+            yield professor      
+
+        # ادبیات علوم انسانی -  جغرافیا
+        for professor in get_professors_7():
+            yield professor   
+               
+        # ادبیات علوم انسانی -  زبان و ادبیات فارسی
+        for professor in get_professors_8():
+            yield professor
+
+        # ادبیات علوم انسانی - زبان و ادبیات عرب
+        for professor in get_professors_9():
+            yield professor
+
+    def get_professor_page(self) -> Professor:
+        return super().get_professor_page()
 
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()

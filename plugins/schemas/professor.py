@@ -174,6 +174,7 @@ class Professor(BaseModel):
     full_name: Optional[str] = None
     full_name_en: Optional[str] = None
     group: Optional[str] = None
+    college: Optional[str] = None
     h_index: Optional[str] = None
     honors: List[Honor] = []
     image: Optional[str] = None
