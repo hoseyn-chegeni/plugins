@@ -4,7 +4,21 @@ from schemas.employee import Employee
 from playwright.sync_api import sync_playwright
 from schemas.colleges import CollegeData
 from schemas.professor import Professor
-from crawlers.universities.azad.groups import get_professors_1, get_professors_2,get_professors_3, get_professors_4, get_professors_5, get_professors_6, get_professors_7, get_professors_8, get_professors_9
+from crawlers.universities.azad.groups import (
+    get_professors_1,
+    get_professors_2,
+    get_professors_3,
+    get_professors_4,
+    get_professors_5,
+    get_professors_6,
+    get_professors_7,
+    get_professors_8,
+    get_professors_9,
+    get_professors_10,
+    get_professors_11,
+    get_professors_12
+)
+
 
 class TehranMarkazCrawler(University):
     def __init__(self) -> None:
@@ -68,7 +82,6 @@ class TehranMarkazCrawler(University):
                 college = CollegeData(href=href, value=link.text.strip())
                 yield college
 
-
     def get_professors(self):
         # ادبیات علوم انسانی -علوم قرآن و حدیث
         for professor in get_professors_1():
@@ -92,12 +105,12 @@ class TehranMarkazCrawler(University):
 
         # ادبیات علوم انسانی - فلسفه غرب
         for professor in get_professors_6():
-            yield professor      
+            yield professor
 
         # ادبیات علوم انسانی -  جغرافیا
         for professor in get_professors_7():
-            yield professor   
-               
+            yield professor
+
         # ادبیات علوم انسانی -  زبان و ادبیات فارسی
         for professor in get_professors_8():
             yield professor
@@ -105,6 +118,19 @@ class TehranMarkazCrawler(University):
         # ادبیات علوم انسانی - زبان و ادبیات عرب
         for professor in get_professors_9():
             yield professor
+
+        # اقتصاد و حسابداری - گروه حسابداری
+        for professor in get_professors_10():
+            yield professor
+
+        # اقتصاد و حسابداری - گروه اقتصاد بازرگانی و حمل ونقل
+        for professor in get_professors_11():
+            yield professor
+
+        # اقتصاد و حسابداری - گروه اقتصاد نظری و صنعتی
+        for professor in get_professors_12():
+            yield professor   
+
 
     def get_professor_page(self) -> Professor:
         return super().get_professor_page()

@@ -25,14 +25,13 @@ def get_professors_1():
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
                 group="علوم قرآن و حدیث",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
         pass
+
 
 # ادبیات علوم انسانی -   ادیان و عرفان اسلامی
 def get_professors_2():
@@ -56,10 +55,8 @@ def get_professors_2():
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
                 group="ادیان و عرفان اسلامی",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
@@ -87,16 +84,13 @@ def get_professors_3():
             professor = Professor(
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
-                group= "فقه و حقوق اسلامی",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                group="فقه و حقوق اسلامی",
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
         pass
-
 
 
 # ادبیات علوم انسانی -  تاریخ و باستانشناسی
@@ -121,15 +115,12 @@ def get_professors_4():
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
                 group="تاریخ و باستانشناسی",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
         pass
-
 
 
 # ادبیات علوم انسانی -  فلسفه و حکمت اسلامی
@@ -154,15 +145,12 @@ def get_professors_5():
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
                 group="فلسفه و حکمت اسلامی",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
         pass
-
 
 
 # ادبیات علوم انسانی - فلسفه غرب
@@ -173,7 +161,7 @@ def get_professors_6():
         page.goto(
             "https://ctb.iau.ir/literature/fa/page/1920/%D9%81%D9%84%D8%B3%D9%81%D9%87-%D8%BA%D8%B1%D8%A8"
         )
-        page.wait_for_selector("table") 
+        page.wait_for_selector("table")
         content = page.content()
         browser.close()
     soup = BeautifulSoup(content, "html.parser")
@@ -187,10 +175,8 @@ def get_professors_6():
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
                 group="فلسفه غرب",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
@@ -199,6 +185,7 @@ def get_professors_6():
 
 # ادبیات علوم انسانی -  جغرافیا
 
+
 def get_professors_7():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -206,7 +193,7 @@ def get_professors_7():
         page.goto(
             "https://ctb.iau.ir/literature/fa/page/1919/%D8%AC%D8%BA%D8%B1%D8%A7%D9%81%DB%8C%D8%A7"
         )
-        page.wait_for_selector("table") 
+        page.wait_for_selector("table")
         content = page.content()
         browser.close()
     soup = BeautifulSoup(content, "html.parser")
@@ -220,10 +207,8 @@ def get_professors_7():
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
                 group="جغرافیا",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
@@ -235,11 +220,13 @@ def get_professors_8():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto("https://ctb.iau.ir/literature/fa/page/1917/%D8%B2%D8%A8%D8%A7%D9%86-%D9%88-%D8%A7%D8%AF%D8%A8%DB%8C%D8%A7%D8%AA-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C")
+        page.goto(
+            "https://ctb.iau.ir/literature/fa/page/1917/%D8%B2%D8%A8%D8%A7%D9%86-%D9%88-%D8%A7%D8%AF%D8%A8%DB%8C%D8%A7%D8%AA-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C"
+        )
         page.wait_for_selector("table")
         content = page.content()
         browser.close()
-    
+
     soup = BeautifulSoup(content, "html.parser")
     tables = soup.find_all("table")  # Find all tables on the page
 
@@ -257,7 +244,7 @@ def get_professors_8():
                     educational_records=[
                         EducationalRecord(title=cells[4].text.strip())
                     ],
-                    college="ادبیات و علوم انسانی "
+                    college="ادبیات و علوم انسانی ",
                 )
                 yield professor
     except:
@@ -272,7 +259,7 @@ def get_professors_9():
         page.goto(
             "https://ctb.iau.ir/literature/fa/page/1918/%D8%B2%D8%A8%D8%A7%D9%86-%D9%88-%D8%A7%D8%AF%D8%A8%DB%8C%D8%A7%D8%AA-%D8%B9%D8%B1%D8%A8"
         )
-        page.wait_for_selector("table") 
+        page.wait_for_selector("table")
         content = page.content()
         browser.close()
     soup = BeautifulSoup(content, "html.parser")
@@ -286,11 +273,98 @@ def get_professors_9():
                 full_name=cells[1].text.strip(),
                 rank=cells[3].text.strip(),
                 group="زبان و ادبیات عرب",
-                educational_records=[
-                    EducationalRecord(title=cells[4].text.strip())
-                ],
-                college= "ادبیات و علوم انسانی "
+                educational_records=[EducationalRecord(title=cells[4].text.strip())],
+                college="ادبیات و علوم انسانی ",
             )
             yield professor
     except:
         pass
+
+
+#  اقتصاد و حسابداری - گروه حسابداری
+def get_professors_10():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto("https://ctb.iau.ir/eco/fa/page/2005/%DA%AF%D8%B1%D9%88%D9%87-%D8%AD%D8%B3%D8%A7%D8%A8%D8%AF%D8%A7%D8%B1%DB%8C")
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody_elements = soup.find_all("tbody")
+
+    try:
+        for tbody in tbody_elements:
+            rows = tbody.find_all("tr")
+            for row in rows:
+                cells = row.find_all("td")
+                
+                if len(cells) >= 3 and cells[1].get_text(strip=True):
+                    name = cells[1].get_text(strip=True)
+                    rank = cells[2].get_text(strip=True)
+                    if name:
+                        professor = Professor(full_name=name, rank=rank)
+                        yield professor
+    except:
+        pass
+
+
+#  اقتصاد و حسابداری - گروه اقتصاد بازرگانی و حمل ونقل
+def get_professors_11():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto("https://ctb.iau.ir/eco/fa/page/2004/%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF-%D8%A8%D8%A7%D8%B2%D8%B1%DA%AF%D8%A7%D9%86%DB%8C-%D9%88-%D8%AD%D9%85%D9%84-%D9%88%D9%86%D9%82%D9%84")
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody_elements = soup.find_all("tbody")
+
+    try:
+        for tbody in tbody_elements:
+            rows = tbody.find_all("tr")
+            for row in rows:
+                cells = row.find_all("td")
+                
+                if len(cells) >= 3 and cells[1].get_text(strip=True):
+                    name = cells[1].get_text(strip=True)
+                    rank = cells[2].get_text(strip=True)
+                    if name:
+                        professor = Professor(full_name=name, rank=rank)
+                        yield professor
+    except:
+        pass
+
+
+#  اقتصاد و حسابداری - گروه اقتصاد نظری و صنعتی
+def get_professors_12():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto("https://ctb.iau.ir/eco/fa/page/2003/%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF-%D9%86%D8%B8%D8%B1%DB%8C-%D9%88-%D8%B5%D9%86%D8%B9%D8%AA%DB%8C")
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody_elements = soup.find_all("tbody")
+
+    try:
+        for tbody in tbody_elements:
+            rows = tbody.find_all("tr")
+            for row in rows:
+                cells = row.find_all("td")
+                
+                if len(cells) >= 3 and cells[1].get_text(strip=True):
+                    name = cells[1].get_text(strip=True)
+                    rank = cells[2].get_text(strip=True)
+                    if name:
+                        professor = Professor(full_name=name, rank=rank)
+                        yield professor
+    except:
+        pass
+
+
