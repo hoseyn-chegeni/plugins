@@ -118,7 +118,7 @@ class QUTCrawler(University):
 
                 professor = Professor(
                     full_name=name,
-                    college=college,
+                    group=college,
                     rank=title,
                     image=image_src,
                 )
