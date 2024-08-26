@@ -153,11 +153,11 @@ class ChamranAhvazCrawler(University):
         professor.email.append(email_img_src)
 
         # BIO
-        teacher_info_div = soup.find('div', class_='teacher-info')
+        teacher_info_div = soup.find("div", class_="teacher-info")
         if teacher_info_div:
-            p_tag = teacher_info_div.find('p', dir='RTL')
+            p_tag = teacher_info_div.find("p", dir="RTL")
             if p_tag:
-                professor.biography =  p_tag.get_text(strip=True)
+                professor.biography = p_tag.get_text(strip=True)
         # BOOKS
         try:
             book_texts = []

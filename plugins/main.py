@@ -1,6 +1,5 @@
 import sys
 import os
-from pprint import pprint
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -60,11 +59,10 @@ crawler = QUTCrawler()
 # for college in crawler.get_colleges():
 #     print(college)
 """Employee"""
-# for emp in crawler.get_employees():
-#     print(emp)
+#
 """Professor"""
-for professor in crawler.get_professors():
-    print(professor.group)
+# for professor in crawler.get_professors():
+#     print(professor.group)
 
 
 """آزاد تهران مرکز"""
@@ -76,5 +74,5 @@ crawler = TehranMarkazCrawler()
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-# for professor in crawler.get_professors():
-#     print(professor)
+for professor in crawler.get_professors():
+    print(professor)

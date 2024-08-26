@@ -286,7 +286,9 @@ def get_professors_10():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto("https://ctb.iau.ir/eco/fa/page/2005/%DA%AF%D8%B1%D9%88%D9%87-%D8%AD%D8%B3%D8%A7%D8%A8%D8%AF%D8%A7%D8%B1%DB%8C")
+        page.goto(
+            "https://ctb.iau.ir/eco/fa/page/2005/%DA%AF%D8%B1%D9%88%D9%87-%D8%AD%D8%B3%D8%A7%D8%A8%D8%AF%D8%A7%D8%B1%DB%8C"
+        )
         page.wait_for_selector("table")
         content = page.content()
         browser.close()
@@ -299,7 +301,7 @@ def get_professors_10():
             rows = tbody.find_all("tr")
             for row in rows:
                 cells = row.find_all("td")
-                
+
                 if len(cells) >= 3 and cells[1].get_text(strip=True):
                     name = cells[1].get_text(strip=True)
                     rank = cells[2].get_text(strip=True)
@@ -315,7 +317,9 @@ def get_professors_11():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto("https://ctb.iau.ir/eco/fa/page/2004/%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF-%D8%A8%D8%A7%D8%B2%D8%B1%DA%AF%D8%A7%D9%86%DB%8C-%D9%88-%D8%AD%D9%85%D9%84-%D9%88%D9%86%D9%82%D9%84")
+        page.goto(
+            "https://ctb.iau.ir/eco/fa/page/2004/%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF-%D8%A8%D8%A7%D8%B2%D8%B1%DA%AF%D8%A7%D9%86%DB%8C-%D9%88-%D8%AD%D9%85%D9%84-%D9%88%D9%86%D9%82%D9%84"
+        )
         page.wait_for_selector("table")
         content = page.content()
         browser.close()
@@ -328,7 +332,7 @@ def get_professors_11():
             rows = tbody.find_all("tr")
             for row in rows:
                 cells = row.find_all("td")
-                
+
                 if len(cells) >= 3 and cells[1].get_text(strip=True):
                     name = cells[1].get_text(strip=True)
                     rank = cells[2].get_text(strip=True)
@@ -344,7 +348,9 @@ def get_professors_12():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto("https://ctb.iau.ir/eco/fa/page/2003/%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF-%D9%86%D8%B8%D8%B1%DB%8C-%D9%88-%D8%B5%D9%86%D8%B9%D8%AA%DB%8C")
+        page.goto(
+            "https://ctb.iau.ir/eco/fa/page/2003/%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF-%D9%86%D8%B8%D8%B1%DB%8C-%D9%88-%D8%B5%D9%86%D8%B9%D8%AA%DB%8C"
+        )
         page.wait_for_selector("table")
         content = page.content()
         browser.close()
@@ -357,7 +363,7 @@ def get_professors_12():
             rows = tbody.find_all("tr")
             for row in rows:
                 cells = row.find_all("td")
-                
+
                 if len(cells) >= 3 and cells[1].get_text(strip=True):
                     name = cells[1].get_text(strip=True)
                     rank = cells[2].get_text(strip=True)
@@ -366,5 +372,3 @@ def get_professors_12():
                         yield professor
     except:
         pass
-
-

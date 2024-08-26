@@ -16,7 +16,7 @@ from crawlers.universities.azad.groups import (
     get_professors_9,
     get_professors_10,
     get_professors_11,
-    get_professors_12
+    get_professors_12,
 )
 
 
@@ -129,8 +129,7 @@ class TehranMarkazCrawler(University):
 
         # اقتصاد و حسابداری - گروه اقتصاد نظری و صنعتی
         for professor in get_professors_12():
-            yield professor   
-
+            yield professor
 
     def get_professor_page(self) -> Professor:
         return super().get_professor_page()
