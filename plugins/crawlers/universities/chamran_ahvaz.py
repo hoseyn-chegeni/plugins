@@ -151,6 +151,13 @@ class ChamranAhvazCrawler(University):
         email_img_src = email_img_tag["src"] if email_img_tag else None
         professor = Professor(full_name=clean_name, rank=rank, college=college)
         professor.email.append(email_img_src)
+
+        # BIO
+        teacher_info_div = soup.find('div', class_='teacher-info')
+        if teacher_info_div:
+            p_tag = teacher_info_div.find('p', dir='RTL')
+            if p_tag:
+                professor.biography =  p_tag.get_text(strip=True)
         # BOOKS
         try:
             book_texts = []
