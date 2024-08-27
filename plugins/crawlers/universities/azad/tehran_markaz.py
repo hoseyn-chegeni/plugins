@@ -5,18 +5,22 @@ from playwright.sync_api import sync_playwright
 from schemas.colleges import CollegeData
 from schemas.professor import Professor
 from crawlers.universities.azad.groups import (
-    get_professors_1,
-    get_professors_2,
-    get_professors_3,
-    get_professors_4,
-    get_professors_5,
-    get_professors_6,
-    get_professors_7,
-    get_professors_8,
-    get_professors_9,
-    get_professors_10,
-    get_professors_11,
-    get_professors_12,
+    get_eghtesad__hesabdari_prof,
+    get_eghtesad__nazari_sanati_prof,
+    get_eghtesad__bazargani_prof,
+    get_ensani__adian_erfan_prof,
+    get_ensani__falsafe_gharb_prof,
+    get_ensani__feghh_hoghugh_prof,
+    get_ensani__qoran_hadis_prof,
+    get_ensani__tarikh_prof,
+    get_ensani__zaban_arab_prof,
+    get_ensnai__joghrafi_prof,
+    get_ensnai__zaban_farsi_prof,
+    get_ensnai__falsafe_prof,
+    get_tarbiat_badani__olum_varzeshi_prof,
+    get_tarbiat_badani__raftar_harkati_prof,
+    get_tarbiat_badani__physiology_varzeshi_prof,
+    get_tarbiat_badani__biomechanic_prof,
 )
 
 
@@ -84,51 +88,67 @@ class TehranMarkazCrawler(University):
 
     def get_professors(self):
         # ادبیات علوم انسانی -علوم قرآن و حدیث
-        for professor in get_professors_1():
+        for professor in get_ensani__qoran_hadis_prof():
             yield professor
 
         # ادبیات علوم انسانی -   ادیان و عرفان اسلامی
-        for professor in get_professors_2():
+        for professor in get_ensani__adian_erfan_prof():
             yield professor
 
         # ادبیات علوم انسانی -   فقه و حقوق اسلامی
-        for professor in get_professors_3():
+        for professor in get_ensani__feghh_hoghugh_prof():
             yield professor
 
         # ادبیات علوم انسانی -  تاریخ و باستانشناسی
-        for professor in get_professors_4():
+        for professor in get_ensani__tarikh_prof():
             yield professor
 
         # ادبیات علوم انسانی - فلسفه و حکمت اسلامی
-        for professor in get_professors_5():
+        for professor in get_ensnai__falsafe_prof():
             yield professor
 
         # ادبیات علوم انسانی - فلسفه غرب
-        for professor in get_professors_6():
+        for professor in get_ensani__falsafe_gharb_prof():
             yield professor
 
         # ادبیات علوم انسانی -  جغرافیا
-        for professor in get_professors_7():
+        for professor in get_ensnai__joghrafi_prof():
             yield professor
 
         # ادبیات علوم انسانی -  زبان و ادبیات فارسی
-        for professor in get_professors_8():
+        for professor in get_ensnai__zaban_farsi_prof():
             yield professor
 
         # ادبیات علوم انسانی - زبان و ادبیات عرب
-        for professor in get_professors_9():
+        for professor in get_ensani__zaban_arab_prof():
             yield professor
 
         # اقتصاد و حسابداری - گروه حسابداری
-        for professor in get_professors_10():
+        for professor in get_eghtesad__hesabdari_prof():
             yield professor
 
         # اقتصاد و حسابداری - گروه اقتصاد بازرگانی و حمل ونقل
-        for professor in get_professors_11():
+        for professor in get_eghtesad__bazargani_prof():
             yield professor
 
         # اقتصاد و حسابداری - گروه اقتصاد نظری و صنعتی
-        for professor in get_professors_12():
+        for professor in get_eghtesad__nazari_sanati_prof():
+            yield professor
+
+        # تربیت بدنی - علوم ورزشی
+        for professor in get_tarbiat_badani__olum_varzeshi_prof():
+            yield professor
+
+        # تربیت بدنی -  رفتار حرکتی
+        for professor in get_tarbiat_badani__raftar_harkati_prof():
+            yield professor
+
+        # تربیت بدنی -  فیزیولوژی ورزشی
+        for professor in get_tarbiat_badani__physiology_varzeshi_prof():
+            yield professor
+
+        # تربیت بدنی -  فیزیولوژی ورزشی
+        for professor in get_tarbiat_badani__biomechanic_prof():
             yield professor
 
     def get_professor_page(self) -> Professor:

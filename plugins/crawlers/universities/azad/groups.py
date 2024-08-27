@@ -4,7 +4,7 @@ from schemas.professor import Professor, EducationalRecord
 
 
 # ادبیات علوم انسانی -علوم قرآن و حدیث
-def get_professors_1():
+def get_ensani__qoran_hadis_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -34,7 +34,7 @@ def get_professors_1():
 
 
 # ادبیات علوم انسانی -   ادیان و عرفان اسلامی
-def get_professors_2():
+def get_ensani__adian_erfan_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -64,7 +64,7 @@ def get_professors_2():
 
 
 # ادبیات علوم انسانی -   فقه و حقوق اسلامی
-def get_professors_3():
+def get_ensani__feghh_hoghugh_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -94,7 +94,7 @@ def get_professors_3():
 
 
 # ادبیات علوم انسانی -  تاریخ و باستانشناسی
-def get_professors_4():
+def get_ensani__tarikh_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -124,7 +124,7 @@ def get_professors_4():
 
 
 # ادبیات علوم انسانی -  فلسفه و حکمت اسلامی
-def get_professors_5():
+def get_ensnai__falsafe_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -154,7 +154,7 @@ def get_professors_5():
 
 
 # ادبیات علوم انسانی - فلسفه غرب
-def get_professors_6():
+def get_ensani__falsafe_gharb_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -186,7 +186,7 @@ def get_professors_6():
 # ادبیات علوم انسانی -  جغرافیا
 
 
-def get_professors_7():
+def get_ensnai__joghrafi_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -216,7 +216,7 @@ def get_professors_7():
 
 
 # ادبیات علوم انسانی -  زبان و ادبیات فارسی
-def get_professors_8():
+def get_ensnai__zaban_farsi_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -252,7 +252,7 @@ def get_professors_8():
 
 
 # ادبیات علوم انسانی -  زبان و ادبیات عرب
-def get_professors_9():
+def get_ensani__zaban_arab_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -282,7 +282,7 @@ def get_professors_9():
 
 
 #  اقتصاد و حسابداری - گروه حسابداری
-def get_professors_10():
+def get_eghtesad__hesabdari_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -306,14 +306,19 @@ def get_professors_10():
                     name = cells[1].get_text(strip=True)
                     rank = cells[2].get_text(strip=True)
                     if name:
-                        professor = Professor(full_name=name, rank=rank)
+                        professor = Professor(
+                            full_name=name,
+                            rank=rank,
+                            group="حسابداری",
+                            college="اقتصاد و حسابداری",
+                        )
                         yield professor
     except:
         pass
 
 
 #  اقتصاد و حسابداری - گروه اقتصاد بازرگانی و حمل ونقل
-def get_professors_11():
+def get_eghtesad__bazargani_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -337,14 +342,19 @@ def get_professors_11():
                     name = cells[1].get_text(strip=True)
                     rank = cells[2].get_text(strip=True)
                     if name:
-                        professor = Professor(full_name=name, rank=rank)
+                        professor = Professor(
+                            full_name=name,
+                            rank=rank,
+                            group="بازرگانی و حمل و نقل",
+                            college="اقتصاد و حسابداری",
+                        )
                         yield professor
     except:
         pass
 
 
 #  اقتصاد و حسابداری - گروه اقتصاد نظری و صنعتی
-def get_professors_12():
+def get_eghtesad__nazari_sanati_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -368,7 +378,180 @@ def get_professors_12():
                     name = cells[1].get_text(strip=True)
                     rank = cells[2].get_text(strip=True)
                     if name:
-                        professor = Professor(full_name=name, rank=rank)
+                        professor = Professor(
+                            full_name=name,
+                            rank=rank,
+                            group="اقتصاد نظری و صنعتی",
+                            college="اقتصاد و حسابداری",
+                        )
                         yield professor
+    except:
+        pass
+
+
+#   تربیت بدنی - علوم ورزشی
+def get_tarbiat_badani__olum_varzeshi_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/sport/fa/page/5380/%D9%85%D8%AF%DB%8C%D8%B1%DB%8C%D8%AA-%D9%88%D8%B1%D8%B2%D8%B4%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    table = soup.find(
+        "table", {"border": "0", "cellpadding": "1", "cellspacing": "1", "width": "289"}
+    )
+    try:
+        for row in table.find_all("tr"):
+            cells = row.find_all("td")
+            if len(cells) > 1:
+                name = cells[0].get_text(strip=True)
+                rank = cells[1].get_text(strip=True)
+                if name:
+                    professor = Professor(
+                        full_name=name,
+                        rank=rank,
+                        group="علوم ورزشی",
+                        college="تربیت بدنی",
+                    )
+                    yield professor
+    except:
+        pass
+
+
+#   تربیت بدنی -  رفتار حرکتی
+def get_tarbiat_badani__raftar_harkati_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/sport/fa/page/5379/%D8%B1%D9%81%D8%AA%D8%A7%D8%B1-%D8%AD%D8%B1%DA%A9%D8%AA%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    table = soup.find("tbody")
+    try:
+        for row in table.find_all("tr"):
+            cells = row.find_all("td")
+            if len(cells) > 1:
+                name = cells[0].get_text(strip=True)
+                rank = cells[1].get_text(strip=True)
+                if name:
+                    professor = Professor(
+                        full_name=name,
+                        rank=rank,
+                        group="رفتار حرکتی",
+                        college="تربیت بدنی",
+                    )
+                    yield professor
+    except:
+        pass
+
+
+#   تربیت بدنی -   فیزیولوژی ورزشی
+def get_tarbiat_badani__physiology_varzeshi_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/sport/fa/page/5381/%D9%81%DB%8C%D8%B2%DB%8C%D9%88%D9%84%D9%88%DA%98%DB%8C-%D9%88%D8%B1%D8%B2%D8%B4%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    table = soup.find("tbody")
+
+    try:
+        rows = table.find_all("tr")[1:]
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) > 1:
+                name = cells[0].get_text(strip=True)
+                rank = cells[1].get_text(strip=True)
+                if name:
+                    professor = Professor(
+                        full_name=name,
+                        rank=rank,
+                        group="فیزیولوژی ورزشی",
+                        college="تربیت بدنی",
+                    )
+                    yield professor
+    except:
+        pass
+
+
+#   تربیت بدنی -   فیزیولوژی ورزشی
+def get_tarbiat_badani__physiology_varzeshi_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/sport/fa/page/5381/%D9%81%DB%8C%D8%B2%DB%8C%D9%88%D9%84%D9%88%DA%98%DB%8C-%D9%88%D8%B1%D8%B2%D8%B4%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    table = soup.find("tbody")
+
+    try:
+        rows = table.find_all("tr")[1:]
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) > 1:
+                name = cells[0].get_text(strip=True)
+                rank = cells[1].get_text(strip=True)
+                if name:
+                    professor = Professor(
+                        full_name=name,
+                        rank=rank,
+                        group="فیزیولوژی ورزشی",
+                        college="تربیت بدنی",
+                    )
+                    yield professor
+    except:
+        pass
+
+
+#   تربیت بدنی -    بیومکانیک ورزشی
+def get_tarbiat_badani__biomechanic_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/sport/fa/page/5382/%D8%A8%DB%8C%D9%88%D9%85%DA%A9%D8%A7%D9%86%DB%8C%DA%A9-%D9%88%D8%B1%D8%B2%D8%B4%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    table = soup.find("tbody")
+
+    try:
+        rows = table.find_all("tr")[1:]
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) > 1:
+                name = cells[0].get_text(strip=True)
+                rank = cells[1].get_text(strip=True)
+                if name:
+                    professor = Professor(
+                        full_name=name,
+                        rank=rank,
+                        group="بیومکانیک ورزشی",
+                        college="تربیت بدنی",
+                    )
+                    yield professor
     except:
         pass
