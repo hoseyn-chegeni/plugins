@@ -555,3 +555,223 @@ def get_tarbiat_badani__biomechanic_prof():
                     yield professor
     except:
         pass
+
+
+#    هنر - نمایش
+def get_honar__namayesh_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/art/fa/page/2323/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody = soup.find('tbody')
+    if tbody:
+        rows = tbody.find_all('tr')[1:]
+        try:  
+            for row in rows:
+                cells = row.find_all("td")
+                if len(cells) >= 4: 
+                    name = cells[1].get_text(strip=True)
+                    major = cells[2].get_text(strip=True)
+                    email = cells[3].get_text(strip=True)
+
+                    professor = Professor(
+                                full_name=name,
+                                major=major,
+                                group="نمایش",
+                                college="هنر", 
+                            )
+                    professor.email.append(email)
+                    yield professor
+        except:
+            pass
+
+
+
+#    هنر -  موسیقی
+def get_honar__music_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/art/fa/page/2307/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody = soup.find('tbody')
+    if tbody:
+        rows = tbody.find_all('tr')[1:]
+        try:  
+            for row in rows:
+                cells = row.find_all("td")
+                if len(cells) >= 4: 
+                    name = cells[1].get_text(strip=True)
+                    major = cells[2].get_text(strip=True)
+                    email = cells[3].get_text(strip=True)
+
+                    professor = Professor(
+                                full_name=name,
+                                major=major,
+                                group=" موسیقی",
+                                college="هنر", 
+                            )
+                    professor.email.append(email)
+                    yield professor
+        except:
+            pass
+
+
+#    هنر -  نقاشی
+def get_honar__naghashi_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/art/fa/page/2315/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody = soup.find('tbody')
+    if tbody:
+        rows = tbody.find_all('tr')[1:]
+        try:  
+            for row in rows:
+                cells = row.find_all("td")
+                if len(cells) >= 4: 
+                    name = cells[1].get_text(strip=True)
+                    major = cells[2].get_text(strip=True)
+                    email = cells[3].get_text(strip=True)
+
+                    professor = Professor(
+                                full_name=name,
+                                major=major,
+                                group=" نقاشی",
+                                college="هنر", 
+                            )
+                    professor.email.append(email)
+                    yield professor
+        except:
+            pass
+
+
+#    هنر -  عکاسی
+def get_honar__akasi_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/art/fa/page/2275/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody = soup.find('tbody')
+    if tbody:
+        rows = tbody.find_all('tr')[1:]
+        try:  
+            for row in rows:
+                cells = row.find_all("td")
+                if len(cells) >= 4: 
+                    name = cells[1].get_text(strip=True)
+                    major = cells[2].get_text(strip=True)
+                    email = cells[3].get_text(strip=True)
+
+                    professor = Professor(
+                                full_name=name,
+                                major=major,
+                                group=" عکاسی",
+                                college="هنر", 
+                            )
+                    professor.email.append(email)
+                    yield professor
+        except:
+            pass
+
+
+#    هنر -  طراحی صنعتی
+def get_honar__tarahi_sanati_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/art/fa/page/2259/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody = soup.find('tbody')
+    if tbody:
+        rows = tbody.find_all('tr')[1:]
+        try:  
+            for row in rows:
+                cells = row.find_all("td")
+                if len(cells) >= 4: 
+                    name = cells[1].get_text(strip=True)
+                    major = cells[2].get_text(strip=True)
+                    email = cells[3].get_text(strip=True)
+
+                    professor = Professor(
+                                full_name=name,
+                                major=major,
+                                group=" طراحی صنعتی",
+                                college="هنر", 
+                            )
+                    professor.email.append(email)
+                    yield professor
+        except:
+            pass
+
+
+
+#    هنر -   پژوهش هنر
+def get_honar__pazhouhesh_honar_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/art/fa/page/2251/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    tbody = soup.find('tbody')
+    if tbody:
+        rows = tbody.find_all('tr')[1:]
+        try:  
+            for row in rows:
+                cells = row.find_all("td")
+                if len(cells) >= 4: 
+                    name = cells[1].get_text(strip=True)
+                    education = cells[2].get_text(strip=True)
+                    email = cells[3].get_text(strip=True)
+
+                    professor = Professor(
+                                full_name=name,
+                                group="پژوهش هنر",
+                                college="هنر", 
+                            )
+                    professor.email.append(email)
+                    professor.educational_records.append(education)
+                    yield professor
+        except:
+            pass
+
+

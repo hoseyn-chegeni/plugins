@@ -206,3 +206,4 @@ class Professor(BaseModel):
     transferring_knowledge: List[TransferringKnowledge] = []
     university_link: str = None
     workshops: List[Workshop] = []
+    major = Optional[str] = None
