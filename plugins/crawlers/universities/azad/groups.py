@@ -775,3 +775,31 @@ def get_honar__pazhouhesh_honar_prof():
             pass
 
 
+
+
+
+
+#   حقوق
+def get_hoghugh_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/law/fa/page/2580/%DA%AF%D8%B1%D9%88%D9%87-%D8%AD%D9%82%D9%88%D9%82"
+        )
+        page.wait_for_selector("table")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        rows = soup.find_all("tr")[1:]  # Find all <tr> elements on the page
+        for row in rows:
+            cells = row.find_all("td")  # Find all <td> elements in the row
+            if len(cells) > 0:  # Ensure there are cells to process
+                name = f'{cells[1].get_text(strip=True)} {cells[2].get_text(strip=True)}'
+                edu = cells[3].get_text(strip = True)
+                professor = Professor(full_name= name, major = edu, college= "حقوق")
+                yield professor
+    except:
+            pass

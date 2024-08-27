@@ -31,6 +31,8 @@ from crawlers.universities.azad.groups import (
     get_honar__akasi_prof,
     get_honar__tarahi_sanati_prof,
     get_honar__pazhouhesh_honar_prof,
+    #حقوق
+    get_hoghugh_prof,
     
 )
 
@@ -182,8 +184,12 @@ class TehranMarkazCrawler(University):
         # for professor in get_honar__tarahi_sanati_prof():
         #     yield professor
 
-        # هنر  -    پژوهش هنر
-        for professor in get_honar__pazhouhesh_honar_prof():
+        # # هنر  -    پژوهش هنر
+        # for professor in get_honar__pazhouhesh_honar_prof():
+        #     yield professor
+
+        #  حقوق
+        for professor in get_hoghugh_prof():
             yield professor
 
 
