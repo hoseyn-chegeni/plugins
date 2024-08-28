@@ -100,93 +100,93 @@ class TehranMarkazCrawler(University):
                 yield college
 
     def get_professors(self):
-        # # ادبیات علوم انسانی -علوم قرآن و حدیث
-        # for professor in get_ensani__qoran_hadis_prof():
-        #     yield professor
+        # ادبیات علوم انسانی -علوم قرآن و حدیث
+        for professor in get_ensani__qoran_hadis_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی -   ادیان و عرفان اسلامی
-        # for professor in get_ensani__adian_erfan_prof():
-        #     yield professor
+        # ادبیات علوم انسانی -   ادیان و عرفان اسلامی
+        for professor in get_ensani__adian_erfan_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی -   فقه و حقوق اسلامی
-        # for professor in get_ensani__feghh_hoghugh_prof():
-        #     yield professor
+        # ادبیات علوم انسانی -   فقه و حقوق اسلامی
+        for professor in get_ensani__feghh_hoghugh_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی -  تاریخ و باستانشناسی
-        # for professor in get_ensani__tarikh_prof():
-        #     yield professor
+        # ادبیات علوم انسانی -  تاریخ و باستانشناسی
+        for professor in get_ensani__tarikh_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی - فلسفه و حکمت اسلامی
-        # for professor in get_ensnai__falsafe_prof():
-        #     yield professor
+        # ادبیات علوم انسانی - فلسفه و حکمت اسلامی
+        for professor in get_ensnai__falsafe_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی - فلسفه غرب
-        # for professor in get_ensani__falsafe_gharb_prof():
-        #     yield professor
+        # ادبیات علوم انسانی - فلسفه غرب
+        for professor in get_ensani__falsafe_gharb_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی -  جغرافیا
-        # for professor in get_ensnai__joghrafi_prof():
-        #     yield professor
+        # ادبیات علوم انسانی -  جغرافیا
+        for professor in get_ensnai__joghrafi_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی -  زبان و ادبیات فارسی
-        # for professor in get_ensnai__zaban_farsi_prof():
-        #     yield professor
+        # ادبیات علوم انسانی -  زبان و ادبیات فارسی
+        for professor in get_ensnai__zaban_farsi_prof():
+            yield professor
 
-        # # ادبیات علوم انسانی - زبان و ادبیات عرب
-        # for professor in get_ensani__zaban_arab_prof():
-        #     yield professor
+        # ادبیات علوم انسانی - زبان و ادبیات عرب
+        for professor in get_ensani__zaban_arab_prof():
+            yield professor
 
-        # # اقتصاد و حسابداری - گروه حسابداری
-        # for professor in get_eghtesad__hesabdari_prof():
-        #     yield professor
+        # اقتصاد و حسابداری - گروه حسابداری
+        for professor in get_eghtesad__hesabdari_prof():
+            yield professor
 
-        # # اقتصاد و حسابداری - گروه اقتصاد بازرگانی و حمل ونقل
-        # for professor in get_eghtesad__bazargani_prof():
-        #     yield professor
+        # اقتصاد و حسابداری - گروه اقتصاد بازرگانی و حمل ونقل
+        for professor in get_eghtesad__bazargani_prof():
+            yield professor
 
-        # # اقتصاد و حسابداری - گروه اقتصاد نظری و صنعتی
-        # for professor in get_eghtesad__nazari_sanati_prof():
-        #     yield professor
+        # اقتصاد و حسابداری - گروه اقتصاد نظری و صنعتی
+        for professor in get_eghtesad__nazari_sanati_prof():
+            yield professor
 
-        # # تربیت بدنی - علوم ورزشی
-        # for professor in get_tarbiat_badani__olum_varzeshi_prof():
-        #     yield professor
+        # تربیت بدنی - علوم ورزشی
+        for professor in get_tarbiat_badani__olum_varzeshi_prof():
+            yield professor
 
-        # # تربیت بدنی -  رفتار حرکتی
-        # for professor in get_tarbiat_badani__raftar_harkati_prof():
-        #     yield professor
+        # تربیت بدنی -  رفتار حرکتی
+        for professor in get_tarbiat_badani__raftar_harkati_prof():
+            yield professor
 
-        # # تربیت بدنی -  فیزیولوژی ورزشی
-        # for professor in get_tarbiat_badani__physiology_varzeshi_prof():
-        #     yield professor
+        # تربیت بدنی -  فیزیولوژی ورزشی
+        for professor in get_tarbiat_badani__physiology_varzeshi_prof():
+            yield professor
 
-        # # تربیت بدنی -  فیزیولوژی ورزشی
-        # for professor in get_tarbiat_badani__biomechanic_prof():
-        #     yield professor
+        # تربیت بدنی -  فیزیولوژی ورزشی
+        for professor in get_tarbiat_badani__biomechanic_prof():
+            yield professor
 
-        # # هنر  -   نمایش
-        # for professor in get_honar__namayesh_prof():
-        #     yield professor
+        # هنر  -   نمایش
+        for professor in get_honar__namayesh_prof():
+            yield professor
 
-        # # هنر  -   موسیقی
-        # for professor in get_honar__music_prof():
-        #     yield professor
+        # هنر  -   موسیقی
+        for professor in get_honar__music_prof():
+            yield professor
 
-        # # هنر  -   نقاشی
-        # for professor in get_honar__naghashi_prof():
-        #     yield professor
+        # هنر  -   نقاشی
+        for professor in get_honar__naghashi_prof():
+            yield professor
 
-        # # هنر  -   عکاسی
-        # for professor in get_honar__akasi_prof():
-        #     yield professor
+        # هنر  -   عکاسی
+        for professor in get_honar__akasi_prof():
+            yield professor
 
-        # # هنر  -   طراحی صنعتی
-        # for professor in get_honar__tarahi_sanati_prof():
-        #     yield professor
+        # هنر  -   طراحی صنعتی
+        for professor in get_honar__tarahi_sanati_prof():
+            yield professor
 
-        # # هنر  -    پژوهش هنر
-        # for professor in get_honar__pazhouhesh_honar_prof():
-        #     yield professor
+        # هنر  -    پژوهش هنر
+        for professor in get_honar__pazhouhesh_honar_prof():
+            yield professor
 
         #  حقوق
         for professor in get_hoghugh_prof():

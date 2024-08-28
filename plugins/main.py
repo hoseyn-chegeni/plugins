@@ -75,4 +75,4 @@ crawler = TehranMarkazCrawler()
 #     print(emp)
 """Professor"""
 for professor in crawler.get_professors():
-    print(professor.full_name)
+    print(professor)
