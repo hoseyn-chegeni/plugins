@@ -1012,3 +1012,180 @@ def get_memari__memari_prof():
             yield professor
     except:
         pass
+
+
+
+#  فنی مهندسی - صنایع
+def get_fani_mohandesi__sanaye_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/eng/fa/page/2823/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D9%87%D9%86%D8%AF%D8%B3%DB%8C-%D8%B5%D9%86%D8%A7%DB%8C%D8%B9"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find('tbody')
+        for tr in tbody.find_all('tr')[1:]:
+            td_elements = tr.find_all('td')
+            rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
+            name = td_elements[2].text.strip() if len(td_elements) > 2 else None
+            professor = Professor(full_name=name, rank=rank, group="صنایع", college="فنی مهندسی")
+            yield professor
+    except:
+        pass
+
+
+#  فنی مهندسی - مهندسی هسته ای
+def get_fani_mohandesi__hastei_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/eng/fa/page/2829/%D9%85%D9%87%D9%86%D8%AF%D8%B3%DB%8C-%D9%87%D8%B3%D8%AA%D9%87-%D8%A7%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find('tbody')
+        for tr in tbody.find_all('tr')[1:]:
+            td_elements = tr.find_all('td')
+            rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
+            name = td_elements[2].text.strip() if len(td_elements) > 2 else None
+            professor = Professor(full_name=name, rank=rank, group="مهندسی هسته ای", college="فنی مهندسی")
+            yield professor
+    except:
+        pass
+
+
+
+#  فنی مهندسی - مهندسی برق
+def get_fani_mohandesi__bargh_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/eng/fa/page/2749/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D9%87%D9%86%D8%AF%D8%B3%DB%8C-%D8%A8%D8%B1%D9%82"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find('tbody')
+        for tr in tbody.find_all('tr')[1:]:
+            td_elements = tr.find_all('td')
+            rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
+            name = td_elements[2].text.strip() if len(td_elements) > 2 else None
+            professor = Professor(full_name=name, rank=rank, group="مهندسی برق", college="فنی مهندسی")
+            yield professor
+    except:
+        pass
+
+
+#  فنی مهندسی -  کامپیوتر
+def get_fani_mohandesi__computer_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/eng/fa/page/2765/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D9%87%D9%86%D8%AF%D8%B3%DB%8C-%DA%A9%D8%A7%D9%85%D9%BE%DB%8C%D9%88%D8%AA%D8%B1-%D9%88-%D9%81%D9%86%D8%A7%D9%88%D8%B1%DB%8C-%D8%A7%D8%B7%D9%84%D8%A7%D8%B9%D8%A7%D8%AA"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find('tbody')
+        for tr in tbody.find_all('tr')[1:]:
+            td_elements = tr.find_all('td')
+            rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
+            name = td_elements[2].text.strip() if len(td_elements) > 2 else None
+            professor = Professor(full_name=name, rank=rank, group=" مهندسی کامپیوتر و فناوری اطلاعات", college="فنی مهندسی")
+            yield professor
+    except:
+        pass
+
+
+#  فنی مهندسی -  مکانیک
+def get_fani_mohandesi__mechanic_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/eng/fa/page/2781/%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D9%87%D9%86%D8%AF%D8%B3%DB%8C-%D9%85%DA%A9%D8%A7%D9%86%DB%8C%DA%A9"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find('tbody')
+        for tr in tbody.find_all('tr')[1:]:
+            td_elements = tr.find_all('td')
+            name = td_elements[1].text.strip() if len(td_elements) > 1 else None
+            rank = td_elements[2].text.strip() if len(td_elements) > 2 else None
+            professor = Professor(full_name=name, rank=rank, group=" مهندسی مکانیک", college="فنی مهندسی")
+            yield professor
+    except:
+        pass
+
+
+#  فنی مهندسی -  مهندسی پزشکی
+def get_fani_mohandesi__pezeshki_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/eng/fa/page/2805/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D9%87%D9%86%D8%AF%D8%B3%DB%8C-%D9%BE%D8%B2%D8%B4%DA%A9%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find('tbody')
+        for tr in tbody.find_all('tr')[1:]:
+            td_elements = tr.find_all('td')
+            rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
+            name = td_elements[2].text.strip() if len(td_elements) > 2 else None
+            professor = Professor(full_name=name, rank=rank, group="مهندسی پزشکی", college="فنی مهندسی")
+            yield professor
+    except:
+        pass
+
+
+#  فنی مهندسی -  مهندسی شیمی
+def get_fani_mohandesi__chemistry_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/eng/fa/page/2789/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A6%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D9%87%D9%86%D8%AF%D8%B3%DB%8C-%D8%B4%DB%8C%D9%85%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find('tbody')
+        for tr in tbody.find_all('tr')[1:]:
+            td_elements = tr.find_all('td')
+            rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
+            name = td_elements[2].text.strip() if len(td_elements) > 2 else None
+            professor = Professor(full_name=name, rank=rank, group="مهندسی شیمی", college="فنی مهندسی")
+            yield professor
+    except:
+        pass

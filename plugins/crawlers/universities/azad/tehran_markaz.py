@@ -39,7 +39,16 @@ from crawlers.universities.azad.groups import (
     get_olum_ejtemaee__prof,
     get_olum_ejtemaee__jame_shenasi_prof,
     get_olum_ejtemaee__mardom_shenasi_prof,
+    # معماری
     get_memari__memari_prof,
+    # فنی مهندسی
+    get_fani_mohandesi__sanaye_prof,
+    get_fani_mohandesi__hastei_prof,
+    get_fani_mohandesi__bargh_prof,
+    get_fani_mohandesi__computer_prof,
+    get_fani_mohandesi__mechanic_prof,
+    get_fani_mohandesi__pezeshki_prof,
+    get_fani_mohandesi__chemistry_prof,
 )
 
 
@@ -218,9 +227,37 @@ class TehranMarkazCrawler(University):
         # for professor in get_olum_ejtemaee__mardom_shenasi_prof():
         #     yield professor
 
-        # دانشکده  معماری و شهرسازی -  شهرسازی
-        for professor in get_memari__memari_prof():
-            yield professor
+        # # دانشکده  معماری و شهرسازی -  شهرسازی
+        # for professor in get_memari__memari_prof():
+        #     yield professor
+
+        # #  فنی مهندسی - صنایع
+        # for professor in get_fani_mohandesi__sanaye_prof():
+        #     yield professor
+
+        # #  فنی مهندسی - مهندسی هسته ای
+        # for professor in get_fani_mohandesi__hastei_prof():
+        #     yield professor
+
+        # #  فنی مهندسی - مهندسی  برق
+        # for professor in get_fani_mohandesi__bargh_prof():
+        #     yield professor
+
+        # #  فنی مهندسی - مهندسی  کامپیوتر 
+        # for professor in get_fani_mohandesi__computer_prof():
+        #     yield professor
+
+        # #  فنی مهندسی - مهندسی  مکانیک 
+        # for professor in get_fani_mohandesi__mechanic_prof():
+        #     yield professor 
+
+        #  فنی مهندسی - مهندسی  پزشکی 
+        for professor in get_fani_mohandesi__pezeshki_prof():
+            yield professor 
+
+        #  فنی مهندسی - مهندسی  شیمی 
+        for professor in get_fani_mohandesi__chemistry_prof():
+            yield professor 
 
     def get_professor_page(self) -> Professor:
         return super().get_professor_page()
