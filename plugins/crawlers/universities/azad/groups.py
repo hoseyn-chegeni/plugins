@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 from schemas.professor import Professor, EducationalRecord
-
+import re
 
 # ادبیات علوم انسانی -علوم قرآن و حدیث
 def get_ensani__qoran_hadis_prof():
@@ -803,3 +803,152 @@ def get_hoghugh_prof():
                 yield professor
     except:
             pass
+
+
+#دانشکده علوم اجتماعی - فرهنگ و رسانه
+def get_olum_ejtemaee__farhang_resane_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/fcsms/fa/page/3556/%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D8%B7%D8%A7%D9%84%D8%B9%D8%A7%D8%AA-%D9%81%D8%B1%D9%87%D9%86%DA%AF%DB%8C-%D9%88-%D8%B1%D8%B3%D8%A7%D9%86%D9%87"
+        )
+        page.wait_for_selector("article")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        elements = soup.find_all('p')
+
+        for element in elements:
+            a = element.find('a')
+            if a and 'href' in a.attrs:
+                a_href = a['href']
+                if a_href.startswith('/file/download/'):
+                    text = element.get_text(strip=True)
+                    clean_text = re.sub(r'^\d+-\s*', '', text)
+                    professor = Professor(full_name= clean_text,group="فرهنگ و رسانه", college="علوم اجتماعی", )
+                    professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
+                    yield professor          
+    except:
+        pass
+
+
+#دانشکده علوم اجتماعی -   ارتباطات، روزنامه نگاری و رسانه
+def get_olum_ejtemaee__ertebatat_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/fcsms/fa/page/3555/%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D8%B1%D8%AA%D8%A8%D8%A7%D8%B7%D8%A7%D8%AA-%D8%B1%D9%88%D8%B2%D9%86%D8%A7%D9%85%D9%87-%D9%86%DA%AF%D8%A7%D8%B1%DB%8C-%D9%88-%D8%B1%D8%B3%D8%A7%D9%86%D9%87"
+        )
+        page.wait_for_selector("article")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        elements = soup.find_all('p')
+        for element in elements:
+            a = element.find('a')
+            if a and 'href' in a.attrs:
+                a_href = a['href']
+                if a_href.startswith('/file/download/'):
+                    text = element.get_text(strip=True)
+                    clean_text = re.sub(r'^\d+-\s*', '', text)
+                    professor = Professor(full_name= clean_text,group="ارتباطات، روزنامه نگاری و رسانه", college="علوم اجتماعی", )
+                    professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
+                    yield professor          
+    except:
+        pass
+
+
+
+
+#دانشکده علوم اجتماعی - گروه علوم اجتماعی
+def get_olum_ejtemaee__prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/fcsms/fa/page/3554/%DA%AF%D8%B1%D9%88%D9%87-%D8%B9%D9%84%D9%88%D9%85-%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9%DB%8C"
+        )
+        page.wait_for_selector("article")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        elements = soup.find_all('p')
+        for element in elements:
+            a = element.find('a')
+            if a and 'href' in a.attrs:
+                a_href = a['href']
+                if a_href.startswith('/file/download/'):
+                    text = element.get_text(strip=True)
+                    clean_text = re.sub(r'^\d+-\s*', '', text)
+                    professor = Professor(full_name= clean_text,group="گروه علوم اجتماعی", college="علوم اجتماعی", )
+                    professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
+                    yield professor          
+    except:
+        pass
+
+
+
+#دانشکده علوم اجتماعی - جامعه شناسی  
+def get_olum_ejtemaee__jame_shenasi_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/fcsms/fa/page/5214/%DA%AF%D8%B1%D9%88%D9%87-%D8%AC%D8%A7%D9%85%D8%B9%D9%87-%D8%B4%D9%86%D8%A7%D8%B3%DB%8C"
+        )
+        page.wait_for_selector("article")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        elements = soup.find_all('p')
+        for element in elements:
+            a = element.find('a')
+            if a and 'href' in a.attrs:
+                a_href = a['href']
+                if a_href.startswith('/file/download/'):
+                    text = element.get_text(strip=True)
+                    clean_text = re.sub(r'^\d+-\s*', '', text)
+                    professor = Professor(full_name= clean_text,group="جامعه شناسی", college="علوم اجتماعی", )
+                    professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
+                    yield professor          
+    except:
+        pass
+
+
+#دانشکده علوم اجتماعی -  مردم شناسی  
+def get_olum_ejtemaee__mardom_shenasi_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/fcsms/fa/page/5215/%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D8%B1%D8%AF%D9%85-%D8%B4%D9%86%D8%A7%D8%B3%DB%8C"
+        )
+        page.wait_for_selector("article")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        elements = soup.find_all('p')
+        for element in elements:
+            a = element.find('a')
+            if a and 'href' in a.attrs:
+                a_href = a['href']
+                if a_href.startswith('/file/download/'):
+                    text = element.get_text(strip=True)
+                    clean_text = re.sub(r'^\d+-\s*', '', text)
+                    professor = Professor(full_name= clean_text,group="مردم شناسی", college="علوم اجتماعی", )
+                    professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
+                    yield professor          
+    except:
+        pass
