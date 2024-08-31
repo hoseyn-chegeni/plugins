@@ -31,14 +31,15 @@ from crawlers.universities.azad.groups import (
     get_honar__akasi_prof,
     get_honar__tarahi_sanati_prof,
     get_honar__pazhouhesh_honar_prof,
-    #حقوق
+    # حقوق
     get_hoghugh_prof,
     # علوم اجتماعی
-    get_olum_ejtemaee__farhang_resane_prof,   
-    get_olum_ejtemaee__ertebatat_prof, 
+    get_olum_ejtemaee__farhang_resane_prof,
+    get_olum_ejtemaee__ertebatat_prof,
     get_olum_ejtemaee__prof,
     get_olum_ejtemaee__jame_shenasi_prof,
     get_olum_ejtemaee__mardom_shenasi_prof,
+    get_memari__memari_prof,
 )
 
 
@@ -209,13 +210,16 @@ class TehranMarkazCrawler(University):
         # for professor in get_olum_ejtemaee__prof():
         #     yield professor
 
-        # #دانشکده علوم اجتماعی - جامعه شناسی  
+        # #دانشکده علوم اجتماعی - جامعه شناسی
         # for professor in get_olum_ejtemaee__jame_shenasi_prof():
         #     yield professor
 
+        # #دانشکده علوم اجتماعی - مردم شناسی
+        # for professor in get_olum_ejtemaee__mardom_shenasi_prof():
+        #     yield professor
 
-        #دانشکده علوم اجتماعی - مردم شناسی  
-        for professor in get_olum_ejtemaee__mardom_shenasi_prof():
+        # دانشکده  معماری و شهرسازی -  شهرسازی
+        for professor in get_memari__memari_prof():
             yield professor
 
     def get_professor_page(self) -> Professor:

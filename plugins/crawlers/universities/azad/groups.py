@@ -3,6 +3,7 @@ from playwright.sync_api import sync_playwright
 from schemas.professor import Professor, EducationalRecord
 import re
 
+
 # ادبیات علوم انسانی -علوم قرآن و حدیث
 def get_ensani__qoran_hadis_prof():
     with sync_playwright() as p:
@@ -570,28 +571,27 @@ def get_honar__namayesh_prof():
         browser.close()
 
     soup = BeautifulSoup(content, "html.parser")
-    tbody = soup.find('tbody')
+    tbody = soup.find("tbody")
     if tbody:
-        rows = tbody.find_all('tr')[1:]
-        try:  
+        rows = tbody.find_all("tr")[1:]
+        try:
             for row in rows:
                 cells = row.find_all("td")
-                if len(cells) >= 4: 
+                if len(cells) >= 4:
                     name = cells[1].get_text(strip=True)
                     major = cells[2].get_text(strip=True)
                     email = cells[3].get_text(strip=True)
 
                     professor = Professor(
-                                full_name=name,
-                                major=major,
-                                group="نمایش",
-                                college="هنر", 
-                            )
+                        full_name=name,
+                        major=major,
+                        group="نمایش",
+                        college="هنر",
+                    )
                     professor.email.append(email)
                     yield professor
         except:
             pass
-
 
 
 #    هنر -  موسیقی
@@ -607,23 +607,23 @@ def get_honar__music_prof():
         browser.close()
 
     soup = BeautifulSoup(content, "html.parser")
-    tbody = soup.find('tbody')
+    tbody = soup.find("tbody")
     if tbody:
-        rows = tbody.find_all('tr')[1:]
-        try:  
+        rows = tbody.find_all("tr")[1:]
+        try:
             for row in rows:
                 cells = row.find_all("td")
-                if len(cells) >= 4: 
+                if len(cells) >= 4:
                     name = cells[1].get_text(strip=True)
                     major = cells[2].get_text(strip=True)
                     email = cells[3].get_text(strip=True)
 
                     professor = Professor(
-                                full_name=name,
-                                major=major,
-                                group=" موسیقی",
-                                college="هنر", 
-                            )
+                        full_name=name,
+                        major=major,
+                        group=" موسیقی",
+                        college="هنر",
+                    )
                     professor.email.append(email)
                     yield professor
         except:
@@ -643,23 +643,23 @@ def get_honar__naghashi_prof():
         browser.close()
 
     soup = BeautifulSoup(content, "html.parser")
-    tbody = soup.find('tbody')
+    tbody = soup.find("tbody")
     if tbody:
-        rows = tbody.find_all('tr')[1:]
-        try:  
+        rows = tbody.find_all("tr")[1:]
+        try:
             for row in rows:
                 cells = row.find_all("td")
-                if len(cells) >= 4: 
+                if len(cells) >= 4:
                     name = cells[1].get_text(strip=True)
                     major = cells[2].get_text(strip=True)
                     email = cells[3].get_text(strip=True)
 
                     professor = Professor(
-                                full_name=name,
-                                major=major,
-                                group=" نقاشی",
-                                college="هنر", 
-                            )
+                        full_name=name,
+                        major=major,
+                        group=" نقاشی",
+                        college="هنر",
+                    )
                     professor.email.append(email)
                     yield professor
         except:
@@ -679,23 +679,23 @@ def get_honar__akasi_prof():
         browser.close()
 
     soup = BeautifulSoup(content, "html.parser")
-    tbody = soup.find('tbody')
+    tbody = soup.find("tbody")
     if tbody:
-        rows = tbody.find_all('tr')[1:]
-        try:  
+        rows = tbody.find_all("tr")[1:]
+        try:
             for row in rows:
                 cells = row.find_all("td")
-                if len(cells) >= 4: 
+                if len(cells) >= 4:
                     name = cells[1].get_text(strip=True)
                     major = cells[2].get_text(strip=True)
                     email = cells[3].get_text(strip=True)
 
                     professor = Professor(
-                                full_name=name,
-                                major=major,
-                                group=" عکاسی",
-                                college="هنر", 
-                            )
+                        full_name=name,
+                        major=major,
+                        group=" عکاسی",
+                        college="هنر",
+                    )
                     professor.email.append(email)
                     yield professor
         except:
@@ -715,28 +715,27 @@ def get_honar__tarahi_sanati_prof():
         browser.close()
 
     soup = BeautifulSoup(content, "html.parser")
-    tbody = soup.find('tbody')
+    tbody = soup.find("tbody")
     if tbody:
-        rows = tbody.find_all('tr')[1:]
-        try:  
+        rows = tbody.find_all("tr")[1:]
+        try:
             for row in rows:
                 cells = row.find_all("td")
-                if len(cells) >= 4: 
+                if len(cells) >= 4:
                     name = cells[1].get_text(strip=True)
                     major = cells[2].get_text(strip=True)
                     email = cells[3].get_text(strip=True)
 
                     professor = Professor(
-                                full_name=name,
-                                major=major,
-                                group=" طراحی صنعتی",
-                                college="هنر", 
-                            )
+                        full_name=name,
+                        major=major,
+                        group=" طراحی صنعتی",
+                        college="هنر",
+                    )
                     professor.email.append(email)
                     yield professor
         except:
             pass
-
 
 
 #    هنر -   پژوهش هنر
@@ -752,31 +751,27 @@ def get_honar__pazhouhesh_honar_prof():
         browser.close()
 
     soup = BeautifulSoup(content, "html.parser")
-    tbody = soup.find('tbody')
+    tbody = soup.find("tbody")
     if tbody:
-        rows = tbody.find_all('tr')[1:]
-        try:  
+        rows = tbody.find_all("tr")[1:]
+        try:
             for row in rows:
                 cells = row.find_all("td")
-                if len(cells) >= 4: 
+                if len(cells) >= 4:
                     name = cells[1].get_text(strip=True)
                     education = cells[2].get_text(strip=True)
                     email = cells[3].get_text(strip=True)
 
                     professor = Professor(
-                                full_name=name,
-                                group="پژوهش هنر",
-                                college="هنر", 
-                            )
+                        full_name=name,
+                        group="پژوهش هنر",
+                        college="هنر",
+                    )
                     professor.email.append(email)
                     professor.educational_records.append(education)
                     yield professor
         except:
             pass
-
-
-
-
 
 
 #   حقوق
@@ -797,15 +792,17 @@ def get_hoghugh_prof():
         for row in rows:
             cells = row.find_all("td")  # Find all <td> elements in the row
             if len(cells) > 0:  # Ensure there are cells to process
-                name = f'{cells[1].get_text(strip=True)} {cells[2].get_text(strip=True)}'
-                edu = cells[3].get_text(strip = True)
-                professor = Professor(full_name= name, major = edu, college= "حقوق")
+                name = (
+                    f"{cells[1].get_text(strip=True)} {cells[2].get_text(strip=True)}"
+                )
+                edu = cells[3].get_text(strip=True)
+                professor = Professor(full_name=name, major=edu, college="حقوق")
                 yield professor
     except:
-            pass
+        pass
 
 
-#دانشکده علوم اجتماعی - فرهنگ و رسانه
+# دانشکده علوم اجتماعی - فرهنگ و رسانه
 def get_olum_ejtemaee__farhang_resane_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -819,23 +816,27 @@ def get_olum_ejtemaee__farhang_resane_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        elements = soup.find_all('p')
+        elements = soup.find_all("p")
 
         for element in elements:
-            a = element.find('a')
-            if a and 'href' in a.attrs:
-                a_href = a['href']
-                if a_href.startswith('/file/download/'):
+            a = element.find("a")
+            if a and "href" in a.attrs:
+                a_href = a["href"]
+                if a_href.startswith("/file/download/"):
                     text = element.get_text(strip=True)
-                    clean_text = re.sub(r'^\d+-\s*', '', text)
-                    professor = Professor(full_name= clean_text,group="فرهنگ و رسانه", college="علوم اجتماعی", )
+                    clean_text = re.sub(r"^\d+-\s*", "", text)
+                    professor = Professor(
+                        full_name=clean_text,
+                        group="فرهنگ و رسانه",
+                        college="علوم اجتماعی",
+                    )
                     professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
-                    yield professor          
+                    yield professor
     except:
         pass
 
 
-#دانشکده علوم اجتماعی -   ارتباطات، روزنامه نگاری و رسانه
+# دانشکده علوم اجتماعی -   ارتباطات، روزنامه نگاری و رسانه
 def get_olum_ejtemaee__ertebatat_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -849,24 +850,26 @@ def get_olum_ejtemaee__ertebatat_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        elements = soup.find_all('p')
+        elements = soup.find_all("p")
         for element in elements:
-            a = element.find('a')
-            if a and 'href' in a.attrs:
-                a_href = a['href']
-                if a_href.startswith('/file/download/'):
+            a = element.find("a")
+            if a and "href" in a.attrs:
+                a_href = a["href"]
+                if a_href.startswith("/file/download/"):
                     text = element.get_text(strip=True)
-                    clean_text = re.sub(r'^\d+-\s*', '', text)
-                    professor = Professor(full_name= clean_text,group="ارتباطات، روزنامه نگاری و رسانه", college="علوم اجتماعی", )
+                    clean_text = re.sub(r"^\d+-\s*", "", text)
+                    professor = Professor(
+                        full_name=clean_text,
+                        group="ارتباطات، روزنامه نگاری و رسانه",
+                        college="علوم اجتماعی",
+                    )
                     professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
-                    yield professor          
+                    yield professor
     except:
         pass
 
 
-
-
-#دانشکده علوم اجتماعی - گروه علوم اجتماعی
+# دانشکده علوم اجتماعی - گروه علوم اجتماعی
 def get_olum_ejtemaee__prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -880,23 +883,26 @@ def get_olum_ejtemaee__prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        elements = soup.find_all('p')
+        elements = soup.find_all("p")
         for element in elements:
-            a = element.find('a')
-            if a and 'href' in a.attrs:
-                a_href = a['href']
-                if a_href.startswith('/file/download/'):
+            a = element.find("a")
+            if a and "href" in a.attrs:
+                a_href = a["href"]
+                if a_href.startswith("/file/download/"):
                     text = element.get_text(strip=True)
-                    clean_text = re.sub(r'^\d+-\s*', '', text)
-                    professor = Professor(full_name= clean_text,group="گروه علوم اجتماعی", college="علوم اجتماعی", )
+                    clean_text = re.sub(r"^\d+-\s*", "", text)
+                    professor = Professor(
+                        full_name=clean_text,
+                        group="گروه علوم اجتماعی",
+                        college="علوم اجتماعی",
+                    )
                     professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
-                    yield professor          
+                    yield professor
     except:
         pass
 
 
-
-#دانشکده علوم اجتماعی - جامعه شناسی  
+# دانشکده علوم اجتماعی - جامعه شناسی
 def get_olum_ejtemaee__jame_shenasi_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -910,22 +916,26 @@ def get_olum_ejtemaee__jame_shenasi_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        elements = soup.find_all('p')
+        elements = soup.find_all("p")
         for element in elements:
-            a = element.find('a')
-            if a and 'href' in a.attrs:
-                a_href = a['href']
-                if a_href.startswith('/file/download/'):
+            a = element.find("a")
+            if a and "href" in a.attrs:
+                a_href = a["href"]
+                if a_href.startswith("/file/download/"):
                     text = element.get_text(strip=True)
-                    clean_text = re.sub(r'^\d+-\s*', '', text)
-                    professor = Professor(full_name= clean_text,group="جامعه شناسی", college="علوم اجتماعی", )
+                    clean_text = re.sub(r"^\d+-\s*", "", text)
+                    professor = Professor(
+                        full_name=clean_text,
+                        group="جامعه شناسی",
+                        college="علوم اجتماعی",
+                    )
                     professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
-                    yield professor          
+                    yield professor
     except:
         pass
 
 
-#دانشکده علوم اجتماعی -  مردم شناسی  
+# دانشکده علوم اجتماعی -  مردم شناسی
 def get_olum_ejtemaee__mardom_shenasi_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -939,16 +949,66 @@ def get_olum_ejtemaee__mardom_shenasi_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        elements = soup.find_all('p')
+        elements = soup.find_all("p")
         for element in elements:
-            a = element.find('a')
-            if a and 'href' in a.attrs:
-                a_href = a['href']
-                if a_href.startswith('/file/download/'):
+            a = element.find("a")
+            if a and "href" in a.attrs:
+                a_href = a["href"]
+                if a_href.startswith("/file/download/"):
                     text = element.get_text(strip=True)
-                    clean_text = re.sub(r'^\d+-\s*', '', text)
-                    professor = Professor(full_name= clean_text,group="مردم شناسی", college="علوم اجتماعی", )
+                    clean_text = re.sub(r"^\d+-\s*", "", text)
+                    professor = Professor(
+                        full_name=clean_text,
+                        group="مردم شناسی",
+                        college="علوم اجتماعی",
+                    )
                     professor.socials.personal_cv = "https://ctb.iau.ir/" + a_href
-                    yield professor          
+                    yield professor
+    except:
+        pass
+
+
+# دانشکده  معماری و شهرسازی -  معماری
+def get_memari__memari_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://ctb.iau.ir/architecture/fa/page/4007/%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D8%B9%D9%85%D8%A7%D8%B1%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, "html.parser")
+    try:
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr"):
+            img_tag = tr.find("img")
+            img_url = "https://ctb.iau.ir" + img_tag["src"] if img_tag else None
+            td_elements = tr.find_all("td")
+            name = (
+                td_elements[1].find("strong").text.strip()
+                if td_elements[1].find("strong")
+                else None
+            )
+            rank_text = (
+                td_elements[1].find_all("p")[1].text.strip()
+                if len(td_elements[1].find_all("p")) > 1
+                else None
+            )
+            rank = (
+                rank_text.split(":")[-1].strip()
+                if rank_text and ":" in rank_text
+                else rank_text
+            )
+            professor = Professor(
+                full_name=name,
+                rank=rank,
+                image=img_url,
+                group="معماری",
+                college="معماری و شهرسازی",
+            )
+            yield professor
     except:
         pass
