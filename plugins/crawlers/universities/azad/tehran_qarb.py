@@ -12,6 +12,7 @@ from schemas.professor import (
 )
 import re
 
+
 class TehranQarbCrawler(University):
     def __init__(self) -> None:
         self.url = ""
@@ -29,18 +30,18 @@ class TehranQarbCrawler(University):
             page_content = page.content()
             browser.close()
 
-        soup = BeautifulSoup(page_content, 'html.parser')
-        ul_elements = soup.find_all('ul', class_='dropdown-menu')
-        pattern = re.compile(r'دانشکده')
+        soup = BeautifulSoup(page_content, "html.parser")
+        ul_elements = soup.find_all("ul", class_="dropdown-menu")
+        pattern = re.compile(r"دانشکده")
         for ul in ul_elements:
-            faculties = ul.find_all('h4')
+            faculties = ul.find_all("h4")
 
             for faculty in faculties:
-                a_tag = faculty.find('a')
+                a_tag = faculty.find("a")
                 if a_tag and pattern.search(a_tag.text):
                     faculty_name = a_tag.text.strip()
-                    faculty_url ="https://wtb.iau.ir" + a_tag['href']
-                    college = CollegeData(href= faculty_url, value=faculty_name)
+                    faculty_url = "https://wtb.iau.ir" + a_tag["href"]
+                    college = CollegeData(href=faculty_url, value=faculty_name)
                     yield college
 
     def get_professors(self):
