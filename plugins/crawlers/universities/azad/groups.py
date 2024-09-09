@@ -1189,3 +1189,42 @@ def get_fani_mohandesi__chemistry_prof():
             yield professor
     except:
         pass
+
+
+
+#  زبان های خارجی  -  زبان آلمانی ، فرانسه ، ارمنی
+def get_zaban__germany_france_armenia_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto("https://ctb.iau.ir/language/fa/page/2059/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C")
+        page.wait_for_selector("tbody", timeout=5000)
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, 'html.parser')
+    tables = soup.find_all('tbody')
+    if not tables:
+        return None
+    for table in tables:
+        rows = table.find_all('tr')
+        for row in rows[1:]:
+            cells = row.find_all('td')
+            if len(cells) >= 4:
+                personal_page_tag = cells[3].find('a')
+                link = personal_page_tag['href'] if personal_page_tag else None
+                if link:
+                  yield link
+
+def get_zaban__germany_france_armenia_prof_page(link):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(link)
+        page.wait_for_selector("tbody", timeout=5000)
+        content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(content, 'html.parser')
+    title = soup.title.string if soup.title else "No title found"
+    print(title)
