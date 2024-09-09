@@ -10,7 +10,7 @@ from schemas.professor import (
     Activity,
     Honor,
 )
-
+import re
 
 class TehranQarbCrawler(University):
     def __init__(self) -> None:
@@ -20,7 +20,28 @@ class TehranQarbCrawler(University):
         pass
 
     def get_colleges(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+
+            page.goto("https://wtb.iau.ir/fa")
+            page.wait_for_selector("ul")
+            page_content = page.content()
+            browser.close()
+
+        soup = BeautifulSoup(page_content, 'html.parser')
+        ul_elements = soup.find_all('ul', class_='dropdown-menu')
+        pattern = re.compile(r'دانشکده')
+        for ul in ul_elements:
+            faculties = ul.find_all('h4')
+
+            for faculty in faculties:
+                a_tag = faculty.find('a')
+                if a_tag and pattern.search(a_tag.text):
+                    faculty_name = a_tag.text.strip()
+                    faculty_url ="https://wtb.iau.ir" + a_tag['href']
+                    college = CollegeData(href= faculty_url, value=faculty_name)
+                    yield college
 
     def get_professors(self):
         with sync_playwright() as p:
@@ -57,12 +78,10 @@ class TehranQarbCrawler(University):
         soup = BeautifulSoup(content, "html.parser")
         profile_div = soup.find("div", class_="col-xs-12 profile-sidebar")
         if profile_div:
-            # Image URL
             img_div = profile_div.find("div", class_="profile-userpic")
             if img_div and img_div.find("img"):
                 img_url = img_div.find("img")["src"]
 
-            # Name and Job Title
             name_div = profile_div.find("div", class_="profile-usertitle-name")
             job_title_div = profile_div.find("div", class_="profile-usertitle-job")
             if name_div:
@@ -70,7 +89,6 @@ class TehranQarbCrawler(University):
             if job_title_div:
                 job_title = job_title_div.get_text(strip=True)
 
-            # Google Scholar Link
             scholar_link_div = profile_div.find("a", class_="btn btn-teal")
             if scholar_link_div:
                 scholar_link = scholar_link_div["href"]
@@ -111,7 +129,6 @@ class TehranQarbCrawler(University):
                 table = employment_div.find(
                     "table", class_="table table-striped table-bordered"
                 )
-                headers = [th.text.strip() for th in table.find_all("th")]
                 rows = table.find("tbody").find_all("tr")
                 for row in rows:
                     cols = row.find_all("td")
@@ -137,7 +154,7 @@ class TehranQarbCrawler(University):
                 "menu4": "زمینه های تدریس",
             }
 
-            for menu_id, tab_name in tabs.items():
+            for menu_id in tabs.items():
                 tab_content = soup.find("div", id=menu_id)
                 if tab_content:
                     text_content = tab_content.get_text(separator="\n").strip()
