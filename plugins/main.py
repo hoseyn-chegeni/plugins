@@ -77,8 +77,6 @@ crawler = TehranMarkazCrawler()
 """Professor"""
 # crawler.get_professors()
 
-     
-
 
 """آزاد تهران غرب"""
 crawler = TehranQarbCrawler()
@@ -89,9 +87,7 @@ crawler = TehranQarbCrawler()
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-professor_links = crawler.get_professors()
-if not professor_links:
-    print("No professor links found.")
-
-for link in professor_links:
-    print(link)
+test = crawler.get_professor_page(
+    "https://wtb.iau.ir/faculty/zhaleh-ebrahiminezhad/fa#journal"
+)
+print(test)

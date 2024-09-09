@@ -51,7 +51,7 @@ from crawlers.universities.azad.groups import (
     get_fani_mohandesi__chemistry_prof,
     # زبان
     get_zaban__germany_france_armenia_prof,
-    get_zaban__germany_france_armenia_prof_page
+    get_zaban__germany_france_armenia_prof_page,
 )
 
 
@@ -246,21 +246,21 @@ class TehranMarkazCrawler(University):
         # for professor in get_fani_mohandesi__bargh_prof():
         #     yield professor
 
-        # #  فنی مهندسی - مهندسی  کامپیوتر 
+        # #  فنی مهندسی - مهندسی  کامپیوتر
         # for professor in get_fani_mohandesi__computer_prof():
         #     yield professor
 
-        # #  فنی مهندسی - مهندسی  مکانیک 
+        # #  فنی مهندسی - مهندسی  مکانیک
         # for professor in get_fani_mohandesi__mechanic_prof():
-        #     yield professor 
+        #     yield professor
 
-        # #  فنی مهندسی - مهندسی  پزشکی 
+        # #  فنی مهندسی - مهندسی  پزشکی
         # for professor in get_fani_mohandesi__pezeshki_prof():
-        #     yield professor 
+        #     yield professor
 
-        # #  فنی مهندسی - مهندسی  شیمی 
+        # #  فنی مهندسی - مهندسی  شیمی
         # for professor in get_fani_mohandesi__chemistry_prof():
-        #     yield professor 
+        #     yield professor
 
         professor_links = get_zaban__germany_france_armenia_prof()
         for link in professor_links:

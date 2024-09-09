@@ -1014,7 +1014,6 @@ def get_memari__memari_prof():
         pass
 
 
-
 #  فنی مهندسی - صنایع
 def get_fani_mohandesi__sanaye_prof():
     with sync_playwright() as p:
@@ -1029,12 +1028,14 @@ def get_fani_mohandesi__sanaye_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        tbody = soup.find('tbody')
-        for tr in tbody.find_all('tr')[1:]:
-            td_elements = tr.find_all('td')
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr")[1:]:
+            td_elements = tr.find_all("td")
             rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
             name = td_elements[2].text.strip() if len(td_elements) > 2 else None
-            professor = Professor(full_name=name, rank=rank, group="صنایع", college="فنی مهندسی")
+            professor = Professor(
+                full_name=name, rank=rank, group="صنایع", college="فنی مهندسی"
+            )
             yield professor
     except:
         pass
@@ -1054,16 +1055,17 @@ def get_fani_mohandesi__hastei_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        tbody = soup.find('tbody')
-        for tr in tbody.find_all('tr')[1:]:
-            td_elements = tr.find_all('td')
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr")[1:]:
+            td_elements = tr.find_all("td")
             rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
             name = td_elements[2].text.strip() if len(td_elements) > 2 else None
-            professor = Professor(full_name=name, rank=rank, group="مهندسی هسته ای", college="فنی مهندسی")
+            professor = Professor(
+                full_name=name, rank=rank, group="مهندسی هسته ای", college="فنی مهندسی"
+            )
             yield professor
     except:
         pass
-
 
 
 #  فنی مهندسی - مهندسی برق
@@ -1080,12 +1082,14 @@ def get_fani_mohandesi__bargh_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        tbody = soup.find('tbody')
-        for tr in tbody.find_all('tr')[1:]:
-            td_elements = tr.find_all('td')
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr")[1:]:
+            td_elements = tr.find_all("td")
             rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
             name = td_elements[2].text.strip() if len(td_elements) > 2 else None
-            professor = Professor(full_name=name, rank=rank, group="مهندسی برق", college="فنی مهندسی")
+            professor = Professor(
+                full_name=name, rank=rank, group="مهندسی برق", college="فنی مهندسی"
+            )
             yield professor
     except:
         pass
@@ -1105,12 +1109,17 @@ def get_fani_mohandesi__computer_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        tbody = soup.find('tbody')
-        for tr in tbody.find_all('tr')[1:]:
-            td_elements = tr.find_all('td')
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr")[1:]:
+            td_elements = tr.find_all("td")
             rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
             name = td_elements[2].text.strip() if len(td_elements) > 2 else None
-            professor = Professor(full_name=name, rank=rank, group=" مهندسی کامپیوتر و فناوری اطلاعات", college="فنی مهندسی")
+            professor = Professor(
+                full_name=name,
+                rank=rank,
+                group=" مهندسی کامپیوتر و فناوری اطلاعات",
+                college="فنی مهندسی",
+            )
             yield professor
     except:
         pass
@@ -1130,12 +1139,14 @@ def get_fani_mohandesi__mechanic_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        tbody = soup.find('tbody')
-        for tr in tbody.find_all('tr')[1:]:
-            td_elements = tr.find_all('td')
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr")[1:]:
+            td_elements = tr.find_all("td")
             name = td_elements[1].text.strip() if len(td_elements) > 1 else None
             rank = td_elements[2].text.strip() if len(td_elements) > 2 else None
-            professor = Professor(full_name=name, rank=rank, group=" مهندسی مکانیک", college="فنی مهندسی")
+            professor = Professor(
+                full_name=name, rank=rank, group=" مهندسی مکانیک", college="فنی مهندسی"
+            )
             yield professor
     except:
         pass
@@ -1155,12 +1166,14 @@ def get_fani_mohandesi__pezeshki_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        tbody = soup.find('tbody')
-        for tr in tbody.find_all('tr')[1:]:
-            td_elements = tr.find_all('td')
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr")[1:]:
+            td_elements = tr.find_all("td")
             rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
             name = td_elements[2].text.strip() if len(td_elements) > 2 else None
-            professor = Professor(full_name=name, rank=rank, group="مهندسی پزشکی", college="فنی مهندسی")
+            professor = Professor(
+                full_name=name, rank=rank, group="مهندسی پزشکی", college="فنی مهندسی"
+            )
             yield professor
     except:
         pass
@@ -1180,16 +1193,17 @@ def get_fani_mohandesi__chemistry_prof():
 
     soup = BeautifulSoup(content, "html.parser")
     try:
-        tbody = soup.find('tbody')
-        for tr in tbody.find_all('tr')[1:]:
-            td_elements = tr.find_all('td')
+        tbody = soup.find("tbody")
+        for tr in tbody.find_all("tr")[1:]:
+            td_elements = tr.find_all("td")
             rank = td_elements[1].text.strip() if len(td_elements) > 1 else None
             name = td_elements[2].text.strip() if len(td_elements) > 2 else None
-            professor = Professor(full_name=name, rank=rank, group="مهندسی شیمی", college="فنی مهندسی")
+            professor = Professor(
+                full_name=name, rank=rank, group="مهندسی شیمی", college="فنی مهندسی"
+            )
             yield professor
     except:
         pass
-
 
 
 #  زبان های خارجی  -  زبان آلمانی ، فرانسه ، ارمنی
@@ -1197,24 +1211,27 @@ def get_zaban__germany_france_armenia_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto("https://ctb.iau.ir/language/fa/page/2059/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C")
+        page.goto(
+            "https://ctb.iau.ir/language/fa/page/2059/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+        )
         page.wait_for_selector("tbody", timeout=5000)
         content = page.content()
         browser.close()
 
-    soup = BeautifulSoup(content, 'html.parser')
-    tables = soup.find_all('tbody')
+    soup = BeautifulSoup(content, "html.parser")
+    tables = soup.find_all("tbody")
     if not tables:
         return None
     for table in tables:
-        rows = table.find_all('tr')
+        rows = table.find_all("tr")
         for row in rows[1:]:
-            cells = row.find_all('td')
+            cells = row.find_all("td")
             if len(cells) >= 4:
-                personal_page_tag = cells[3].find('a')
-                link = personal_page_tag['href'] if personal_page_tag else None
+                personal_page_tag = cells[3].find("a")
+                link = personal_page_tag["href"] if personal_page_tag else None
                 if link:
-                  yield link
+                    yield link
+
 
 def get_zaban__germany_france_armenia_prof_page(link):
     with sync_playwright() as p:
@@ -1225,6 +1242,6 @@ def get_zaban__germany_france_armenia_prof_page(link):
         content = page.content()
         browser.close()
 
-    soup = BeautifulSoup(content, 'html.parser')
+    soup = BeautifulSoup(content, "html.parser")
     title = soup.title.string if soup.title else "No title found"
     print(title)
