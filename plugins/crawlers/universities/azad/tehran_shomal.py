@@ -59,18 +59,23 @@ class TehranShomalCrawler(University):
         main_info_div = soup.find("div", class_="block main-info")
 
         if main_info_div:
-            name = main_info_div.find("div", class_="profile-usertitle-name").get_text(strip=True)
-            rank = main_info_div.find("div", class_="profile-usertitle-job").get_text(strip=True)
+            name = main_info_div.find("div", class_="profile-usertitle-name").get_text(
+                strip=True
+            )
+            rank = main_info_div.find("div", class_="profile-usertitle-job").get_text(
+                strip=True
+            )
             faculty_div = main_info_div.find(text=lambda x: "دانشکده" in x)
             faculty = faculty_div.split(":")[1].strip() if faculty_div else "Unknown"
             group_div = main_info_div.find(text=lambda x: "گروه" in x)
             group = group_div.split(":")[1].strip() if group_div else "Unknown"
             resume_link_tag = main_info_div.find("a", class_="btn btn-teal m-t-1")
-            resume_link = resume_link_tag['href'] if resume_link_tag else None
+            resume_link = resume_link_tag["href"] if resume_link_tag else None
 
-
-            professor = Professor(full_name=name, rank=rank, group= group, faculty=faculty)
-            professor.socials.personal_cv =self.url + resume_link
+            professor = Professor(
+                full_name=name, rank=rank, group=group, faculty=faculty
+            )
+            professor.socials.personal_cv = self.url + resume_link
             return professor
 
         else:

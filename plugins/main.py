@@ -1,7 +1,6 @@
 import sys
 import os
 
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
@@ -11,6 +10,7 @@ from crawlers.universities.sanati_qome import QUTCrawler
 from crawlers.universities.azad.tehran_markaz import TehranMarkazCrawler
 from crawlers.universities.azad.tehran_qarb import TehranQarbCrawler
 from crawlers.universities.azad.tehran_shomal import TehranShomalCrawler
+
 
 """ چمران اهواز """
 crawler = ChamranAhvazCrawler()
@@ -101,4 +101,4 @@ crawler = TehranShomalCrawler()
 #     print(emp)
 """Professor"""
 test = crawler.get_professor_page("https://ntb.iau.ir/faculty/ebnetorab/fa")
-print(test.full_name, test.rank,test.faculty, test.group, test.socials.personal_cv)
+print(test.full_name, test.rank, test.faculty, test.group, test.socials.personal_cv)
