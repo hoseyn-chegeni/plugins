@@ -100,5 +100,5 @@ crawler = TehranShomalCrawler()
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-for prof in crawler.get_professors():
-    print(prof)
+test = crawler.get_professor_page("https://ntb.iau.ir/faculty/ebnetorab/fa")
+print(test.full_name, test.rank,test.faculty, test.group, test.socials.personal_cv)
