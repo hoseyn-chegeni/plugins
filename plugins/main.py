@@ -10,7 +10,7 @@ from crawlers.universities.elm_sanat import ElmSanatCrawler
 from crawlers.universities.sanati_qome import QUTCrawler
 from crawlers.universities.azad.tehran_markaz import TehranMarkazCrawler
 from crawlers.universities.azad.tehran_qarb import TehranQarbCrawler
-
+from crawlers.universities.azad.tehran_shomal import TehranShomalCrawler
 
 """ چمران اهواز """
 crawler = ChamranAhvazCrawler()
@@ -81,13 +81,24 @@ crawler = TehranMarkazCrawler()
 """آزاد تهران غرب"""
 crawler = TehranQarbCrawler()
 """College"""
-for college in crawler.get_colleges():
-    print(college)
+# for college in crawler.get_colleges():
+#     print(college)
 """Employee"""
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-# test = crawler.get_professor_page(
-#     "https://wtb.iau.ir/faculty/zhaleh-ebrahiminezhad/fa#journal"
-# )
+# test = crawler.get_professor_page("")
 # print(test)
+
+
+"""آزاد تهران غرب"""
+crawler = TehranShomalCrawler()
+"""College"""
+# for college in crawler.get_colleges():
+#     print(college)
+"""Employee"""
+# for emp in crawler.get_employees():
+#     print(emp)
+"""Professor"""
+for prof in crawler.get_professors():
+    print(prof)
