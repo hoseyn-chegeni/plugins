@@ -10,6 +10,7 @@ from crawlers.universities.sanati_qome import QUTCrawler
 from crawlers.universities.azad.tehran_markaz import TehranMarkazCrawler
 from crawlers.universities.azad.tehran_qarb import TehranQarbCrawler
 from crawlers.universities.azad.tehran_shomal import TehranShomalCrawler
+from crawlers.universities.azad.tehran_jonub import TehranJonubCrawler
 
 
 """ چمران اهواز """
@@ -94,8 +95,21 @@ crawler = TehranQarbCrawler()
 """آزاد تهران شمال"""
 crawler = TehranShomalCrawler()
 """College"""
-for college in crawler.get_colleges():
-    print(college)
+# for college in crawler.get_colleges():
+#     print(college)
+"""Employee"""
+# for emp in crawler.get_employees():
+#     print(emp)
+"""Professor"""
+# test = crawler.get_professor_page("https://ntb.iau.ir/faculty/ebnetorab/fa")
+# print(test.full_name, test.rank, test.faculty, test.group, test.socials.personal_cv)
+
+
+"""آزاد تهران جنوب"""
+crawler = TehranJonubCrawler()
+"""College"""
+# for college in crawler.get_colleges():
+#     print(college)
 """Employee"""
 # for emp in crawler.get_employees():
 #     print(emp)
