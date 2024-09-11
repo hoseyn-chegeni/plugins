@@ -3,7 +3,9 @@ from crawlers.universities.base import University
 from schemas.employee import Employee
 from playwright.sync_api import sync_playwright
 from schemas.colleges import CollegeData
-from schemas.professor import (Professor,)
+from schemas.professor import (
+    Professor,
+)
 import re
 
 

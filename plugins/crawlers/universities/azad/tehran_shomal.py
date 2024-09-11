@@ -80,9 +80,6 @@ class TehranShomalCrawler(University):
                     college = CollegeData(href=faculty_url, value=faculty_name)
                     yield college
 
-
-       
-
     def get_professors(self):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
