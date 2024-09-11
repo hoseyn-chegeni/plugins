@@ -6,6 +6,7 @@ from schemas.professor import (
     Professor,
 )
 import re
+from schemas.colleges import CollegeData
 
 
 class TehranShomalCrawler(University):
@@ -56,7 +57,31 @@ class TehranShomalCrawler(University):
             browser.close()
 
     def get_colleges(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+
+            page.goto("https://ntb.iau.ir/fa")
+            page.wait_for_selector("ul")
+            page_content = page.content()
+            browser.close()
+
+        soup = BeautifulSoup(page_content, "html.parser")
+        ul_elements = soup.find_all("ul", class_="dropdown-menu")
+        pattern = re.compile(r"دانشکده")
+        for ul in ul_elements:
+            faculties = ul.find_all("h4")
+
+            for faculty in faculties:
+                a_tag = faculty.find("a")
+                if a_tag and pattern.search(a_tag.text):
+                    faculty_name = a_tag.text.strip()
+                    faculty_url = "https://ntb.iau.ir" + a_tag["href"]
+                    college = CollegeData(href=faculty_url, value=faculty_name)
+                    yield college
+
+
+       
 
     def get_professors(self):
         with sync_playwright() as p:
