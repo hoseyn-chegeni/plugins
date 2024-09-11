@@ -2,13 +2,8 @@ from bs4 import BeautifulSoup
 from crawlers.universities.base import University
 from schemas.employee import Employee
 from playwright.sync_api import sync_playwright
-from schemas.colleges import CollegeData
 from schemas.professor import (
     Professor,
-    EducationalRecord,
-    JobExperience,
-    Activity,
-    Honor,
 )
 import re
 
@@ -31,7 +26,7 @@ class TehranShomalCrawler(University):
                 page.wait_for_selector("td")
                 page_content = page.content()
                 soup = BeautifulSoup(page_content, "html.parser")
-                tr_elements = soup.find_all("tr", class_="")  
+                tr_elements = soup.find_all("tr", class_="")
                 current_rows = []
                 for tr in tr_elements:
                     td_elements = tr.find_all("td")
@@ -45,12 +40,12 @@ class TehranShomalCrawler(University):
                             name=name,
                             internal_number=internal_number,
                             role=role,
-                            department=department
+                            department=department,
                         )
                         yield employee
-                        
+
                 if current_rows == previous_rows:
-                    break  
+                    break
 
                 previous_rows = current_rows
                 if not current_rows:
@@ -59,6 +54,7 @@ class TehranShomalCrawler(University):
                 page_num += 1
 
             browser.close()
+
     def get_colleges(self):
         pass
 
@@ -118,7 +114,6 @@ class TehranShomalCrawler(University):
             return professor
 
         else:
-            print("Main info block not found.")
             return None
 
     def get_employee_page(self) -> Employee:
