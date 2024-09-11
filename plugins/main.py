@@ -91,14 +91,14 @@ crawler = TehranQarbCrawler()
 # print(test)
 
 
-"""آزاد تهران غرب"""
+"""آزاد تهران شمال"""
 crawler = TehranShomalCrawler()
 """College"""
 # for college in crawler.get_colleges():
 #     print(college)
 """Employee"""
-# for emp in crawler.get_employees():
-#     print(emp)
+for emp in crawler.get_employees():
+    print(emp)
 """Professor"""
-test = crawler.get_professor_page("https://ntb.iau.ir/faculty/ebnetorab/fa")
-print(test.full_name, test.rank, test.faculty, test.group, test.socials.personal_cv)
+# test = crawler.get_professor_page("https://ntb.iau.ir/faculty/ebnetorab/fa")
+# print(test.full_name, test.rank, test.faculty, test.group, test.socials.personal_cv)

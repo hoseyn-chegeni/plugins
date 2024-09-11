@@ -18,7 +18,52 @@ class TehranShomalCrawler(University):
         self.url = "https://ntb.iau.ir"
 
     def get_employees(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            base_url = "https://ntb.iau.ir/fa/grid/40/%D8%AF%D9%81%D8%AA%D8%B1-%D8%AA%D9%84%D9%81%D9%86-%D8%AC%D8%AF%DB%8C%D8%AF?GridSearch%5BpageSize%5D=200&GridSearch%5Bsearch%5D=&page="
+            page_num = 1
+            previous_first_row = None
+
+            while True:
+                url = f"{base_url}{page_num}&per-page=200"
+                page.goto(url)
+                page.wait_for_selector("td")  # Ensure the page content is loaded
+                page_content = page.content()
+                soup = BeautifulSoup(page_content, "html.parser")
+
+                # Find all the relevant table rows
+                tr_elements = soup.find_all("tr", class_="")  # Match the tr elements that have no class
+
+                all_rows = []
+                # Extract data row by row
+                for tr in tr_elements:
+                    # Find all td elements within the tr
+                    td_elements = tr.find_all("td")
+                    
+                    if td_elements:  # Only proceed if td elements are found
+                        # Map the correct fields from the table, using data-title attribute
+                        name = td_elements[0].get_text(strip=True)
+                        internal_number = td_elements[1].get_text(strip=True)
+                        role = td_elements[2].get_text(strip=True)
+                        department = td_elements[3].get_text(strip=True)
+
+                        # Store the employee data
+                        employee = Employee(
+                            name=name,
+                            internal_number=internal_number,
+                            role=role,
+                            department=department
+                        )
+                        yield employee
+
+                if not tr_elements or (previous_first_row and tr_elements[0] == previous_first_row):
+                    break
+                
+                previous_first_row = tr_elements[0]  # Set the first row for comparison in the next page
+                page_num += 1
+
+            browser.close()
 
     def get_colleges(self):
         pass
