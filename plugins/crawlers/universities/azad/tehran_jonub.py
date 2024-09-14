@@ -24,7 +24,7 @@ class TehranJonubCrawler(University):
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
 
-            for page_number in range(1,50):
+            for page_number in range(1, 50):
                 url = f"https://stb.iau.ir/faculty/fa?%2Ffa=&page={page_number}&per-page=18"
                 page.goto(url)
                 page.wait_for_selector("form")
@@ -51,34 +51,40 @@ class TehranJonubCrawler(University):
             page_content = page.content()
             browser.close()
 
+        soup = BeautifulSoup(page_content, "html.parser")
+        main_info = soup.find("div", class_="block main-info")
 
-        soup = BeautifulSoup(page_content, 'html.parser')
-        main_info = soup.find('div', class_='block main-info')
-        
-        if  main_info:
+        if main_info:
 
-            img_tag = main_info.find('img', class_='img-responsive')
-            img_url ="https://stb.iau.ir/" + img_tag['src'] if img_tag else None
-            
-            name_tag = main_info.find('div', class_='profile-usertitle-name')
+            img_tag = main_info.find("img", class_="img-responsive")
+            img_url = "https://stb.iau.ir/" + img_tag["src"] if img_tag else None
+
+            name_tag = main_info.find("div", class_="profile-usertitle-name")
             name = name_tag.get_text(strip=True) if name_tag else None
-            
-            job_title_tag = main_info.find('div', class_='profile-usertitle-job')
+
+            job_title_tag = main_info.find("div", class_="profile-usertitle-job")
             job_title = job_title_tag.get_text(strip=True) if job_title_tag else None
-            
-            faculty_tag = main_info.find(text=lambda t: 'دانشکده' in t)
-            faculty = faculty_tag.split(':')[-1].strip() if faculty_tag else None
-            
-            group_tag = main_info.find(text=lambda t: 'گروه' in t)
-            group = group_tag.split(':')[-1].strip() if group_tag else None
-            
-            cv_link_tag = main_info.find('a', class_='btn btn-teal m-t-1')
-            cv_link = "https://stb.iau.ir/" + cv_link_tag['href'] if cv_link_tag else None
-        
-            professor = Professor(full_name= name, rank= job_title, faculty=faculty, image= img_url,group= group) 
+
+            faculty_tag = main_info.find(text=lambda t: "دانشکده" in t)
+            faculty = faculty_tag.split(":")[-1].strip() if faculty_tag else None
+
+            group_tag = main_info.find(text=lambda t: "گروه" in t)
+            group = group_tag.split(":")[-1].strip() if group_tag else None
+
+            cv_link_tag = main_info.find("a", class_="btn btn-teal m-t-1")
+            cv_link = (
+                "https://stb.iau.ir/" + cv_link_tag["href"] if cv_link_tag else None
+            )
+
+            professor = Professor(
+                full_name=name,
+                rank=job_title,
+                faculty=faculty,
+                image=img_url,
+                group=group,
+            )
             professor.socials.personal_cv = cv_link
             return professor
-
 
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()
