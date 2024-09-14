@@ -107,15 +107,15 @@ class TehranMarkazCrawler(University):
             page.wait_for_selector("ul#wb08a2d9f4c3791de4252d29fb27982a15")
             page_content = page.content()
             browser.close()
-            soup = BeautifulSoup(page_content, "html.parser")
-            ul_element = soup.find("ul", id="wb08a2d9f4c3791de4252d29fb27982a15")
-            links = ul_element.find_all("a")
-            for link in links[1:]:
-                href = link.get("href")
-                if not href.startswith("http"):
-                    href = "https://ctb.iau.ir" + href
-                college = CollegeData(href=href, value=link.text.strip())
-                yield college
+        soup = BeautifulSoup(page_content, "html.parser")
+        ul_element = soup.find("ul", id="wb08a2d9f4c3791de4252d29fb27982a15")
+        links = ul_element.find_all("a")
+        for link in links[1:]:
+            href = link.get("href")
+            if not href.startswith("http"):
+                href = "https://ctb.iau.ir" + href
+            college = CollegeData(href=href, value=link.text.strip())
+            yield college
 
     def get_professors(self):
         # # ادبیات علوم انسانی -علوم قرآن و حدیث
