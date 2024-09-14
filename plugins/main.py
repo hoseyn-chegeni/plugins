@@ -108,11 +108,11 @@ crawler = TehranShomalCrawler()
 """آزاد تهران جنوب"""
 crawler = TehranJonubCrawler()
 """College"""
-# for college in crawler.get_colleges():
-#     print(college)
+for college in crawler.get_colleges():
+    print(college)
 """Employee"""
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
-test = crawler.get_professor_page("https://stb.iau.ir/faculty/h-abniki/fa")
-print(test.full_name, test.rank, test.faculty, test.group, test.socials.personal_cv)
+# test = crawler.get_professor_page("https://stb.iau.ir/faculty/h-abniki/fa")
+# print(test.full_name, test.rank, test.faculty, test.group, test.socials.personal_cv)

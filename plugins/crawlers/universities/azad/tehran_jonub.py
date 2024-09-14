@@ -17,7 +17,31 @@ class TehranJonubCrawler(University):
         pass
 
     def get_colleges(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto("https://stb.iau.ir/fa")
+            page.wait_for_selector("ul")
+            page_content = page.content()
+            browser.close()
+
+        soup = BeautifulSoup(page_content, 'html.parser')
+        all_li_elements = soup.find_all('li')
+        target_dropdown = None
+        for li in all_li_elements:
+            a_tag = li.find('a')
+            if a_tag and re.search(r'دانشکده ها', a_tag.get_text()):
+                target_dropdown = li
+                break
+
+        for li in target_dropdown.find_all('li'):
+            a_tag = li.find('a')
+            if a_tag:
+                faculty_name = a_tag.get_text(strip=True)
+                faculty_link = a_tag['href']
+                college = CollegeData(href= faculty_link, value=faculty_name)
+                yield college
+
 
     def get_professors(self):
         with sync_playwright() as p:
