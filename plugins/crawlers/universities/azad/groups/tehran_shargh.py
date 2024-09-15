@@ -29,3 +29,58 @@ def get_shimi_prof():
             yield professor
 
 
+
+#علوم پایه 
+def get_oloom_paye_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto("https://etb.iau.ir/oloompayeh/fa/page/343/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D8%B9%D9%84%D9%88%D9%85-%D9%BE%D8%A7%DB%8C%D9%87")
+        page.wait_for_selector("tbody")  
+        page_content = page.content()
+        browser.close()
+    soup = BeautifulSoup(page_content, 'html.parser')
+    tbody = soup.find('tbody')
+    for row in tbody.find_all('tr'):
+        cells = row.find_all('td')
+        if len(cells) == 6: 
+            
+            name = cells[1].get_text(strip=True),
+            group = cells[2].get_text(strip=True),
+            major = cells[3].get_text(strip=True),
+            rank = cells[5].get_text(strip=True),
+            professor = Professor(full_name=name,rank=rank, group= major, group = group )
+            yield professor
+
+
+# زیست
+def get_zist_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto("https://etb.iau.ir/oloompayeh/fa/page/337/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D8%B2%DB%8C%D8%B3%D8%AA-%D8%B4%D9%86%D8%A7%D8%B3%DB%8C")
+        page.wait_for_selector("ul")
+        page_content = page.content()
+        browser.close()
+
+
+    soup = BeautifulSoup(page_content, 'html.parser')
+    table = soup.find('table', {'align': 'right', 'border': '1', 'cellpadding': '0', 'cellspacing': '0', 'dir': 'rtl'})
+    data = []
+    rows = table.find_all('tr')
+    for row in rows[1:]: 
+        cells = row.find_all('td')
+        if len(cells) == 7: 
+            
+            row_data = {
+                'row_number': cells[0].get_text(strip=True),
+                'first_name': cells[1].get_text(strip=True),
+                'last_name': cells[2].get_text(strip=True),
+                'group': cells[3].get_text(strip=True),
+                'major': cells[4].get_text(strip=True),
+                'degree': cells[5].get_text(strip=True),
+                'rank': cells[6].get_text(strip=True),
+            }
+            data.append(row_data)
+    
+    return data

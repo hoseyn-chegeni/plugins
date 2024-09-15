@@ -10,7 +10,7 @@ from schemas.professor import (
     Activity,
     Honor,
 )
-from crawlers.universities.azad.groups.tehran_shargh import get_shimi_prof
+from crawlers.universities.azad.groups.tehran_shargh import get_shimi_prof, get_oloom_paye_prof, get_zist_prof
 
 
 class TehranSharghCrawler(University):
@@ -22,11 +22,20 @@ class TehranSharghCrawler(University):
 
     def get_colleges(self):
         pass
+
+
     def get_professors(self):
         #شیمی 
         for professor in get_shimi_prof():
             yield professor  
-              
+        #علوم پایه 
+        for professor in get_oloom_paye_prof():
+            yield professor 
+        # زیست 
+        for professor in get_zist_prof():
+            yield professor 
+
+
     def get_professor_page(self) -> Professor:
         return super().get_professor_page()
 
