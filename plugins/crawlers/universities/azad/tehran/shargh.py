@@ -15,6 +15,7 @@ from crawlers.universities.azad.groups.tehran_shargh import (
     get_oloom_paye_prof,
     get_zist_prof,
     get_mohandesi_pezeshki_prof,
+    get_computer_prof,
 )
 
 
@@ -42,6 +43,13 @@ class TehranSharghCrawler(University):
         # مهندسی پزشکی
         for professor in get_mohandesi_pezeshki_prof():
             yield professor
+
+
+        #  کامپیوتر
+        for professor in get_computer_prof():
+            yield professor
+
+
 
     def get_professor_page(self) -> Professor:
         return super().get_professor_page()
