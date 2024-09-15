@@ -7,11 +7,11 @@ sys.path.append(current_dir)
 from crawlers.universities.chamran_ahvaz import ChamranAhvazCrawler
 from crawlers.universities.elm_sanat import ElmSanatCrawler
 from crawlers.universities.sanati_qome import QUTCrawler
-from plugins.crawlers.universities.azad.tehran.markaz import TehranMarkazCrawler
-from plugins.crawlers.universities.azad.tehran.qarb import TehranQarbCrawler
-from plugins.crawlers.universities.azad.tehran.shomal import TehranShomalCrawler
-from plugins.crawlers.universities.azad.tehran.jonub import TehranJonubCrawler
-
+from crawlers.universities.azad.tehran.markaz import TehranMarkazCrawler
+from crawlers.universities.azad.tehran.qarb import TehranQarbCrawler
+from crawlers.universities.azad.tehran.shomal import TehranShomalCrawler
+from crawlers.universities.azad.tehran.jonub import TehranJonubCrawler
+from crawlers.universities.azad.tehran.shargh import TehranSharghCrawler
 
 """ چمران اهواز """
 crawler = ChamranAhvazCrawler()
@@ -108,11 +108,24 @@ crawler = TehranShomalCrawler()
 """آزاد تهران جنوب"""
 crawler = TehranJonubCrawler()
 """College"""
-for college in crawler.get_colleges():
-    print(college)
+# for college in crawler.get_colleges():
+#     print(college)
 """Employee"""
 # for emp in crawler.get_employees():
 #     print(emp)
 """Professor"""
 # test = crawler.get_professor_page("https://stb.iau.ir/faculty/h-abniki/fa")
 # print(test.full_name, test.rank, test.faculty, test.group, test.socials.personal_cv)
+
+
+"""آزاد تهران شرق"""
+crawler = TehranSharghCrawler()
+"""College"""
+# for college in crawler.get_colleges():
+#     print(college)
+"""Employee"""
+# for emp in crawler.get_employees():
+#     print(emp)
+"""Professor"""
+for i in crawler.get_professors():
+    print(i)

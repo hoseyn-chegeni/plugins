@@ -10,12 +10,12 @@ from schemas.professor import (
     Activity,
     Honor,
 )
-import re
+from crawlers.universities.azad.groups.tehran_shargh import get_shimi_prof
 
 
 class TehranSharghCrawler(University):
     def __init__(self) -> None:
-        self.url = ""
+        self.url = "https://etb.iau.ir/"
 
     def get_employees(self):
         pass
@@ -23,8 +23,13 @@ class TehranSharghCrawler(University):
     def get_colleges(self):
         pass
     def get_professors(self):
-        pass
-    def get_professor_page(self, link) -> Professor:
-        pass
+        #شیمی 
+        for professor in get_shimi_prof():
+            yield professor  
+              
+    def get_professor_page(self) -> Professor:
+        return super().get_professor_page()
+
+
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()
