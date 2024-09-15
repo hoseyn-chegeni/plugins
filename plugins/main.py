@@ -7,10 +7,10 @@ sys.path.append(current_dir)
 from crawlers.universities.chamran_ahvaz import ChamranAhvazCrawler
 from crawlers.universities.elm_sanat import ElmSanatCrawler
 from crawlers.universities.sanati_qome import QUTCrawler
-from crawlers.universities.azad.tehran_markaz import TehranMarkazCrawler
-from crawlers.universities.azad.tehran_qarb import TehranQarbCrawler
-from crawlers.universities.azad.tehran_shomal import TehranShomalCrawler
-from crawlers.universities.azad.tehran_jonub import TehranJonubCrawler
+from plugins.crawlers.universities.azad.tehran.markaz import TehranMarkazCrawler
+from plugins.crawlers.universities.azad.tehran.qarb import TehranQarbCrawler
+from plugins.crawlers.universities.azad.tehran.shomal import TehranShomalCrawler
+from plugins.crawlers.universities.azad.tehran.jonub import TehranJonubCrawler
 
 
 """ چمران اهواز """
