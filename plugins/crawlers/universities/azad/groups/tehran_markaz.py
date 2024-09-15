@@ -5,6 +5,7 @@ import re
 
 """آزاد تهران مرکز"""
 
+
 # ادبیات علوم انسانی -علوم قرآن و حدیث
 def get_ensani__qoran_hadis_prof():
     with sync_playwright() as p:
@@ -1246,4 +1247,3 @@ def get_zaban__germany_france_armenia_prof_page(link):
     soup = BeautifulSoup(content, "html.parser")
     title = soup.title.string if soup.title else "No title found"
     print(title)
-
