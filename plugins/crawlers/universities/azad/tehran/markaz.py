@@ -4,7 +4,7 @@ from schemas.employee import Employee
 from playwright.sync_api import sync_playwright
 from schemas.colleges import CollegeData
 from schemas.professor import Professor
-from crawlers.universities.azad.groups import (
+from plugins.crawlers.universities.azad.groups.tehran_markaz import (
     # اقتصاد
     get_eghtesad__hesabdari_prof,
     get_eghtesad__nazari_sanati_prof,
