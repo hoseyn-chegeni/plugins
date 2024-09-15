@@ -1,15 +1,6 @@
-from bs4 import BeautifulSoup
 from crawlers.universities.base import University
 from schemas.employee import Employee
-from playwright.sync_api import sync_playwright
-from schemas.colleges import CollegeData
-from schemas.professor import (
-    Professor,
-    EducationalRecord,
-    JobExperience,
-    Activity,
-    Honor,
-)
+
 from crawlers.universities.azad.groups.tehran_shargh import (
     get_shimi_prof,
     get_oloom_paye_prof,
@@ -17,6 +8,7 @@ from crawlers.universities.azad.groups.tehran_shargh import (
     get_mohandesi_pezeshki_prof,
     get_computer_prof,
     get_omran_prof,
+    get_hava_faza_prof
 )
 
 
@@ -54,9 +46,12 @@ class TehranSharghCrawler(University):
         for professor in get_omran_prof():
             yield professor
 
+        #  مهندسی مکانیک و مهندسی هوافضا  
+        for professor in get_hava_faza_prof():
+            yield professor
 
 
-    def get_professor_page(self) -> Professor:
+    def get_professor_page(self):
         return super().get_professor_page()
 
     def get_employee_page(self) -> Employee:
