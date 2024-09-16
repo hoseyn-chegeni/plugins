@@ -13,6 +13,9 @@ from crawlers.universities.azad.groups.tehran_shargh import (
     get_oloom_ejtemaee_prof,
     get_tarbiat_badain_prof,
     get_hesabdari_prof,
+    get_hoquq_prof,
+    get_adabiat_prof,
+    get_maaref_prof,
 )
 
 
@@ -69,7 +72,17 @@ class TehranSharghCrawler(University):
         for professor in get_hesabdari_prof():
             yield professor
 
+        # حقوق
+        for professor in get_hoquq_prof():
+            yield professor
 
+        # معارف
+        for professor in get_maaref_prof():
+            yield professor
+
+        # ادبیات
+        for professor in get_adabiat_prof():
+            yield professor
 
     def get_professor_page(self):
         return super().get_professor_page()

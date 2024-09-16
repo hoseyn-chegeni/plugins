@@ -51,11 +51,11 @@ def get_oloom_paye_prof():
         cells = row.find_all("td")
         if len(cells) == 6:
 
-            name = (cells[1].get_text(strip=True),)
-            group = (cells[2].get_text(strip=True),)
-            major = (cells[3].get_text(strip=True),)
-            rank = (cells[5].get_text(strip=True),)
-            professor = Professor(full_name=name, rank=rank, group=major, group=group)
+            name = cells[1].get_text(strip=True)
+            group = cells[2].get_text(strip=True)
+            major = cells[3].get_text(strip=True)
+            rank = cells[5].get_text(strip=True)
+            professor = Professor(full_name=name, rank=rank, major=major, group=group)
             yield professor
 
 
@@ -86,11 +86,11 @@ def get_zist_prof():
     for row in rows[1:]:
         cells = row.find_all("td")
         if len(cells) == 7:
-            first_name = (cells[1].get_text(strip=True),)
-            last_name = (cells[2].get_text(strip=True),)
-            faculty = (cells[3].get_text(strip=True),)
-            group = (cells[4].get_text(strip=True),)
-            rank = (cells[6].get_text(strip=True),)
+            first_name = cells[1].get_text(strip=True)
+            last_name = cells[2].get_text(strip=True)
+            faculty = cells[3].get_text(strip=True)
+            group = cells[4].get_text(strip=True)
+            rank = cells[6].get_text(strip=True)
 
             professor = Professor(
                 full_name=first_name + last_name,
@@ -118,11 +118,11 @@ def get_mohandesi_pezeshki_prof():
         cells = row.find_all("td")
         if len(cells) == 6:
 
-            name = (cells[1].get_text(strip=True),)
-            group = (cells[2].get_text(strip=True),)
-            major = (cells[3].get_text(strip=True),)
-            rank = (cells[5].get_text(strip=True),)
-            professor = Professor(full_name=name, rank=rank, group=major, group=group)
+            name = cells[1].get_text(strip=True)
+            group = cells[2].get_text(strip=True)
+            major = cells[3].get_text(strip=True)
+            rank = cells[5].get_text(strip=True)
+            professor = Professor(full_name=name, rank=rank, major=major, group=group)
             yield professor
 
 
@@ -143,11 +143,11 @@ def get_computer_prof():
         cells = row.find_all("td")
         if len(cells) == 6:
 
-            name = (cells[1].get_text(strip=True),)
-            group = (cells[2].get_text(strip=True),)
-            major = (cells[3].get_text(strip=True),)
-            rank = (cells[5].get_text(strip=True),)
-            professor = Professor(full_name=name, rank=rank, group=major, group=group)
+            name = cells[1].get_text(strip=True)
+            group = cells[2].get_text(strip=True)
+            major = cells[3].get_text(strip=True)
+            rank = cells[5].get_text(strip=True)
+            professor = Professor(full_name=name, rank=rank, major=major, group=group)
             yield professor
 
 
@@ -168,11 +168,11 @@ def get_omran_prof():
         cells = row.find_all("td")
         if len(cells) == 6:
 
-            name = (cells[1].get_text(strip=True),)
-            group = (cells[2].get_text(strip=True),)
-            major = (cells[3].get_text(strip=True),)
-            rank = (cells[5].get_text(strip=True),)
-            professor = Professor(full_name=name, rank=rank, group=major, group=group)
+            name = cells[1].get_text(strip=True)
+            group = cells[2].get_text(strip=True)
+            major = cells[3].get_text(strip=True)
+            rank = cells[5].get_text(strip=True)
+            professor = Professor(full_name=name, rank=rank, major=major, group=group)
             yield professor
 
 
@@ -193,11 +193,11 @@ def get_hava_faza_prof():
         cells = row.find_all("td")
         if len(cells) == 6:
 
-            name = (cells[1].get_text(strip=True),)
-            group = (cells[2].get_text(strip=True),)
-            major = (cells[3].get_text(strip=True),)
-            rank = (cells[5].get_text(strip=True),)
-            professor = Professor(full_name=name, rank=rank, group=major, group=group)
+            name = cells[1].get_text(strip=True)
+            group = cells[2].get_text(strip=True)
+            major = cells[3].get_text(strip=True)
+            rank = cells[5].get_text(strip=True)
+            professor = Professor(full_name=name, rank=rank, major=major, group=group)
             yield professor
 
 
@@ -315,3 +315,88 @@ def get_hesabdari_prof():
         professor = Professor(
             full_name=first_name + " " + last_name, group=group, major=major, rank=rank
         )
+        yield professor
+
+
+# حقوق
+def get_hoquq_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://etb.iau.ir/oloomensani/fa/page/431/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D8%AD%D9%82%D9%88%D9%82"
+        )
+        page.wait_for_selector("tbody")
+        page_content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(page_content, "html.parser")
+    tbody = soup.find("tbody")
+    rows = tbody.find_all("tr")
+    for row in rows[1:]:
+        cells = row.find_all("td")
+        first_name = cells[1].get_text(strip=True)
+        last_name = cells[2].get_text(strip=True)
+        group = cells[3].get_text(strip=True)
+        major = cells[4].get_text(strip=True)
+        rank = cells[6].get_text(strip=True)
+        professor = Professor(
+            full_name=first_name + " " + last_name, group=group, major=major, rank=rank
+        )
+        yield professor
+
+
+# ادبیات
+def get_adabiat_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://etb.iau.ir/oloomensani/fa/page/445/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D8%A7%D8%AF%D8%A8%DB%8C%D8%A7%D8%AA-%D9%81%D8%A7%D8%B1%D8%B3%DB%8C-%D9%88-%D8%AF%D8%B1%D9%88%D8%B3-%D8%B9%D9%85%D9%88%D9%85%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        page_content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(page_content, "html.parser")
+    tbody = soup.find("tbody")
+    rows = tbody.find_all("tr")
+    for row in rows[1:]:
+        cells = row.find_all("td")
+        first_name = cells[1].get_text(strip=True)
+        last_name = cells[2].get_text(strip=True)
+        group = cells[3].get_text(strip=True)
+        major = cells[4].get_text(strip=True)
+        rank = cells[6].get_text(strip=True)
+        professor = Professor(
+            full_name=first_name + " " + last_name, group=group, major=major, rank=rank
+        )
+        yield professor
+
+
+
+# معارف اسلامی
+def get_maaref_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://etb.iau.ir/oloomensani/fa/page/452/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D8%B9%D8%A7%D8%B1%D9%81-%D8%A7%D8%B3%D9%84%D8%A7%D9%85%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        page_content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(page_content, "html.parser")
+    tbody = soup.find("tbody")
+    rows = tbody.find_all("tr")
+    for row in rows[1:]:
+        cells = row.find_all("td")
+        first_name = cells[1].get_text(strip=True)
+        last_name = cells[2].get_text(strip=True)
+        major = cells[3].get_text(strip=True)
+        rank = cells[5].get_text(strip=True)
+        professor = Professor(
+            full_name=first_name + " " + last_name, major=major, rank=rank
+        )
+        yield professor
