@@ -10,7 +10,8 @@ from crawlers.universities.azad.groups.tehran_shargh import (
     get_omran_prof,
     get_hava_faza_prof,
     get_modiriat_prof,
-    get_oloom_ejtemaee_prof
+    get_oloom_ejtemaee_prof,
+    get_tarbiat_badain_prof,
 )
 
 
@@ -39,19 +40,18 @@ class TehranSharghCrawler(University):
         for professor in get_mohandesi_pezeshki_prof():
             yield professor
 
-
         # کامپیوتر
         for professor in get_computer_prof():
             yield professor
 
-        # مهندسی عمران 
+        # مهندسی عمران
         for professor in get_omran_prof():
             yield professor
 
-        #  مهندسی مکانیک و مهندسی هوافضا  
+        #  مهندسی مکانیک و مهندسی هوافضا
         for professor in get_hava_faza_prof():
             yield professor
-                 
+
         # مدیریت
         for professor in get_modiriat_prof():
             yield professor
@@ -59,6 +59,11 @@ class TehranSharghCrawler(University):
         # علوم اجتماعی
         for professor in get_oloom_ejtemaee_prof():
             yield professor
+
+        # تربیت بدنی
+        for professor in get_tarbiat_badain_prof():
+            yield professor
+
 
     def get_professor_page(self):
         return super().get_professor_page()

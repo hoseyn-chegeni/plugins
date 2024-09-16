@@ -4,6 +4,8 @@ from schemas.professor import Professor
 
 
 """ازاد تهران شرق"""
+
+
 # شیمی
 def get_shimi_prof():
     with sync_playwright() as p:
@@ -149,8 +151,7 @@ def get_computer_prof():
             yield professor
 
 
-
-#   مهندسی عمران 
+#   مهندسی عمران
 def get_omran_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -175,7 +176,7 @@ def get_omran_prof():
             yield professor
 
 
-# مهندسی مکانیک و مهندسی هوافضا 
+# مهندسی مکانیک و مهندسی هوافضا
 def get_hava_faza_prof():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -200,7 +201,6 @@ def get_hava_faza_prof():
             yield professor
 
 
-
 # مدیریت
 def get_modiriat_prof():
     with sync_playwright() as p:
@@ -223,8 +223,11 @@ def get_modiriat_prof():
             last_name = cells[3].get_text(strip=True)
             group = cells[2].get_text(strip=True)
             rank = cells[0].get_text(strip=True)
-            professor = Professor(full_name=first_name + ' ' + last_name, group=group, rank= rank)
+            professor = Professor(
+                full_name=first_name + " " + last_name, group=group, rank=rank
+            )
             yield professor
+
 
 # علوم اجتماعی
 def get_oloom_ejtemaee_prof():
@@ -247,5 +250,35 @@ def get_oloom_ejtemaee_prof():
             first_name = cells[1].get_text(strip=True)
             last_name = cells[2].get_text(strip=True)
             rank = cells[4].get_text(strip=True)
-            professor = Professor(full_name=first_name + ' ' + last_name, rank=rank, group= "علوم ارتباطات و علوم اجتماعی")
+            professor = Professor(
+                full_name=first_name + " " + last_name,
+                rank=rank,
+                group="علوم ارتباطات و علوم اجتماعی",
+            )
+            yield professor
+
+# تربیت بدنی
+def get_tarbiat_badain_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://etb.iau.ir/oloomensani/fa/page/413/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A3%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D8%B9%D9%84%D9%88%D9%85-%D9%88%D8%B1%D8%B2%D8%B4%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        page_content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(page_content, "html.parser")
+    tbody = soup.find("tbody")
+    rows = tbody.find_all("tr")
+    for row in rows[1:]:
+        cells = row.find_all("td")
+        if len(cells) == 7:
+            first_name = cells[1].get_text(strip=True)
+            last_name = cells[2].get_text(strip=True)
+            group = cells[3].get_text(strip=True)
+            major = cells[4].get_text(strip=True)
+            rank = cells[6].get_text(strip=True)
+            professor = Professor(full_name= first_name + ' ' + last_name, group=group, major=major, rank=rank)
             yield professor
