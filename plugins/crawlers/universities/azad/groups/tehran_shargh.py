@@ -400,3 +400,57 @@ def get_maaref_prof():
             full_name=first_name + " " + last_name, major=major, rank=rank
         )
         yield professor
+
+#  هنر
+def get_honar_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://etb.iau.ir/honar/fa/page/466/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%87%D9%86%D8%B1"
+        )
+        page.wait_for_selector("tbody")
+        page_content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(page_content, "html.parser")
+    tbody = soup.find("tbody")
+    rows = tbody.find_all("tr")
+    for row in rows[1:]:
+        cells = row.find_all("td")
+        first_name = cells[1].get_text(strip=True)
+        last_name = cells[2].get_text(strip=True)
+        group = cells[4].get_text(strip=True)
+        major = cells[4].get_text(strip=True)
+        rank = cells[6].get_text(strip=True)
+        professor = Professor(
+            full_name=first_name + " " + last_name, major=major, rank=rank, group=group)
+        
+        yield professor
+
+#  معماری
+def get_memari_prof():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto(
+            "https://etb.iau.ir/honar/fa/page/473/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C-%DA%AF%D8%B1%D9%88%D9%87-%D9%85%D8%B9%D9%85%D8%A7%D8%B1%DB%8C"
+        )
+        page.wait_for_selector("tbody")
+        page_content = page.content()
+        browser.close()
+
+    soup = BeautifulSoup(page_content, "html.parser")
+    tbody = soup.find("tbody")
+    rows = tbody.find_all("tr")
+    for row in rows[1:]:
+        cells = row.find_all("td")
+        first_name = cells[1].get_text(strip=True)
+        last_name = cells[2].get_text(strip=True)
+        group = cells[4].get_text(strip=True)
+        major = cells[4].get_text(strip=True)
+        rank = cells[6].get_text(strip=True)
+        professor = Professor(
+            full_name=first_name + " " + last_name, major=major, rank=rank, group=group)
+        
+        yield professor
