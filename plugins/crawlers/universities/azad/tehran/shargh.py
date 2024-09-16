@@ -12,6 +12,7 @@ from crawlers.universities.azad.groups.tehran_shargh import (
     get_modiriat_prof,
     get_oloom_ejtemaee_prof,
     get_tarbiat_badain_prof,
+    get_hesabdari_prof,
 )
 
 
@@ -63,6 +64,11 @@ class TehranSharghCrawler(University):
         # تربیت بدنی
         for professor in get_tarbiat_badain_prof():
             yield professor
+
+        # حسابداری
+        for professor in get_hesabdari_prof():
+            yield professor
+
 
 
     def get_professor_page(self):
