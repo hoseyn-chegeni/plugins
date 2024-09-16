@@ -8,7 +8,8 @@ from crawlers.universities.azad.groups.tehran_shargh import (
     get_mohandesi_pezeshki_prof,
     get_computer_prof,
     get_omran_prof,
-    get_hava_faza_prof
+    get_hava_faza_prof,
+    get_modiriat_prof,
 )
 
 
@@ -49,6 +50,11 @@ class TehranSharghCrawler(University):
         #  مهندسی مکانیک و مهندسی هوافضا  
         for professor in get_hava_faza_prof():
             yield professor
+                 
+        # مدیریت
+        for professor in get_modiriat_prof():
+            yield professor
+
 
 
     def get_professor_page(self):
