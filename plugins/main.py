@@ -12,6 +12,8 @@ from crawlers.universities.azad.tehran.qarb import TehranQarbCrawler
 from crawlers.universities.azad.tehran.shomal import TehranShomalCrawler
 from crawlers.universities.azad.tehran.jonub import TehranJonubCrawler
 from crawlers.universities.azad.tehran.shargh import TehranSharghCrawler
+from crawlers.universities.azad.tehran.qods import QodsCrawler
+
 
 """ چمران اهواز """
 crawler = ChamranAhvazCrawler()
@@ -120,6 +122,20 @@ crawler = TehranJonubCrawler()
 
 """آزاد تهران شرق"""
 crawler = TehranSharghCrawler()
+"""College"""
+# for college in crawler.get_colleges():
+#     print(college)
+"""Employee"""
+# for emp in crawler.get_employees():
+#     print(emp)
+"""Professor"""
+# for i in crawler.get_professors():
+#     print(i)
+
+
+
+"""آزاد  شهر قدس"""
+crawler = QodsCrawler()
 """College"""
 # for college in crawler.get_colleges():
 #     print(college)
