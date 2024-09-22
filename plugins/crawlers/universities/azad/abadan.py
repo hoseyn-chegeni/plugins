@@ -14,7 +14,33 @@ class AbadanCrawler(University):
         self.url = "https://abadan.iau.ir/"
 
     def get_employees(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto("https://abadan.iau.ir/fa/grid/4/%D8%B1%D8%A7%D9%87%D9%86%D9%85%D8%A7%DB%8C-%D8%AC%D8%A7%D9%85%D8%B9-%D8%AA%D9%84%D9%81%D9%86-%D9%87%D8%A7%DB%8C-%D9%88%D8%A7%D8%AD%D8%AF?GridSearch%5BpageSize%5D=200&GridSearch%5Bsearch%5D=")
+            page.wait_for_selector('table.table-striped')
+            page_content = page.content()
+            browser.close()
+
+
+        soup = BeautifulSoup(page_content, "html.parser")
+        table = soup.find('table', class_='table-striped')
+        table_data = []
+        rows = table.find('tbody').find_all('tr')
+        for row in rows:
+
+            columns = row.find_all('td')
+
+            first_name = columns[1].get_text(strip=True)
+            last_name = columns[2].get_text(strip=True)
+            role = columns[3].get_text(strip=True)
+            dept = columns[4].get_text(strip=True)
+            internal= columns[5].get_text(strip=True)
+            phone_number = columns[6].get_text(strip=True)
+
+            employee = Employee(name= first_name + " " + last_name, role=role, department= dept, phone_number= phone_number, internal_number= internal)
+            
+            yield employee
 
     def get_colleges(self):
         pass
