@@ -374,7 +374,6 @@ def get_adabiat_prof():
         yield professor
 
 
-
 # معارف اسلامی
 def get_maaref_prof():
     with sync_playwright() as p:
@@ -401,6 +400,7 @@ def get_maaref_prof():
         )
         yield professor
 
+
 #  هنر
 def get_honar_prof():
     with sync_playwright() as p:
@@ -424,9 +424,11 @@ def get_honar_prof():
         major = cells[4].get_text(strip=True)
         rank = cells[6].get_text(strip=True)
         professor = Professor(
-            full_name=first_name + " " + last_name, major=major, rank=rank, group=group)
-        
+            full_name=first_name + " " + last_name, major=major, rank=rank, group=group
+        )
+
         yield professor
+
 
 #  معماری
 def get_memari_prof():
@@ -451,6 +453,7 @@ def get_memari_prof():
         major = cells[4].get_text(strip=True)
         rank = cells[6].get_text(strip=True)
         professor = Professor(
-            full_name=first_name + " " + last_name, major=major, rank=rank, group=group)
-        
+            full_name=first_name + " " + last_name, major=major, rank=rank, group=group
+        )
+
         yield professor

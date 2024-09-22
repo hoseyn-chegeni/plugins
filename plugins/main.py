@@ -133,7 +133,6 @@ crawler = TehranSharghCrawler()
 #     print(i)
 
 
-
 """آزاد  شهر قدس"""
 crawler = QodsCrawler()
 """College"""
