@@ -25,7 +25,6 @@ class AbadanCrawler(University):
 
         soup = BeautifulSoup(page_content, "html.parser")
         table = soup.find('table', class_='table-striped')
-        table_data = []
         rows = table.find('tbody').find_all('tr')
         for row in rows:
 
@@ -39,11 +38,27 @@ class AbadanCrawler(University):
             phone_number = columns[6].get_text(strip=True)
 
             employee = Employee(name= first_name + " " + last_name, role=role, department= dept, phone_number= phone_number, internal_number= internal)
-            
+
             yield employee
 
     def get_colleges(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto("https://abadan.iau.ir/fa")
+            page.wait_for_selector('ul#w3a8755a040adf602c2c7a92170abc59e8')
+            page_content = page.content()
+            browser.close()
+
+        soup = BeautifulSoup(page_content, "html.parser")
+        ul_elements = soup.find_all('ul', class_='dropdown-menu')
+        for ul in ul_elements:
+            links = ul.find_all('a', string=lambda text: text and 'دانشکده' in text)
+            for link in links:
+                college = CollegeData(href= link['href'], value= link.get_text(strip=True))
+                yield college
+
+    
 
     def get_professors(self):
         with sync_playwright() as p:
