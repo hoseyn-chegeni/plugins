@@ -9,7 +9,7 @@ from schemas.professor import (
 import re
 
 
-class Crawler(University):
+class AbharCrawler(University):
     def __init__(self) -> None:
         self.url = ""
 
