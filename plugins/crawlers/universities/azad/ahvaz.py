@@ -16,9 +16,32 @@ class Crawler(University):
     def get_employees(self):
         pass
 
-    def get_colleges(self):
-        pass
 
+    def get_colleges(self):
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto("https://ahvaz.iau.ir/fa/page/51/%D8%AF%D8%A7%D9%86%D8%B4%DA%A9%D8%AF%D9%87-%D9%87%D8%A7")  
+            page.wait_for_timeout(5000)  
+            page_content = page.content()
+            browser.close()
+
+        soup = BeautifulSoup(page_content, "html.parser")
+        li_elements = soup.find_all("li", class_="dropdown yamm-fw")
+        target_text_pattern = re.compile(r'دانشکده‌ها')
+        for li in li_elements:
+            anchor_tag = li.find("a", class_="dropdown-toggle")
+
+            if anchor_tag and target_text_pattern.search(anchor_tag.get_text(strip=True)):
+                faculties = li.find_all("a")[1:]
+                for faculty in faculties:
+                    href = faculty.get("href")
+                    text = faculty.get_text(strip=True)
+
+                    college = CollegeData(href=href, value=text)
+                    yield college
+
+                    
     def get_professors(self):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
