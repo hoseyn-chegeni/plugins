@@ -43,8 +43,27 @@ class DamavandCrawler(University):
 
 
     def get_colleges(self):
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto("https://damavand.iau.ir/fa")
+            page.wait_for_selector('ul#w8f893ab513a98b422594488087f030f31')
+            page_content = page.content()
+            browser.close()
 
-        pass
+        target_text = re.compile(r'دانشکده ها')
+        soup = BeautifulSoup(page_content, "html.parser")
+        dropdown_elements = soup.find_all("li", class_="dropdown")
+        
+        for dropdown in dropdown_elements[1:]:
+            anchor_tag = dropdown.find("a", class_="dropdown-toggle")
+            if anchor_tag and target_text.search(anchor_tag.get_text(strip=True)):
+                links = dropdown.find_all("a")[1:]
+                for link in links:
+                    href = link.get("href")
+                    text = link.get_text(strip=True)
+                    college = CollegeData(href=href, value=text)
+                    yield college
 
     def get_professors(self):
         with sync_playwright() as p:
