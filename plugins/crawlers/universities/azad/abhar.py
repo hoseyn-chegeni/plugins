@@ -50,8 +50,6 @@ class AbharCrawler(University):
             professor.socials.personal_cv = resume_url
             yield professor
 
-
-
     def get_professor_page(self, link) -> Professor:
         pass
 
