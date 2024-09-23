@@ -37,7 +37,31 @@ class Crawler(University):
 
 
     def get_colleges(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto("https://abadeh.iau.ir/fa")
+
+            page.wait_for_selector('ul#w04007ba748339bbdae2f95cb5a80189c3')
+            page_content = page.content()
+            browser.close()
+
+
+        soup = BeautifulSoup(page_content, "html.parser")
+        target_text = re.compile(r'دانشکده‌ها')
+        dropdown_elements = soup.find_all("li", class_="dropdown")
+        for dropdown in dropdown_elements:
+            anchor_tag = dropdown.find("a", class_="dropdown-toggle")
+        
+            if anchor_tag and target_text.search(anchor_tag.get_text(strip=True)):
+                links = dropdown.find_all("a")[1:]
+                for link in links:
+                    href = link.get("href")
+                    text = link.get_text(strip=True)
+
+                    if href and text:
+                        college = CollegeData(href=href, value=text)
+                        yield college
 
     def get_professors(self):
         pass
