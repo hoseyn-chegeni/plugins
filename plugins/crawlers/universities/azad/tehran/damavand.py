@@ -17,44 +17,48 @@ class DamavandCrawler(University):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.goto("https://damavand.iau.ir/fa/grid/23/%D8%AF%D9%81%D8%AA%D8%B1%DA%86%D9%87-%D8%AA%D9%84%D9%81%D9%86?GridSearch%5BpageSize%5D=200&GridSearch%5Bsearch%5D=")
-            page.wait_for_selector('tbody')
+            page.goto(
+                "https://damavand.iau.ir/fa/grid/23/%D8%AF%D9%81%D8%AA%D8%B1%DA%86%D9%87-%D8%AA%D9%84%D9%81%D9%86?GridSearch%5BpageSize%5D=200&GridSearch%5Bsearch%5D="
+            )
+            page.wait_for_selector("tbody")
             page_content = page.content()
             browser.close()
 
-
         soup = BeautifulSoup(page_content, "html.parser")
-        tbody = soup.find('tbody')
-        rows = tbody.find_all('tr')
-        
+        tbody = soup.find("tbody")
+        rows = tbody.find_all("tr")
+
         for row in rows:
-            columns = row.find_all('td')
-            if columns[1].get_text(strip=True) != '-':
+            columns = row.find_all("td")
+            if columns[1].get_text(strip=True) != "-":
                 name = columns[1].get_text(strip=True)
                 role = columns[2].get_text(strip=True)
                 internal = columns[3].get_text(strip=True)
                 phone = columns[4].get_text(strip=True)
                 dept = columns[5].get_text(strip=True)
 
-                emp = Employee(name = name, role=role, internal_number= internal, phone_number=phone, department=dept)
+                emp = Employee(
+                    name=name,
+                    role=role,
+                    internal_number=internal,
+                    phone_number=phone,
+                    department=dept,
+                )
                 yield emp
-
-
-
 
     def get_colleges(self):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             page.goto("https://damavand.iau.ir/fa")
-            page.wait_for_selector('ul#w8f893ab513a98b422594488087f030f31')
+            page.wait_for_selector("ul#w8f893ab513a98b422594488087f030f31")
             page_content = page.content()
             browser.close()
 
-        target_text = re.compile(r'دانشکده ها')
+        target_text = re.compile(r"دانشکده ها")
         soup = BeautifulSoup(page_content, "html.parser")
         dropdown_elements = soup.find_all("li", class_="dropdown")
-        
+
         for dropdown in dropdown_elements[1:]:
             anchor_tag = dropdown.find("a", class_="dropdown-toggle")
             if anchor_tag and target_text.search(anchor_tag.get_text(strip=True)):
@@ -88,8 +92,8 @@ class DamavandCrawler(University):
                         yield link
             browser.close()
 
-
     def get_professor_page(self, link) -> Professor:
         pass
+
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()

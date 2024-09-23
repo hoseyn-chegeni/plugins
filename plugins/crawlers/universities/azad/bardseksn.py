@@ -21,6 +21,8 @@ class Crawler(University):
 
     def get_professors(self):
         pass
+
+
 from bs4 import BeautifulSoup
 from crawlers.universities.base import University
 from schemas.employee import Employee
@@ -50,7 +52,6 @@ class Crawler(University):
 
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()
-
 
     def get_employee_page(self) -> Employee:
         return super().get_employee_page()
