@@ -24,7 +24,7 @@ class Crawler(University):
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
             page.goto(
-                "https://ajabshir.iau.ir/fa/grid/3/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%D8%AA-%D8%B9%D9%84%D9%85%DB%8C"
+                "https://ajabshir.iau.ir/fa/grid/3/%D8%A7%D8%B9%D8%B6%D8%A7%DB%8C-%D9%87%DB%8C%D8%A7%"
             )
             page.wait_for_selector("table.table-striped")
             page_content = page.content()
