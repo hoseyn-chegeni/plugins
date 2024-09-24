@@ -17,6 +17,7 @@ from crawlers.universities.azad.aligodarz import AligodarzCrawler
 from crawlers.universities.azad.anar import AnarCrawler
 from crawlers.universities.azad.anzali import AnzaliCrawler
 from crawlers.universities.azad.andimeshk import AndimeshkCrawler  
+from crawlers.universities.azad.arak import ArakCrawler  
 
 
 
@@ -204,3 +205,16 @@ crawler = AndimeshkCrawler()
 """Professor"""
 #for i in crawler.get_professors():
 #  print(i.full_name)
+
+
+"""arak"""
+crawler = ArakCrawler()
+"""College"""
+#for college in crawler.get_colleges():
+#    print(college)
+"""Employee"""
+#for emp in crawler.get_employees():
+#    print(emp)
+"""Professor"""
+for i in crawler.get_professors():
+    print(i.full_name)
