@@ -37,15 +37,19 @@ class Crawler(University):
                 for row in rows:
                     columns = row.find_all("td")
                     if columns[1].get_text(strip=True) != "-":
-                        last_name =  columns[1].get_text(strip=True) 
+                        last_name = columns[1].get_text(strip=True)
                         first_name = columns[2].get_text(strip=True)
                         faculty = columns[3].get_text(strip=True)
                         rank = columns[4].get_text(strip=True)
-                        professor = Professor(full_name= first_name + " " + last_name, rank=rank, faculty=faculty)
+                        professor = Professor(
+                            full_name=first_name + " " + last_name,
+                            rank=rank,
+                            faculty=faculty,
+                        )
                         yield professor
 
-
             browser.close()
+
     def get_professor_page(self, link) -> Professor:
         pass
 
