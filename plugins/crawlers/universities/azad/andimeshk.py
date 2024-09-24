@@ -17,7 +17,23 @@ class AndimeshkCrawler(University):
         pass
 
     def get_colleges(self):
-        pass
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto("https://andimeshk.iau.ir/fa")
+            page.wait_for_selector("ul#w0d8dc5de11dbab44ee54a3c84cda6e665")
+            page_content = page.content()
+            browser.close()
+
+        soup = BeautifulSoup(page_content, "html.parser")
+        ul_elements = soup.find_all("ul", class_="dropdown-menu")
+        for ul in ul_elements:
+            links = ul.find_all("a", string=lambda text: text and "دانشکده" in text)
+            for link in links:
+                college = CollegeData(
+                    href=link["href"], value=link.get_text(strip=True)
+                )
+                yield college
 
     def get_professors(self):
         with sync_playwright() as p:

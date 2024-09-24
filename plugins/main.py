@@ -194,8 +194,8 @@ crawler = AnzaliCrawler()
 
 
 """andimesh"""
-crawler = AnzaliCrawler()
-#"""College"""
+crawler = AndimeshkCrawler()
+"""College"""
 #for college in crawler.get_colleges():
 #    print(college)
 """Employee"""
@@ -203,4 +203,4 @@ crawler = AnzaliCrawler()
 #    print(emp)
 """Professor"""
 #for i in crawler.get_professors():
-#   print(i)
+#  print(i.full_name)
